@@ -65,7 +65,7 @@ exports.getUsers = async (req, res) => {
 exports.update = async (req, res) => {
     const id = req.params.id;
 
-    console.log("Received ID:", id); // Vérifier l'ID reçu
+    console.log("Received ID:", id);
 
     if (!id) {
         return res.status(400).send({ message: "User ID is required" });

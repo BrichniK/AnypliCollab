@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
       ref: "Role"
     }
   ],
+  imageURL: {type : String} ,
 
 });
 
