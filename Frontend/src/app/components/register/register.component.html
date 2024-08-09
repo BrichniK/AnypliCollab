@@ -1,0 +1,38 @@
+<div class="flex align-items-center justify-content-center">
+    <div class="form-container" style="max-width: 30rem;">
+        <div>
+            <img  src="assets/images/logo2.png" class="div-image" style="width: 60%; height: 30%;margin-left: 80%;">
+        </div>
+       
+
+        <form [formGroup]="signupForm" (ngSubmit)="register()" class="signup-form">
+            <div class="form-content">
+                <div class="text-center mb-5">
+                    <div class="welcome-title">Welcome to AnypliCollab</div>
+                    <span class="subtext">Sign up to continue</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="label-text">Name</label>
+                    <input formControlName="name" type="text" id="name" placeholder="Username" pInputText class="input-field">
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="label-text">Email</label>
+                    <input formControlName="email" type="email" id="email" placeholder="Email address" pInputText class="input-field">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="label-text">Password</label>
+                    <input formControlName="password" type="password" id="password" placeholder="Password" pInputText class="input-field">
+                </div>
+
+                <div class="flex align-items-center justify-content-between mb-5">
+                    <a [routerLink]="['/login']" class="account-link">Have an account?</a>
+                </div>
+
+                <button pButton type="submit" [disabled]="signupForm.invalid" label="Sign Up" class="signup-button"></button>
+            </div>
+        </form>
+    </div>
+</div>

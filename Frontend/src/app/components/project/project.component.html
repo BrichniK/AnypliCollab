@@ -1,0 +1,6 @@
+<div class="project-list">
+    <div *ngFor="let project of projects" (click)="selectProject(project)">
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.tasks.length }} tasks</p>
+    </div>
+</div>
