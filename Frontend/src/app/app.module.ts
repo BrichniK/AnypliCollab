@@ -14,6 +14,9 @@ import { TaskComponent } from './components/task/task.component';
 import { BoardComponent } from './components/board/board.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { BoardDetailComponent } from './components/board-detail/board-detail.component';
 
 
 
@@ -29,6 +32,9 @@ import { CommonModule } from '@angular/common';
     ProjectComponent,
     TaskComponent,
     BoardComponent,
+    NavbarComponent,
+    SidebarComponent,
+    BoardDetailComponent,
 
   ],
   imports: [

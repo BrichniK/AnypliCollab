@@ -1,0 +1,10 @@
+<div class="board-detail" [ngStyle]="{'background-image': 'url(' + board.wallpaper + ')'}">
+    <h1>{{ board.name }}</h1>
+    <form (ngSubmit)="addTask()">
+      <input [(ngModel)]="newTaskName" placeholder="Task Name" name="taskName" required>
+      <textarea [(ngModel)]="newTaskDescription" placeholder="Task Description" name="taskDescription" required></textarea>
+      <button type="submit">Add Task</button>
+    </form>
+    <!-- Display tasks here -->
+  </div>
+  

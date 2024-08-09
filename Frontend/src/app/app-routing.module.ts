@@ -7,6 +7,8 @@ import { TaskComponent } from './components/task/task.component';
 import { ProjectComponent } from './components/project/project.component';
 import { BoardComponent } from './components/board/board.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { BoardDetailComponent } from './components/board-detail/board-detail.component';
+
 
 
 const routes: Routes = [
@@ -16,6 +18,7 @@ const routes: Routes = [
   {path: 'task',component:TaskComponent},
   {path: 'board',component:BoardComponent},
   {path: 'project',component:ProjectComponent},
+  { path: 'board-detail/:id', component: BoardDetailComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path:'**',component:NotfoundComponent},
 ];

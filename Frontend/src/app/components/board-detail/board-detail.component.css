@@ -1,0 +1,33 @@
+.board-detail {
+    position: relative; /* Ensure positioning context for child elements */
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    background-size: cover; /* Ensure the background image covers the entire container */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    display: flex; /* Flexbox layout for centering content */
+    flex-direction: column; /* Arrange children vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    color: rgb(17, 1, 1); /* Ensure text is visible on the background */
+    padding: 20px; /* Add some padding */
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+  }
+  
+  /* Optional: Style for form elements */
+  .board-detail input, .board-detail textarea {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .board-detail button {
+    background-color: #0f6d76; /* Match with your theme color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

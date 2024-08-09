@@ -1,0 +1,38 @@
+.sidebar {
+    width: 250px;
+    height: calc(100% - 60px); /* Adjust height to account for the navbar (assuming navbar is 60px high) */
+    background-color: #39b2bd;
+    position: fixed;
+    top: 52px; /* Adjust this to match the height of your navbar */
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    padding: 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 500; /* Ensure it appears above other content but below the navbar */
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin: 1rem 0;
+  }
+  
+  .sidebar ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Board container */
+  .board-container {
+    margin-left: 260px; /* Add margin to make space for the sidebar */
+    padding: 20px;
+    margin-top: 60px; /* Add margin to make space for the navbar */
+  }
