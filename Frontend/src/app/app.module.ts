@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';  // Ensure FormsModule is imported
+import { FormsModule } from '@angular/forms'; 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
@@ -10,10 +10,14 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProjectComponent } from './components/project/project.component';
-import { TaskBoardComponent } from './components/task-board/taskboard.component';
 import { TaskComponent } from './components/task/task.component';
 import { BoardComponent } from './components/board/board.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';  
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -23,9 +27,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     RegisterComponent,
     LoginComponent,
     ProjectComponent,
-    TaskBoardComponent,
     TaskComponent,
-    BoardComponent
+    BoardComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -33,7 +37,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    DragDropModule  
+    DragDropModule  ,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

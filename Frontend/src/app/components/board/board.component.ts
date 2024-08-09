@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardService } from 'src/app/services/boards.service'; 
 import { Board,Task } from 'src/app/models/board';
+import { CdkDragDrop,moveItemInArray,transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board',
@@ -19,34 +20,25 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.boards = this.boardService.getBoards();
   }
+  parkingSpots: { id: number; boards: Board[] }[] = [
+    { id: 1, boards: [] },
+    { id: 2, boards: [] },
+    { id: 3, boards: [] },
+    // add more spots as needed
+  ];
 
-  addBoard(name: string): void {
-    if (name.trim()) {
-      const newBoard: Board = {
-        id: this.boards.length + 1,
-        name,
-        tasks: []
-      };
-      this.boardService.addBoard(newBoard);
-      this.newBoardName = '';
+
+
+  onBoardDrop(event: CdkDragDrop<Board[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     }
-  }
-
-  addTask(boardId: number, title: string, description: string): void {
-    if (title.trim() && description.trim()) {
-      const newTask: Task = {
-        id: Math.floor(Math.random() * 10000),
-        title,
-        description,
-        status: 'To Do'
-      };
-      this.boardService.addTaskToBoard(boardId, newTask);
-      this.newTaskTitle = '';
-      this.newTaskDescription = '';
-    }
-  }
-
-  updateTaskStatus(boardId: number, taskId: number, status: 'To Do' | 'Proceeding' | 'Done'): void {
-    this.boardService.updateTaskStatus(boardId, taskId, status);
   }
 }
