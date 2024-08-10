@@ -19,4 +19,7 @@ export class SidebarComponent implements OnInit {
   showBoards() {
     this.router.navigate(['/board']); // Navigates to the board route
   }
+  setting() {
+    this.router.navigate(['/setting']); // Navigates to the board route
+  }
 }

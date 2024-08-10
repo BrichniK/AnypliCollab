@@ -9,7 +9,20 @@
     <ul class="task-list">
       <li *ngFor="let task of board.tasks" cdkDrag (cdkDragReleased)="onDragReleased($event, task.id, board.id)" 
           [ngStyle]="{'left.px': task.position.left, 'top.px': task.position.top}" class="task-item">
-        <strong>{{ task.title }}</strong>: {{ task.description }} (Status: {{ task.status }})
+        <strong>{{ task.title }}</strong>: 
+        <div>{{ task.description }}</div>
+        
+        <div>( {{ task.status }})
+          <SELECT>
+
+            <OPTION Value="Status">Proceeding</OPTION>
+            <OPTION Value="Status">Done</OPTION>
+
+            
+            </SELECT>
+        </div>
+         
+
       </li>
     </ul>
   </div>

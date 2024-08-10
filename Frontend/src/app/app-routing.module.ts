@@ -8,6 +8,9 @@ import { ProjectComponent } from './components/project/project.component';
 import { BoardComponent } from './components/board/board.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
+import { SettingsComponent } from './components/setting/setting.component';
+import { ActivityComponent } from './components/activity/activity.component';
+
 
 
 
@@ -19,6 +22,8 @@ const routes: Routes = [
   {path: 'board',component:BoardComponent},
   {path: 'project',component:ProjectComponent},
   { path: 'board-detail/:id', component: BoardDetailComponent },
+  { path: 'setting', component: SettingsComponent },
+  { path: 'activity',component: ActivityComponent  },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path:'**',component:NotfoundComponent},
 ];

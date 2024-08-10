@@ -1,0 +1,68 @@
+<div class="form-section">
+<h2>Boards and Users</h2>
+<div *ngFor="let board of boards" class="board-section">
+  <h3>{{ board.name }}</h3>
+  <ul class="user-list">
+    <li *ngFor="let user of board.users" class="user-item">
+      <div class="user-info">
+        <img [src]="user.imageURL" alt="{{ user.name }}" class="user-avatar">
+        <div>
+          <p><strong>{{ user.name }}</strong></p>
+          <p>{{ user.email }}</p>
+          <p>Status: <span [class.active]="user.active">{{ user.active ? 'Active' : 'Inactive' }}</span></p>
+          <p>Role: {{ user.roles[0]?.name }}</p>
+        </div>
+      </div>
+      <button class="kickout-button" (click)="removeUserFromBoard(user.id!)">Kick Out</button>
+    </li>
+  </ul>
+</div>
+
+<div class="form-section">
+  <h3>Add Existing User to Board</h3>
+  <form (ngSubmit)="addUserToBoard()">
+    <div class="form-group">
+      <label for="board-select">Board:</label>
+      <select [(ngModel)]="selectedBoardId" name="board" id="board-select" required>
+        <option *ngFor="let board of boards" [value]="board.id">{{ board.name }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="user-select">User:</label>
+      <select [(ngModel)]="selectedUserId" name="user" id="user-select" required>
+        <option *ngFor="let user of allUsers" [value]="user.id">{{ user.name }} - {{ user.email }}</option>
+      </select>
+    </div>
+    <button class="submit-button" type="submit">Add User to Board</button>
+  </form>
+</div>
+
+<div class="form-section">
+  <h3>Change User Role</h3>
+  <form (ngSubmit)="changeUserRole()">
+    <div class="form-group">
+      <label for="board-select-role">Board:</label>
+      <select [(ngModel)]="selectedBoardId" name="board" id="board-select-role" required>
+        <option *ngFor="let board of boards" [value]="board.id">{{ board.name }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="user-select-role">User:</label>
+      <select [(ngModel)]="selectedUserId" name="user" id="user-select-role" required>
+        <option *ngFor="let user of allUsers" [value]="user.id">{{ user.name }} - {{ user.email }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="role-input">New Role:</label>
+      <SELECT >
+        <input [(ngModel)]="newRole" name="roleName" id="role-input" placeholder="New Role Name" required>
+
+        <OPTION Value="Status">Admin</OPTION>
+        <OPTION Value="Status">Manager</OPTION>
+        <OPTION Value="Status">User</OPTION>
+        
+        </SELECT>    </div>
+    <button class="submit-button" type="submit">Change Role</button>
+  </form>
+</div>
+</div>

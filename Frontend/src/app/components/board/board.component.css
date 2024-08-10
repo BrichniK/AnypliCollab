@@ -1,6 +1,6 @@
 .parking-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Adjust number of columns as needed */
+  grid-template-columns: repeat(6, 4fr); /* Adjust number of columns as needed */
   gap: 20px;
   padding: 20px;
 }

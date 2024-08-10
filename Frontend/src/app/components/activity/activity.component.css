@@ -1,0 +1,22 @@
+.activity-list {
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 10px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .activity-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 8px 0;
+  }
+  
+  .activity-item p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  .activity-item strong {
+    color: #555;
+  }
+  

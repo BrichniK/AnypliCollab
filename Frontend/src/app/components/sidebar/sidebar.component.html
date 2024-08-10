@@ -1,9 +1,15 @@
 <div class="sidebar" [class.open]="isOpen">
     <ul>
       <li><a href="#">Dashboard</a></li>
-      <li><a (click)="showBoards()">Boards</a></li>
-      <li><a href="#">Activiy</a></li>
-      <li><a href="#">Settings</a></li>
+      <li>
+      <a [routerLink]="['/board']" class="view-activities-button">Boards</a>
+    </li>
+  <li>
+      <a [routerLink]="['/activity']" class="view-activities-button">Activity Log</a>
+    </li>
+  <li>
+      <a [routerLink]="['/setting']" class="view-activities-button">Settings</a>
+    </li>
     </ul>
   </div>
   

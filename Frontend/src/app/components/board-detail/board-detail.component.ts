@@ -25,7 +25,7 @@ export class BoardDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.boards = [
-      { id: 1, name: 'Project 1', tasks: [],wallpaper: 'assets/images/Boards/b3.png' },
+      { id: 1, name: 'Project 1', tasks: [],wallpaper: 'assets/images/Boards/b3.png',users:[] },
     ];
 
     this.boards[0].tasks = [

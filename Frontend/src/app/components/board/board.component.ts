@@ -59,6 +59,7 @@ export class BoardComponent implements OnInit {
       name: boardName,
       wallpaper: boardImage,
       tasks: [] ,
+      users:[]
      
     };
 

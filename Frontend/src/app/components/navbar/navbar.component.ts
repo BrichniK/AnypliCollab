@@ -21,12 +21,13 @@ export class NavbarComponent {
   }  
   logout() {
     //this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['']);
     this.authService.logout();
 }
 
 profile() {
     this.profileservice.profile();
+    this.router.navigate(['']);
 }
 
 }

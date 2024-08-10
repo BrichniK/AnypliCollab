@@ -1,8 +1,11 @@
+import { User } from "./user";
+
 export class Board {
     id!: number;
     name!: string;
     tasks!: Task[];
     wallpaper!: string;
+    users!:User[]
   }
 
 export interface Task {

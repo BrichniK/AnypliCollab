@@ -17,6 +17,8 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
+import { ActivityComponent } from './components/activity/activity.component';
+import { SettingsComponent } from './components/setting/setting.component';
 
 
 
@@ -35,6 +37,8 @@ import { BoardDetailComponent } from './components/board-detail/board-detail.com
     NavbarComponent,
     SidebarComponent,
     BoardDetailComponent,
+    SettingsComponent,
+    ActivityComponent,
 
   ],
   imports: [

@@ -1,0 +1,8 @@
+<h2>Activity Log</h2>
+<div class="activity-list">
+  <div *ngFor="let activity of activities" class="activity-item">
+    <p><strong>User ID:</strong> {{ activity.userId }}</p>
+    <p><strong>Description:</strong> {{ activity.description }}</p>
+    <p><strong>Date:</strong> {{ activity.date | date:'short' }}</p>
+  </div>
+</div>

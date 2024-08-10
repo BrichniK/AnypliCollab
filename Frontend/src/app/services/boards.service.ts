@@ -13,8 +13,8 @@ export class BoardService {
 
 
   private boards: Board[] = [
-    { id: 1, name: 'Project Planning', wallpaper: 'assets/images/Boards/b3.png' ,tasks:[]},
-    { id: 2, name: 'Design Phase', wallpaper: 'assets/images/Boards/b2.jpg' ,tasks:[]}
+    { id: 1, name: 'Project Planning', wallpaper: 'assets/images/Boards/b3.png' ,tasks:[],users:[]},
+    { id: 2, name: 'Design Phase', wallpaper: 'assets/images/Boards/b2.jpg' ,tasks:[],users:[]}
   ];
 
   
