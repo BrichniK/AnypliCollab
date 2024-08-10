@@ -58,7 +58,8 @@ export class BoardComponent implements OnInit {
      id :1,
       name: boardName,
       wallpaper: boardImage,
-      tasks: [] // Initialize with an empty task list
+      tasks: [] ,
+     
     };
 
     this.boards.push(newBoard);

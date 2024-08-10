@@ -1,33 +1,109 @@
+.board-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between boards */
+  padding: 20px; /* Padding around the container */
+  position: relative;
+  background-size: cover; /* Ensure the background image covers the entire container */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Do not repeat the background image */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Hide any overflowing content */
+}
+
 .board-detail {
-    position: relative; /* Ensure positioning context for child elements */
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
-    background-size: cover; /* Ensure the background image covers the entire container */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Do not repeat the background image */
-    display: flex; /* Flexbox layout for centering content */
-    flex-direction: column; /* Arrange children vertically */
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
-    color: rgb(17, 1, 1); /* Ensure text is visible on the background */
-    padding: 20px; /* Add some padding */
-    box-sizing: border-box; /* Include padding in the element's total width and height */
-  }
-  
-  /* Optional: Style for form elements */
-  .board-detail input, .board-detail textarea {
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .board-detail button {
-    background-color: #0f6d76; /* Match with your theme color */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+  position: relative;
+  width: 350px; /* Fixed width for consistent layout */
+  height: 600px; /* Fixed height to contain tasks */
+  background: rgba(210, 228, 229, 0.6); /* Semi-transparent dark background to improve text readability */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Start content from the top */
+  color: white; /* White text for better contrast */
+  padding: 10px; /* Reduced padding for a more compact layout */
+  box-sizing: border-box;
+  border-radius: 10px; /* Rounded corners for a modern look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  overflow: auto; /* Add scrollbars if content overflows */
+}
+
+.board-title {
+  margin: 10px 0;
+  font-size: 18px; /* Slightly smaller font size for the title */
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.7); /* Slightly darker background */
+  border-radius: 8px;
+  padding: 8px; /* Reduced padding */
+  width: 100%; /* Full width title */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add a shadow to the title */
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Full width of the board */
+  margin-top: 10px; /* Reduced margin above the form */
+}
+
+input, textarea {
+  margin-bottom: 7px; /* Reduced margin between fields */
+  padding: 5px; /* Reduced padding */
+  border-radius: 5px; /* Smaller border radius */
+  border: 1px solid #ddd; /* Lighter border color */
+  font-size: 11px; /* Smaller font size */
+}
+
+button {
+  background-color: #00796b; /* Slightly brighter theme color */
+  color: white;
+  border: none;
+  padding: 5px; /* Reduced padding */
+  border-radius: 5px; /* Smaller border radius */
+  cursor: pointer;
+  font-size: 11px; /* Smaller font size */
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover and click effects */
+}
+
+button:hover {
+  background-color: #004d40; /* Darker color on hover */
+  transform: translateY(-2px); /* Slightly lift the button on hover */
+}
+
+button:active {
+  transform: translateY(1px); /* Push the button down slightly on click */
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin-top: 10px; /* Reduced space above the task list */
+}
+
+li {
+  background-color: rgba(255, 255, 255, 0.8); /* Light background for tasks */
+  padding: 7px; /* Reduced padding */
+  border-radius: 5px; /* Smaller border radius */
+  margin-bottom: 7px; /* Reduced space between tasks */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for each task */
+  font-size: 11px; /* Smaller font size for task details */
+  transition: transform 0.5s ease; /* Smooth scaling on hover */
+}
+
+li:hover {
+  transform: scale(1.02); /* Slightly enlarge the task on hover */
+}
+
+li strong {
+  font-weight: bold;
+  color: #333; /* Darker color for task title */
+}
+
+li span {
+  display: block;
+  font-size: 12px; /* Smaller font for task description */
+  color: #666; /* Gray color for task details */
+}

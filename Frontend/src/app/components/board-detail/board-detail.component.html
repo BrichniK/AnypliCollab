@@ -1,10 +1,16 @@
-<div class="board-detail" [ngStyle]="{'background-image': 'url(' + board.wallpaper + ')'}">
-    <h1>{{ board.name }}</h1>
-    <form (ngSubmit)="addTask()">
+<div *ngFor="let board of boards" class="board-container" [ngStyle]="{'background-image': 'url(' + board.wallpaper + ')'}">
+  <div class="board">
+    <h1 class="board-title">{{ board.name }}</h1>
+    <form (ngSubmit)="addTask(board.id)" class="task-form">
       <input [(ngModel)]="newTaskName" placeholder="Task Name" name="taskName" required>
       <textarea [(ngModel)]="newTaskDescription" placeholder="Task Description" name="taskDescription" required></textarea>
       <button type="submit">Add Task</button>
     </form>
-    <!-- Display tasks here -->
+    <ul class="task-list">
+      <li *ngFor="let task of board.tasks" cdkDrag (cdkDragReleased)="onDragReleased($event, task.id, board.id)" 
+          [ngStyle]="{'left.px': task.position.left, 'top.px': task.position.top}" class="task-item">
+        <strong>{{ task.title }}</strong>: {{ task.description }} (Status: {{ task.status }})
+      </li>
+    </ul>
   </div>
-  
+</div>

@@ -5,6 +5,13 @@ import { Board } from '../models/board';
   providedIn: 'root'
 })
 export class BoardService {
+  private positions = [
+    { left: 100, top: 100 },
+    { left: 100, top: 300 },
+    
+  ];
+
+
   private boards: Board[] = [
     { id: 1, name: 'Project Planning', wallpaper: 'assets/images/Boards/b3.png' ,tasks:[]},
     { id: 2, name: 'Design Phase', wallpaper: 'assets/images/Boards/b2.jpg' ,tasks:[]}
