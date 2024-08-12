@@ -1,20 +1,9 @@
+const express = require('express');
+const router = express.Router();
 const authController = require('../controllers/auth.controller');
 
+// Use the correct path for the signup function
+router.post('/signup', authController.signup);
+router.post('/login', authController.login);
 
-module.exports = function(app) {
-    app.use(function(req, res, next) {
-      res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, Content-Type, Accept"
-      );
-      next();
-    });
-  
-    app.post("/auth/signup",authController.signup);
-  
-    app.post("/auth/signin", authController.signin);
-  
-    app.post("/auth/signout", authController.signout);
-
-}
-
+module.exports = router;

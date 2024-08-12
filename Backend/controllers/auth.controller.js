@@ -1,143 +1,83 @@
-const config = require("../config/auth.config");
-const User = require ("../models/user.model");
-const Role = require ("../models/role.model");
+const { PrismaClient, Role } = require("@prisma/client");
+const prisma = new PrismaClient();
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const { JWT_Secret } = require ('../config/auth')
 
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+exports.signup = async (req, res, next) => {
+    try {
+        const userData = req.body;
+        console.log("Request body:", userData); // Log the user data
 
+        // Validate fields
+        if (!userData.name || !userData.email || !userData.password || !userData.role) {
+            return res.status(400).json({ error: 'Missing required fields or role.' });
+        }
 
+        // Validate the role
+        if (!Object.values(Role).includes(userData.role)) {
+            return res.status(400).json({ error: 'Invalid role.' });
+        }
 
+        // Create the new user with the provided role
+        const newUser = await prisma.user.create({
+            data: {
+                name: userData.name,
+                email: userData.email,
+                password: userData.password,
+                role: userData.role // Assign the role
+            },
+            select: { // Ensure the role is selected
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+            }
+        });
 
-
-exports.signup = async (req, res) => {
-  try {
-
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 8),
-    });
-
-    let roles;
-    
-    
-    if (req.body.roles) {
-      if (typeof req.body.roles === 'string') {
-       
-        roles = await Role.find({ name: req.body.roles }).exec();
-      } else if (Array.isArray(req.body.roles)) {
-       
-        roles = await Role.find({ name: { $in: req.body.roles } }).exec();
-      } else {
-        return res.status(400).send({ message: "Invalid roles format." });
-      }
-
-      
-      console.log("Fetched roles:", roles);
-
-    
-      if (roles.length === 0) {
-        return res.status(400).send({ message: "No valid roles found." });
-      }
-    } else {
-      return res.status(400).send({ message: "Roles must be provided." });
+        console.log("User created:", newUser);
+        res.status(201).json(newUser);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Internal server error' });
     }
-
-   
-    user.roles = roles.map(role => role._id);
-    
-   
-    await user.save();
-
-   
-    res.send({ message: "User was registered successfully!" });
-
-  } catch (err) {
-   
-    res.status(500).send({ message: err.message });
-  }
 };
 
 
-
-exports.signin = async (req, res) => {
-  try {
-   
-    const user = await User.findOne({ email: req.body.email })
-      .populate("roles", "-__v")
-      .exec();
-
-    if (!user) {
-      return res.status(404).send({ message: "User Not found." });
-    }
-
- 
-    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-
-    if (!passwordIsValid) {
-     
-      user.loginAttempts += 1;
-
-      if (user.loginAttempts >= 3) {
-       
-        user.lockUntil = Date.now() + 60 * 60 * 1000; 
-        user.loginAttempts = 0; 
-      }
-
-     
-      await user.save();
-      return res.status(401).send({ message: "Invalid Password!" });
-    } else {
-   
-      user.loginAttempts = 0;
-      user.lockUntil = undefined;
-
-      await user.save();
-
-   
-      const token = jwt.sign({ id: user.id }, config.secret, {
-        algorithm: 'HS256',
-        allowInsecureKeySizes: true,
-        expiresIn: 86400, 
-      });
-
-      if (!token) {
-        console.error("Token generation failed");
-        return res.status(500).send({ message: "Token generation failed" });
-      }
-
-    
-      const authorities = user.roles.map(role => `ROLE_${role.name.toUpperCase()}`);
-
-      
-      req.session.token = token;
-
-      
-      return res.status(200).send({
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        roles: authorities,
-        token: token, 
-      });
-    }
-  } catch (err) {
+exports.login = async (req, res) => {
+    try {
+      const { email, password } = req.body;
   
-    return res.status(500).send({ message: err.message });
-  }
-};
-
-
-
-
-
-exports.signout = async (req, res, next) => {
-  try {
-    req.session = null;
-    return res.status(200).send({ message: "You've been signed out!" });
-  } catch (err) {
-    next(err); 
-  }
-};
-
-
+      // Find user by email
+      const user = await prisma.user.findUnique({
+        where: { email }
+        
+      });
+  
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+  
+      // Compare passwords
+    //   const isMatch = await bcrypt.compare(password, user.password);
+    //   if (!isMatch) {
+    //     return res.status(401).json({ error: 'Invalid email or password' });
+    //   }
+  
+      // Create JWT token
+      const token = jwt.sign(
+        {
+          userId: user.id,
+          email: user.email,
+          roles: user.role,
+        },
+        process.env.JWT_Secret,
+        { expiresIn: '1h' }
+      );
+  
+      res.status(200).json({ token });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
