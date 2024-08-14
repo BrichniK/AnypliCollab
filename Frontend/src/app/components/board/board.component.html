@@ -1,10 +1,10 @@
-
 <button class="add-board-button" (click)="addBoard()">
   +
 </button>
+
+
 <div class="board-container" cdkDropListGroup>
  
-
   <div
     *ngFor="let board of boards"
     class="board"
@@ -15,6 +15,26 @@
     (click)="openBoardDetail(board)"
     [ngStyle]="{'background-image': 'url(' + board.wallpaper + ')'}"
   >
-   
+
+    <h3>{{ board.name }}</h3>
   </div>
+</div>
+<div class="board-container" cdkDropListGroup>
+  <div
+    *ngFor="let board of boards"
+    class="board"
+    cdkDrag
+    cdkDropList
+    [cdkDropListData]="boards"
+    (cdkDropListDropped)="onBoardDrop($event)"
+    (click)="openBoardDetail(board)"
+    [ngStyle]="{'background-image': 'url(' + board.wallpaper + ')'}"
+  >
+    <h3>{{ board.name }}</h3>
+  </div>
+</div>
+<div class="board" [ngStyle]="{'background-image': 'url(path/to/image.jpg)'}">
+  <h3>Test Board</h3>
+
+  <button (click)="getAll()"></button>
 </div>

@@ -72,7 +72,7 @@ exports.add =  async function createBoard(req, res) {
       res.json({
         status: true,
         message: 'Board Successfully updated',
-        data: updatedUser,
+        data: updatedBoard,
       });
     } catch (error) {
       console.log(error);
@@ -82,3 +82,40 @@ exports.add =  async function createBoard(req, res) {
       });
     }
   }
+  
+  exports.delete = async function deleteBoard(req, res) {
+    try {
+      const { boardid } = req.params;
+  
+      const board = await prisma.board.findFirst({
+        where: {
+          id: boardid,
+        },
+      });
+  
+      if (!board) {
+        return res.status(404).json({
+          status: false,
+          message: "User not found",
+        });
+      }
+  
+      await prisma.board.delete({
+        where: {
+          id: boardid,
+        },
+      });
+  
+      res.json({
+        status: true,
+        message: "board successfully deleted",
+      });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).json({
+        status: false,
+        message: "Server error",
+      });
+    }
+  };
+  

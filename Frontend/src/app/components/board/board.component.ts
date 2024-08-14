@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardService } from 'src/app/services/boards.service'; 
 import { Board } from 'src/app/models/board';
-import { CdkDragDrop,moveItemInArray,transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,25 +11,16 @@ import { Router } from '@angular/router';
 })
 export class BoardComponent implements OnInit {
   boards: Board[] = [];
-  newBoardName: string = '';
+  loading: boolean = true;
 
- 
-
-  constructor(private boardService: BoardService,
-    private router : Router
+  constructor(
+    private boardService: BoardService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.boards = this.boardService.getBoards();
+    this.getAll();
   }
-  parkingSpots: { boards: Board[] }[] = [
-    {  boards: [] },
-    {  boards: [] },
-    { boards: [] },
-    // add more spots as needed
-  ];
-
-
 
   onBoardDrop(event: CdkDragDrop<Board[]>) {
     if (event.previousContainer === event.container) {
@@ -43,28 +34,47 @@ export class BoardComponent implements OnInit {
       );
     }
   }
+
   openBoardDetail(board: Board) {
     this.router.navigate(['/board-detail', board.id]);
   }
+
   addBoard() {
-    // Prompt user for board details
     const boardName = prompt('Enter board title:', 'New Board');
-    if (!boardName) return; // Cancel if no name provided
+    if (!boardName) return; 
 
     const boardImage = prompt('Enter image URL:', 'path/to/default/image.jpg');
-    if (!boardImage) return; // Use default image if no URL provided
+    if (!boardImage) return; 
 
     const newBoard: Board = {
-     id :1,
+      id: this.boards.length + 1, // Generate a simple unique ID
       name: boardName,
       wallpaper: boardImage,
-      tasks: [] ,
-      users:[]
-     
+      tasks: [],
+      users: []
     };
 
-    this.boards.push(newBoard);
-    // Save the new board to your service or backend
-    this.boardService.saveBoards(newBoard);
+    this.boardService.saveBoards(newBoard).subscribe(
+      (savedBoard) => {
+        this.boards.push(savedBoard);
+      },
+      (error) => {
+        console.error('Error saving board:', error);
+      }
+    );
+  }
+
+  getAll() {
+    this.boardService.getAllBoards().subscribe(
+      (response) => {
+        console.log('Boards:', response);
+        this.boards = response;
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Error loading boards:', error);
+        this.loading = false;
+      }
+    );
   }
 }

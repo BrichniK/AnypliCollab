@@ -11,7 +11,7 @@ export class AuthService {
     private isLoggedIn$ = this.authSubject.asObservable();
     token!: any;
     currentUser = {};
-    endpoint: string = 'http://localhost:4200/auth/';
+    endpoint: string = 'http://localhost:4200/auth';
 
     constructor(private http: HttpClient, private router: Router) {}
 

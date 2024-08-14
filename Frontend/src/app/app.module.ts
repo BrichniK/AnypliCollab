@@ -9,7 +9,6 @@ import { UserComponent } from './components/user/user.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/task/task.component';
 import { BoardComponent } from './components/board/board.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -31,7 +30,6 @@ import { SettingsComponent } from './components/setting/setting.component';
     UserComponent,
     RegisterComponent,
     LoginComponent,
-    ProjectComponent,
     TaskComponent,
     BoardComponent,
     NavbarComponent,
@@ -48,9 +46,11 @@ import { SettingsComponent } from './components/setting/setting.component';
     HttpClientModule,
     ReactiveFormsModule,
     DragDropModule  ,
+    
     CommonModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule { }
