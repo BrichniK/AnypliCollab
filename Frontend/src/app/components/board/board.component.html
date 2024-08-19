@@ -1,16 +1,44 @@
-<button class="add-board-button" >
-    +
-  </button>
-  
-  
- 
-   
+<div class="board-container">
+  <!-- Add Board Form -->
+
+  <div *ngIf="boardDialog" class="board-dialog">
+    <h3>Add New Board</h3>
+    <form (ngSubmit)="addBoard()">
+      <label for="boardName">Board Name:</label>
+      <input id="boardName" [(ngModel)]="board.name" name="name" required />
+
+      <label for="wallpaper">Select Wallpaper:</label>
+      <div class="wallpaper-options">
+        <div
+          *ngFor="let wallpaper of wallpapers"
+          class="wallpaper-option"
+          [ngStyle]="{ 'background-image': 'url(' + wallpaper + ')' }"
+          (click)="selectWallpaper(wallpaper)"
+          [class.selected]="wallpaper === board.wallpaper"
+        ></div>
+      </div>
+
+      <button type="submit">Add Board</button>
+      <button type="button" (click)="closeAddBoardDialog()">Cancel</button>
+    </form>
+  </div>
+
+  <!-- Board Display -->
+  <div cdkDropList class="clipboard" (cdkDropListDropped)="drop($event)" >
     <div
       *ngFor="let board of boards"
+      cdkDrag
+      class="board-item"
+      [ngStyle]="{ 'background-image': 'url(' + board.wallpaper + ')' }"
       
     >
-  
-      <h3>{{board.name}}</h3>
+      <div class="board-content">
+        <h3>{{ board.name }}</h3>
+      </div>
+      
     </div>
-
-  
+  </div>
+</div>
+<button class="add-board-button" (click)="showDialog()">
+  +
+</button>

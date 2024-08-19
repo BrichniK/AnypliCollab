@@ -14,8 +14,13 @@ export class BoardService {
   getAllBoards(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/show`);
   }
+
   addBoard(board: Board): Observable<Board> {
     return this.http.post<Board>(`${this.baseUrl}/addboard`, board);
+}
+
+removeBoard(id: String): Observable<void> {
+  return this.http.delete<void>(`${this.baseUrl}/deleteboard/${id}`);
 }
 
 

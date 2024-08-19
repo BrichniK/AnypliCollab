@@ -20,10 +20,6 @@ import { SettingsComponent } from './components/setting/setting.component';
 import { BoardComponent } from './components/board/board.component';
 import { MessageService } from 'primeng/api';
 
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +34,6 @@ import { MessageService } from 'primeng/api';
     BoardDetailComponent,
     SettingsComponent,
     ActivityComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -46,13 +41,10 @@ import { MessageService } from 'primeng/api';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    DragDropModule  ,
-  
-    
+    DragDropModule,
     CommonModule
   ],
-  providers: [],
+  providers: [MessageService], // Provide MessageService here
   bootstrap: [AppComponent],
-
 })
 export class AppModule { }

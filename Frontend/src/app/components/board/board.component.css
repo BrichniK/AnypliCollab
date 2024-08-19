@@ -1,88 +1,94 @@
-.parking-container {
-    display: grid;
-    grid-template-columns: repeat(6, 4fr); /* Adjust number of columns as needed */
-    gap: 20px;
-    padding: 20px;
-  }
-  .board-container {
-    display: flex; /* Adjust as needed */
-    flex-wrap: wrap; /* Allows boards to wrap onto the next line */
-    gap: 20px; /* Adjust spacing between boards */
-    padding: 20px;
-  }
-  .add-board-button {
-    position: fixed; /* Fixed position to stay at a specific location */
-    bottom: 20px; /* Distance from the bottom of the viewport */
-    right: 20px; /* Distance from the right of the viewport */
-    width: 60px; /* Diameter of the circle */
-    height: 60px; /* Diameter of the circle */
-    background-color: #0f6d76; /* Background color of the button */
-    color: white; /* Text color */
-    border: none; /* Remove default border */
-    border-radius: 50%; /* Make the button circular */
-    font-size: 24px; /* Font size for the '+' */
-    display: flex; /* Flexbox for centering content */
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Center items horizontally */
-    cursor: pointer; /* Change cursor to pointer */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
-    transition: background-color 0.3s ease; /* Smooth transition for background color */
-  }
-  .board-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  
-  .board {
-    width: 200px;
-    height: 150px;
-    background-size: cover;
-    background-position: center;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-  }
-  
-  .add-board-button {
-    font-size: 24px;
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    cursor: pointer;
-  }
-  
-  
-  .add-board-button:hover {
-    background-color: #0d5a5e; /* Darker color on hover */
-  }
-  
-  
-  .parking-spot {
-    width: 200px;
-    height: 300px;
-    background-color: #e0e0e0;
-    border: 2px dashed #aaa;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-  
-  .board {
-    width: 180px;
-    height: 300px; /* Set the height according to your design */
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-    cursor: move;
-    background-size: cover; /* Ensure the image covers the board */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Prevent image repetition */
-  }
+.add-board-button {
+  position: fixed;
+  bottom: 20px; /* Adjust as needed */
+  right: 20px;  /* Adjust as needed */
+  width: 60px;  /* Adjust the size */
+  height: 60px; /* Adjust the size */
+  border-radius: 50%; /* Makes the button circular */
+  background-color: #007bff; /* Blue color */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 24px; /* Adjust the font size */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-board-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.add-board-button:focus {
+  outline: none; /* Remove focus outline */
+}/* Board dialog styling */
+
+
+.board-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.wallpaper-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.wallpaper-option {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.wallpaper-option.selected {
+  border: 2px solid #007bff;
+}
+
+.board-container {
+  margin-left: 260px; 
+  padding: 20px;
+  margin-top: 60px; 
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.board-item {
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  position: relative;
+  cursor: move;
+  display: flex;
+  align-items: flex-end;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.board-item:hover {
+  transform: scale(1.05);
+}
+
+.board-content {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  padding: 5px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
