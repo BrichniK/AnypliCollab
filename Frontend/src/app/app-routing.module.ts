@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {path: 'user',component:UserComponent},
   {path: 'task',component:TaskComponent},
-  {path: 'board',component:BoardComponent},
+  {path: 'board/show',component:BoardComponent},
   { path: 'board-detail/:id', component: BoardDetailComponent },
   { path: 'setting', component: SettingsComponent },
   { path: 'activity',component: ActivityComponent  },

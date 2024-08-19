@@ -22,7 +22,7 @@ model User {
   activity Activity?
 
   tasks    Task[]  @relation("UserTasks")
-  boardUsers BoardUser[]  // Relation to the join model
+  boardUsers BoardUser[]  
 }
 
 enum Status {
@@ -57,7 +57,7 @@ model Board {
   wallpaper String
 
   tasks     Task[]   @relation("BoardTasks")
-  boardUsers BoardUser[]  // Relation to the join model
+  users BoardUser[]  
 }
 
 model BoardUser {
@@ -68,7 +68,7 @@ model BoardUser {
   board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([boardId, userId])  // Ensure a unique combination of boardId and userId
+  @@unique([boardId, userId])  
 }
 
 

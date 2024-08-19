@@ -1,7 +1,8 @@
 import { User } from "./user";
 
 export class Board {
-    id!: number;
+ 
+    id!: String;
     name!: string;
     tasks!: Task[];
     wallpaper!: string;

@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Board } from '../models/board';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardService {
-  private baseUrl = 'http://localhost:4200/board';
-  private apiUrl = 'http://localhost:4200/board';
+  private baseUrl = 'http://localhost:8080/board';
+
   constructor(private http: HttpClient) {}
 
-  getAllBoards(): Observable<Board[]> {
-    return this.http.get<Board[]>(`${this.baseUrl}/show`);
+  getAllBoards(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/show`);
   }
+  addBoard(board: Board): Observable<Board> {
+    return this.http.post<Board>(`${this.baseUrl}/addboard`, board);
+}
 
-  saveBoards(board: Board): Observable<Board> {
-    return this.http.post<Board>(`${this.baseUrl}/save`, board);
-  }
+
 }

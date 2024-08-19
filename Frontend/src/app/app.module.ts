@@ -10,7 +10,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TaskComponent } from './components/task/task.component';
-import { BoardComponent } from './components/board/board.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -18,6 +17,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
 import { ActivityComponent } from './components/activity/activity.component';
 import { SettingsComponent } from './components/setting/setting.component';
+import { BoardComponent } from './components/board/board.component';
+import { MessageService } from 'primeng/api';
 
 
 
@@ -46,6 +47,7 @@ import { SettingsComponent } from './components/setting/setting.component';
     HttpClientModule,
     ReactiveFormsModule,
     DragDropModule  ,
+  
     
     CommonModule
   ],

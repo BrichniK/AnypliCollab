@@ -1,121 +1,96 @@
-const { PrismaClient, Role } = require("@prisma/client");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-
-exports.add =  async function createBoard(req, res) {
-    try {
-      const board = await prisma.board.create({
-        data: req.body,
-      });
-  
-      res.status(201).json({
-        status: true,
-        message: "Board Successfully Created",
-        data: board,
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: false,
-        message: 'server error'
-      });
-    }
+exports.add = async (req, res) => {
+  try {
+    const newBoard = await prisma.board.create({
+      data: {
+        name: req.body.name,
+        wallpaper: req.body.wallpaper,
+        users: {
+          connect: req.body.users.map(userId => ({ id: userId })),
+        },
+      },
+    });
+    res.json(newBoard);
+  } catch (error) {
+    res.status(500).json({ error: 'Error creating board' });
   }
+};
 
-  exports.show =  async function getBoards (req, res) {
+exports.show = async function getBoards(req, res) {
+  try {
+    console.log('GET /board/show called'); // Add this line for debugging
     const boards = await prisma.board.findMany();
-  
     res.json({
       status: true,
       message: "Boards Successfully fetched",
       data: boards,
     });
+  } catch (error) {
+    console.error("Error fetching boards:", error);
+    res.status(500).json({
+      status: false,
+      message: "Server error",
+    });
   }
-  exports.showById = async function getBoard(req, res) {
-    const { boardid } = req.params;
+};
+
+
+exports.showById = async (req, res) => {
+  try {
+    const { id } = req.params;
     const board = await prisma.board.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    res.json({
+      status: true,
+      message: "Board successfully fetched",
+      data: board,
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching board' });
+  }
+};
+
+exports.update = async (req, res) => {
+  try {
+    const { boardid } = req.params;
+
+    const updatedBoard = await prisma.board.update({
+      where: {
+        id: boardid,
+      },
+      data: req.body,
+    });
+
+    res.json({
+      status: true,
+      message: 'Board successfully updated',
+      data: updatedBoard,
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating board' });
+  }
+};
+
+exports.delete = async (req, res) => {
+  try {
+    const { boardid } = req.params;
+
+    await prisma.board.delete({
       where: {
         id: boardid,
       },
     });
-  
+
     res.json({
       status: true,
-      message: "Board Successfully fetched",
-      data: board,
+      message: "Board successfully deleted",
     });
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting board' });
   }
-
-  exports.update = async function updateBoard(req, res) {
-    try {
-      const { boardid } = req.params;
-  
-      const board = await prisma.board.findFirst({
-        where: {
-          id: boardid,
-        },
-      });
-  
-      if (!board) {
-        return res.status(401).json({
-          status: false,
-          message: 'Board not found',
-        });
-      }
-  
-      const updatedBoard = await prisma.board.update({
-        where: {
-          id: boardid,
-        },
-        data: req.body,
-      });
-  
-      res.json({
-        status: true,
-        message: 'Board Successfully updated',
-        data: updatedBoard,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        status: false,
-        message: 'server error',
-      });
-    }
-  }
-  
-  exports.delete = async function deleteBoard(req, res) {
-    try {
-      const { boardid } = req.params;
-  
-      const board = await prisma.board.findFirst({
-        where: {
-          id: boardid,
-        },
-      });
-  
-      if (!board) {
-        return res.status(404).json({
-          status: false,
-          message: "User not found",
-        });
-      }
-  
-      await prisma.board.delete({
-        where: {
-          id: boardid,
-        },
-      });
-  
-      res.json({
-        status: true,
-        message: "board successfully deleted",
-      });
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      res.status(500).json({
-        status: false,
-        message: "Server error",
-      });
-    }
-  };
-  
+};
