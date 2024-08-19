@@ -2,40 +2,40 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 
-// exports.add = async function createTask(req, res) {
-//     try {
-//       console.log(req.body); 
-//       const task = await prisma.task.create({
-//         data: req.body,
-//       });
+exports.add = async function createTask(req, res) {
+    try {
+      console.log(req.body); 
+      const task = await prisma.task.create({
+        data: req.body,
+      });
   
-//       res.status(201).json({
-//         status: true,
-//         message: "Task Successfully Created",
-//         data: task,
-//       });
-//     } catch (error) {
-//       console.error("Error creating task:", error);
-//       res.status(500).json({
-//         status: false,
-//         message: 'server error',
-//       });
-//     }
-//   }
+      res.status(201).json({
+        status: true,
+        message: "Task Successfully Created",
+        data: task,
+      });
+    } catch (error) {
+      console.error("Error creating task:", error);
+      res.status(500).json({
+        status: false,
+        message: 'server error',
+      });
+    }
+  }
   
   
 
-exports.show = async function getUsers(req, res) {
+  exports.show = async function getUsers(req, res) {
     try {
+      console.log('GET /user/show called'); // Add this line for debugging
       const users = await prisma.user.findMany();
-  
       res.json({
         status: true,
-        message: "Users Successfully fetched",
+        message: "users Successfully fetched",
         data: users,
       });
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching boards:", error);
       res.status(500).json({
         status: false,
         message: "Server error",

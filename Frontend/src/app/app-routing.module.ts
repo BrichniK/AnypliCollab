@@ -17,7 +17,7 @@ const routes: Routes = [
   {path: 'task',component:TaskComponent},
   {path: 'board/show',component:BoardComponent},
   { path: 'board-detail/:id', component: BoardDetailComponent },
-  { path: 'setting', component: SettingsComponent },
+  { path: 'setting/show', component: SettingsComponent },
   { path: 'activity',component: ActivityComponent  },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path:'**',component:NotfoundComponent},

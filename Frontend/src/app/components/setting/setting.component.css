@@ -1,134 +1,28 @@
-/* General Styling */
-body {
-  font-family: Arial, sans-serif;
-  color: #333;
-  background-color: #f4f4f4;
-  margin: 0;
-  padding: 0;
+/* setting.component.css */
+.container {
+  padding: 20px;
 }
 
-h2, h3 {
-  color: #444;
-  margin-bottom: 20px;
-}
-
-/* Board Section */
-.board-section {
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.user-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.user-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-}
-
-.user-avatar {
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
-}
-
-.user-info p {
-  margin: 0;
-  font-size: 14px;
-}
-
-.user-info p strong {
-  font-size: 16px;
-}
-
-.active {
-  color: green;
-}
-
-.kickout-button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  font-size: 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.kickout-button:hover {
-  background-color: #c0392b;
-}
-
-/* Form Section */
-.form-section {
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #555;
-}
-
-select, input {
+.user-table {
   width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th, .user-table td {
+  border: 1px solid #ddd;
   padding: 8px;
-  font-size: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
 }
 
-.submit-button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 7px 15px;
-  font-size: 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: block;
-  margin-top: 10px;
+.user-table th {
+  background-color: #f4f4f4;
 }
 
-.submit-button:hover {
-  background-color: #2980b9;
+.loader {
+  text-align: center;
+  font-size: 1.2em;
+  color: #666;
 }
 
-@media (min-width: 768px) {
-  .user-info p {
-    font-size: 14px;
-  }
-
-  .submit-button {
-    padding: 7px 20px;
-    font-size: 14px;
-  }
-
-  select, input {
-    font-size: 14px;
-  }
+button {
+  margin: 0 5px;
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingService } from 'src/app/services/setting.service';
-import { Board } from 'src/app/models/board';
+import { settingService } from 'src/app/services/setting.service';
+import { Role } from 'src/app/models/user';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -9,47 +9,42 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./setting.component.css']
 })
 export class SettingsComponent implements OnInit {
-  // boards: Board[] = [];
-  // allUsers: User[] = [];
-  // selectedBoardId!: number;
-  // selectedUserId!: number;
-  // newRole!: string; // To hold the new role for a user
-
-  // constructor(private settingService: SettingService) {}
-
+ constructor(private settingService: settingService ) {}
+ users: User[] = [];
+ loading: boolean = true;
+ role? : Role
   ngOnInit(): void {
-    // this.loadBoards();
-    // this.allUsers = this.settingService.getAllUsers(); // Fetch all users from the service
+    this.getAll();
+  
   }
 
-  // addUserToBoard(): void {
-  //   const selectedUser = this.allUsers.find(user => user.id === this.selectedUserId);
-  //   if (selectedUser) {
-  //     this.settingService.addUserToBoard(this.selectedBoardId, selectedUser).subscribe(
-  //       (data: Board[]) => this.boards = data,
-  //       error => console.error('Error adding user to board:', error)
-  //     );
-  //   }
-  // }
+  getAll() {
+    this.settingService.getAllUsers().subscribe(
+      (response) => {
+        this.users = response.data;
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Error loading boards:', error);
+        this.loading = false;
+      }
+    );
+  }
 
-  // removeUserFromBoard(userId: number): void {
-  //   this.settingService.removeUserFromBoard(this.selectedBoardId, userId).subscribe(
-  //     (data: Board[]) => this.boards = data,
-  //     error => console.error('Error removing user from board:', error)
-  //   );
-  // }
+  deleteUser() {
 
-  // changeUserRole(): void {
-  //   this.settingService.changeUserRole(this.selectedBoardId, this.selectedUserId, this.newRole).subscribe(
-  //     (data: Board[]) => this.boards = data,
-  //     error => console.error('Error changing user role:', error)
-  //   );
-  // }
+  }
+  save() {
+    // this.settingService.(this.userId, this.user).subscribe(
+    //   (response) => {
+    //     alert('User successfully updated.');
+    //     this.router.navigate(['/settings']);
+    //   },
+    //   (error) => {
+    //     console.error('Error updating user:', error);
+    //     alert('Failed to update user.');
+    //   }
+    // );
+  }
 
-  // loadBoards(): void {
-  //   this.settingService.getBoards().subscribe(
-  //     (data: Board[]) => this.boards = data,
-  //     error => console.error('Error fetching boards:', error)
-  //   );
-  // }
 }
