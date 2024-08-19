@@ -1,28 +1,79 @@
-/* setting.component.css */
+/* Container Styling */
 .container {
   padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
+/* Loader Styling */
+.loader {
+  text-align: center;
+  font-size: 18px;
+  color: #007bff;
+  margin-top: 20px;
+}
+
+/* User Table Styling */
 .user-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
 .user-table th, .user-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  padding: 12px 15px;
+  text-align: left;
 }
 
 .user-table th {
   background-color: #f4f4f4;
+  color: #333;
+  border-bottom: 2px solid #ddd;
 }
 
-.loader {
+.user-table td {
+  border-bottom: 1px solid #ddd;
+}
+
+.user-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.user-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.user-table button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-right: 5px; /* Space between buttons */
+}
+
+.user-table button.edit {
+  background-color: #007bff;
+  color: white;
+}
+
+.user-table button.edit:hover {
+  background-color: #0056b3;
+}
+
+.user-table button.delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.user-table button.delete:hover {
+  background-color: #c82333;
+}
+
+/* No Users Message Styling */
+.no-users {
   text-align: center;
-  font-size: 1.2em;
-  color: #666;
-}
-
-button {
-  margin: 0 5px;
+  font-size: 16px;
+  color: #777;
+  margin-top: 20px;
 }

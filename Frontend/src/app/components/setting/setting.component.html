@@ -10,7 +10,6 @@
     <table class="user-table">
       <thead>
         <tr>
-          
           <th>Name</th>
           <th>Email</th>
           <th>Actions</th>
@@ -20,11 +19,9 @@
         <tr *ngFor="let user of users">
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-        
-       
           <td>
-            <button (click)="save()">Edit</button>
-            <button (click)="deleteUser()">Delete</button>
+            <button class="edit" (click)="save()">Edit</button>
+            <button class="delete" (click)="deleteUser()">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -32,7 +29,7 @@
   </div>
   
   <!-- No Users Message -->
-  <div *ngIf="!loading && users.length === 0">
+  <div *ngIf="!loading && users.length === 0" class="no-users">
     <p>No users found.</p>
   </div>
 </div>

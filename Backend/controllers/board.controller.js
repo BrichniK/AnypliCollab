@@ -6,21 +6,19 @@ exports.add = async (req, res) => {
     const newBoard = await prisma.board.create({
       data: {
         name: req.body.name,
-        wallpaper: req.body.wallpaper,
-        users: {
-          connect: req.body.users.map(userId => ({ id: userId })),
-        },
+        wallpaper: req.body.wallpaper
       },
     });
     res.json(newBoard);
   } catch (error) {
-    res.status(500).json({ error: 'Error creating board' });
+    console.error(error); 
+    res.status(500).json({ error: 'Error creating board', details: error.message });
   }
 };
 
 exports.show = async function getBoards(req, res) {
   try {
-    console.log('GET /board/show called'); // Add this line for debugging
+    console.log('GET /board/show called');
     const boards = await prisma.board.findMany();
     res.json({
       status: true,
