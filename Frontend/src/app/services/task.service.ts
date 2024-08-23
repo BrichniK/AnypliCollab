@@ -14,10 +14,12 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  getAllTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(`${this.baseUrl}/show`);
+  getAllTasks(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/show`);
   }
-
+  addTask(task: Task): Observable<Task> {
+    return this.http.post<Task>(`${this.baseUrl}/addtask`, task);
+}
 
 }
 

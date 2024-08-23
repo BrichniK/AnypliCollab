@@ -3,7 +3,7 @@ import { BoardService } from 'src/app/services/boards.service';
 import { Board } from 'src/app/models/board';
 import { MessageService } from 'primeng/api';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-board',
@@ -21,7 +21,8 @@ export class BoardComponent implements OnInit {
   constructor(
     private boardService: BoardService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private _route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -115,12 +116,31 @@ export class BoardComponent implements OnInit {
     this.boardDialog = true; // Open the dialog
   }
 
-  deleteBoard(boardId: number) {
-    // Implement board deletion logic here
+
+  deleteBoard(boardId: string) {
+    this.boardService.removeBoard(boardId).subscribe(
+      () => {
+        this.boards = this.boards.filter(board => board.id !== boardId);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'Board Deleted',
+          life: 3000,
+        });
+      },
+      (error) => {
+        console.error('Error deleting board:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to delete Board',
+          life: 3000,
+        });
+      }
+    );
   }
 
-  openBoardDetail(board: Board, event: MouseEvent) {
-    event.stopPropagation(); // Prevent the click from being interpreted as a drag
-    this.router.navigate(['/board-detail', board.id]);
+  openBoardDetail(id: string): void {
+    this.router.navigate(['/board/showById', id]);
   }
 }

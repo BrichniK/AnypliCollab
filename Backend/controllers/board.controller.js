@@ -16,6 +16,7 @@ exports.add = async (req, res) => {
   }
 };
 
+
 exports.show = async function getBoards(req, res) {
   try {
     console.log('GET /board/show called');
@@ -33,6 +34,50 @@ exports.show = async function getBoards(req, res) {
     });
   }
 };
+
+
+
+exports.updateBoard = async (req, res) => {
+  const boardId = req.params.id;
+  const { name, newTask } = req.body;
+
+  try {
+  
+    const createdTask = await prisma.task.create({
+      data: {
+        title: newTask.title,
+        description: newTask.description,
+        status: newTask.status || 'ToDo',
+        wallpaper: newTask.wallpaper || '',
+        boardId: boardId, 
+      },
+    });
+
+   
+    const updatedBoard = await prisma.board.update({
+      where: { id: boardId },
+      data: {
+        name, 
+        tasks: {
+          connect: { id: createdTask.id }, 
+        },
+      },
+      include: {
+        tasks: true, 
+      },
+    });
+
+    res.json({
+      status: true,
+      message: "Board updated with new task successfully",
+      data: updatedBoard,
+    });
+  } catch (error) {
+    console.error('Error updating board:', error);
+    res.status(500).json({ message: 'Error updating board', error });
+  }
+};
+
 
 
 exports.showById = async (req, res) => {
@@ -53,26 +98,40 @@ exports.showById = async (req, res) => {
   }
 };
 
-exports.update = async (req, res) => {
-  try {
-    const { boardid } = req.params;
 
-    const updatedBoard = await prisma.board.update({
-      where: {
-        id: boardid,
+
+exports.addTask = async (req, res) => {
+  try {
+    const { boardId } = req.params;
+    if (!boardId) {
+      return res.status(400).json({ error: 'Board ID is required' });
+    }
+
+    const newTask = await prisma.task.create({
+      data: {
+        title: req.body.title,
+        description: req.body.description,
+        status: req.body.status || 'ToDo',
+        deadline: new Date(req.body.deadline),
+        priority: req.body.priority || 'Low',
+        board: {
+          connect: { id: boardId },  // Connect task to an existing board by ID
+        },
       },
-      data: req.body,
     });
 
     res.json({
       status: true,
-      message: 'Board successfully updated',
-      data: updatedBoard,
+      message: 'Task added successfully',
+      data: newTask,
     });
   } catch (error) {
-    res.status(500).json({ error: 'Error updating board' });
+    console.error('Error adding task:', error);
+    res.status(500).json({ error: 'Error adding task', details: error.message });
   }
 };
+
+
 
 exports.delete = async (req, res) => {
   try {

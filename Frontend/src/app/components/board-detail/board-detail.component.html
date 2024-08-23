@@ -1,1 +1,26 @@
-<div> work </div>
+<div *ngIf="board">
+  <h2>{{ board.name }}</h2>
+
+  <!-- Task creation form -->
+  <div>
+    <input [(ngModel)]="newTask.title" placeholder="Task Title" />
+    <input [(ngModel)]="newTask.description" placeholder="Task Description" />
+    <select [(ngModel)]="newTask.status">
+      <option value="ToDo">To Do</option>
+      <option value="Proceeding">Proceeding</option>
+      <option value="Done">Done</option>
+    </select>
+    <select [(ngModel)]="newTask.priority">
+      <option value="High">High</option>
+      <option value="Low">Low</option>
+    </select>
+    <input type="date" [(ngModel)]="newTask.deadline" />
+
+    <button (click)="addTask()">Add Task</button>
+  </div>
+
+
+  <div *ngFor="let task of board.tasks">
+    <p>{{ task.title }} - {{ task.description }} - {{ task.deadline | date }}</p>
+  </div>
+</div>

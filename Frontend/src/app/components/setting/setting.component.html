@@ -1,4 +1,3 @@
-<!-- settings.component.html -->
 <div class="container">
   <h1>User Management</h1>
   
@@ -12,6 +11,7 @@
         <tr>
           <th>Name</th>
           <th>Email</th>
+          <th>Role</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -19,9 +19,11 @@
         <tr *ngFor="let user of users">
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
           <td>
-            <button class="edit" (click)="save()">Edit</button>
-            <button class="delete" (click)="deleteUser()">Delete</button>
+            <!-- Edit Button: Opens the dialog for editing -->
+            <button class="edit" (click)="openDialog(user)">Edit</button>
+            <button class="delete" (click)="deleteUser(user.id)">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -32,4 +34,40 @@
   <div *ngIf="!loading && users.length === 0" class="no-users">
     <p>No users found.</p>
   </div>
+  
+  <!-- Dialog for Updating User -->
+  <p-dialog [(visible)]="boardDialog" [modal]="true" header="Update User" [style]="{ width: '500px' }" [closable]="false">
+    <form (ngSubmit)="save()">
+      <div class="p-fluid">
+        <!-- Role Selection -->
+        <div class="field">
+          <label for="role">Role</label>
+          <p-dropdown 
+          [options]="roles" 
+            [(ngModel)]="selectedUser.role" 
+            name="role" 
+            optionLabel="label">
+          </p-dropdown>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="field">
+          <label for="image">Profile Image</label>
+          <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+          <img *ngIf="selectedImageURL" [src]="selectedImageURL" alt="Profile Image" style="width: 100px; height: 100px; margin-top: 10px;" />
+        </div>
+
+        <!-- Password Input -->
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" [(ngModel)]="selectedUser.password" name="password" placeholder="Enter new password" />
+        </div>
+      </div>
+
+      <p-footer>
+        <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="hideDialog()"></button>
+        <button pButton type="submit" label="Save" icon="pi pi-check" (click)="save()" ></button>
+      </p-footer>
+    </form>
+  </p-dialog>
 </div>

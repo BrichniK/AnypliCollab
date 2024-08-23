@@ -79,7 +79,6 @@ exports.add = async function createTask(req, res) {
   exports.update = async function updateTask(req, res) {
     try {
       const { userid } = req.params;
-  
       if (!userid) {
         return res.status(400).json({
           status: false,
@@ -87,10 +86,18 @@ exports.add = async function createTask(req, res) {
         });
       }
   
+      // Validate req.body to ensure no null values for non-nullable fields
+      const { email, password, name, imageURL, role } = req.body;
+      const updateData = {};
+  
+      if (email) updateData.email = email;
+      if (password) updateData.password = password;
+      if (name) updateData.name = name;
+      if (imageURL !== undefined) updateData.imageURL = imageURL; // Handle imageURL correctly
+      if (role) updateData.role = role;
+  
       const user = await prisma.user.findFirst({
-        where: {
-          id: userid,
-        },
+        where: { id: userid },
       });
   
       if (!user) {
@@ -101,10 +108,8 @@ exports.add = async function createTask(req, res) {
       }
   
       const updatedUser = await prisma.user.update({
-        where: {
-          id: userid,
-        },
-        data: req.body, // Assumes req.body has valid fields and values
+        where: { id: userid },
+        data: updateData,
       });
   
       res.json({

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Board } from '../models/board';
+import { Board , Task} from '../models/board';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -20,7 +20,21 @@ export class BoardService {
 }
 
 removeBoard(id: String): Observable<void> {
-  return this.http.delete<void>(`${this.baseUrl}/deleteboard/${id}`);
+  return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
+}
+getBoardById(id: string): Observable<Board> {
+  return this.http.get<Board>(`${this.baseUrl}/showById/${id}`);
+}
+
+
+updateBoard(id: string, board: Board): Observable<Board> {
+  return this.http.put<Board>(`${this.baseUrl}/update/${id}`, board);
+}
+
+
+
+addTaskToBoard(id: string, task: Task): Observable<Task> {
+  return this.http.post<Task>(`${this.baseUrl}/${id}/addTask`, task);
 }
 
 

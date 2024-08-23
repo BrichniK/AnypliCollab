@@ -1,6 +1,5 @@
 <div class="board-container">
   <!-- Add Board Form -->
-
   <div *ngIf="boardDialog" class="board-dialog">
     <h3>Add New Board</h3>
     <form (ngSubmit)="addBoard()">
@@ -24,18 +23,20 @@
   </div>
 
   <!-- Board Display -->
-  <div cdkDropList class="clipboard" (cdkDropListDropped)="drop($event)" >
+  <div cdkDropList class="clipboard" (cdkDropListDropped)="drop($event)">
     <div
       *ngFor="let board of boards"
       cdkDrag
       class="board-item"
       [ngStyle]="{ 'background-image': 'url(' + board.wallpaper + ')' }"
-      
+      (click)="openBoardDetail(board.id)"
+      style="cursor: pointer;"
     >
       <div class="board-content">
         <h3>{{ board.name }}</h3>
+        <button class="material-icons" style="font-size:20px;color:rgb(17, 16, 16)" (click)="deleteBoard(board.id); $event.stopPropagation();">
+          <i style="font-size:10px" class="fa">&#xf014;</i>        </button>
       </div>
-      
     </div>
   </div>
 </div>

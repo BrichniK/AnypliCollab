@@ -19,6 +19,9 @@ import { ActivityComponent } from './components/activity/activity.component';
 import { SettingsComponent } from './components/setting/setting.component';
 import { BoardComponent } from './components/board/board.component';
 import { MessageService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,10 @@ import { MessageService } from 'primeng/api';
     HttpClientModule,
     ReactiveFormsModule,
     DragDropModule,
-    CommonModule
+    CommonModule,
+    DialogModule,
+    DropdownModule,
+    BrowserAnimationsModule
   ],
   providers: [MessageService], // Provide MessageService here
   bootstrap: [AppComponent],

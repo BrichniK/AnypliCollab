@@ -1,29 +1,29 @@
 .add-board-button {
   position: fixed;
-  bottom: 20px; /* Adjust as needed */
-  right: 20px;  /* Adjust as needed */
-  width: 60px;  /* Adjust the size */
-  height: 60px; /* Adjust the size */
-  border-radius: 50%; /* Makes the button circular */
-  background-color: #007bff; /* Blue color */
+  bottom: 20px; 
+  right: 20px; 
+  width: 60px;  
+  height: 60px; 
+  border-radius: 50%; 
+  background-color: #007bff;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  font-size: 24px; /* Adjust the font size */
+  font-size: 24px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .add-board-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3; 
 }
 
 .add-board-button:focus {
-  outline: none; /* Remove focus outline */
-}/* Board dialog styling */
+  outline: none; 
+}
 
 
 .board-dialog {
@@ -92,3 +92,5 @@
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
+
+

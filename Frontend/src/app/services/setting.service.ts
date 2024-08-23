@@ -19,9 +19,12 @@ export class settingService {
     return this.http.post<User>(`${this.baseUrl}/adduser`, user);
 }
 
-removeBoard(id: String): Observable<void> {
-  return this.http.delete<void>(`${this.baseUrl}/deleteuser/${id}`);
+removeUser(id: String): Observable<void> {
+  return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
 }
 
+updateUser(id: string, user: User): Observable<User> {
+  return this.http.put<User>(`${this.baseUrl}/update/${id}`, user);
+}
 
 }

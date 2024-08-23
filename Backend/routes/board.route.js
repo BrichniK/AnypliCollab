@@ -4,8 +4,8 @@ const boardController = require('../controllers/board.controller');
 
 router.post('/addboard', boardController.add);
 router.get('/show', boardController.show);
-router.get('/showById/:id', boardController.showById);
-router.put('/update/:boardid', boardController.update);
+router.get('/showById/:boardid', boardController.showById);
 router.delete('/delete/:boardid', boardController.delete);
-
+router.put('/update/:id', boardController.updateBoard);
+router.post('/:boardid/addTask', boardController.addTask);
 module.exports = router;
