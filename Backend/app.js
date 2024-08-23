@@ -15,7 +15,7 @@ const boardRouter = require('./routes/board.route');
 const userRouter = require('./routes/user.router');
 
 const app = express();
-
+console.log('JWT_SECRET_KEY:', process.env.JWT_SECRET_KEY);
 // CORS setup
 app.use(cors({
   origin: 'http://localhost:4200',

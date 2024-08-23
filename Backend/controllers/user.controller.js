@@ -22,12 +22,10 @@ exports.add = async function createTask(req, res) {
       });
     }
   }
-  
-  
 
   exports.show = async function getUsers(req, res) {
     try {
-      console.log('GET /user/show called'); // Add this line for debugging
+      console.log('GET /user/show called'); 
       const users = await prisma.user.findMany();
       res.json({
         status: true,
@@ -86,14 +84,14 @@ exports.add = async function createTask(req, res) {
         });
       }
   
-      // Validate req.body to ensure no null values for non-nullable fields
+
       const { email, password, name, imageURL, role } = req.body;
       const updateData = {};
   
       if (email) updateData.email = email;
       if (password) updateData.password = password;
       if (name) updateData.name = name;
-      if (imageURL !== undefined) updateData.imageURL = imageURL; // Handle imageURL correctly
+      if (imageURL !== undefined) updateData.imageURL = imageURL; 
       if (role) updateData.role = role;
   
       const user = await prisma.user.findFirst({
@@ -162,3 +160,4 @@ exports.add = async function createTask(req, res) {
     }
   };
   
+

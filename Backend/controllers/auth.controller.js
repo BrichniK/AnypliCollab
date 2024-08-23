@@ -23,7 +23,7 @@ exports.signup = async (req, res, next) => {
                 role: true,
             }
         });
-
+        console.log('JWT_SECRET_KEY:', process.env.JWT_SECRET_KEY);
         console.log("User created:", newUser);
         res.status(201).json(newUser);
     } catch (err) {
@@ -34,6 +34,7 @@ exports.signup = async (req, res, next) => {
 
 
 exports.login = async (req, res) => {
+  
     try {
       const { email, password } = req.body;
   

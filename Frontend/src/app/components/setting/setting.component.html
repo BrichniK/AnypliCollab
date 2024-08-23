@@ -22,8 +22,10 @@
           <td>{{ user.role }}</td>
           <td>
             <!-- Edit Button: Opens the dialog for editing -->
-            <button class="edit" (click)="openDialog(user)">Edit</button>
-            <button class="delete" (click)="deleteUser(user.id)">Delete</button>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)"></button>
+            
+            <!-- Delete Button: Opens the confirmation dialog for deleting -->
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteUser(user)"></button>
           </td>
         </tr>
       </tbody>
@@ -36,38 +38,41 @@
   </div>
   
   <!-- Dialog for Updating User -->
-  <p-dialog [(visible)]="boardDialog" [modal]="true" header="Update User" [style]="{ width: '500px' }" [closable]="false">
-    <form (ngSubmit)="save()">
-      <div class="p-fluid">
-        <!-- Role Selection -->
-        <div class="field">
-          <label for="role">Role</label>
-          <p-dropdown 
-          [options]="roles" 
-            [(ngModel)]="selectedUser.role" 
-            name="role" 
-            optionLabel="label">
-          </p-dropdown>
-        </div>
-
-        <!-- Image Upload -->
-        <div class="field">
-          <label for="image">Profile Image</label>
-          <input type="file" accept="image/*" (change)="onImageSelected($event)" />
-          <img *ngIf="selectedImageURL" [src]="selectedImageURL" alt="Profile Image" style="width: 100px; height: 100px; margin-top: 10px;" />
-        </div>
-
-        <!-- Password Input -->
+  <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="User Details" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+      <img
+        [src]="'../../../assets/images/Avatars/' + user.imageURL"
+        [alt]="user.imageURL"
+        width="150"
+        class="mt-0 mx-auto mb-5 block shadow-2"
+        (error)="onImageError($event)"
+      />
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" pInputText id="name" [(ngModel)]="user.name" required/>
+        <div *ngIf="submitted && !user.name" class="p-error">Name is required.</div>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <textarea id="email" pInputTextarea [(ngModel)]="user.email" rows="3" cols="20" required></textarea>
+        <div *ngIf="submitted && !user.email" class="p-error">Email is required.</div>
+      </div>
+      <div class="formgrid grid">
         <div class="field">
           <label for="password">Password</label>
-          <input type="password" [(ngModel)]="selectedUser.password" name="password" placeholder="Enter new password" />
+          <input type="password" pInputText id="password" [(ngModel)]="user.password" required />
+          <div *ngIf="submitted && !user.password" class="p-error">Password is required.</div>
         </div>
       </div>
-
-      <p-footer>
-        <button pButton type="button" label="Cancel" icon="pi pi-times" (click)="hideDialog()"></button>
-        <button pButton type="submit" label="Save" icon="pi pi-check" (click)="save()" ></button>
-      </p-footer>
-    </form>
+      <div class="field">
+        <label for="image">Image</label>
+        <input type="file" (change)="onFileSelected($event)" />
+        <div *ngIf="submitted && !user.imageURL" class="p-error">Image is required.</div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"></button>
+    </ng-template>
   </p-dialog>
 </div>

@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         this.loginForm = new FormGroup({
-            username: new FormControl('', [Validators.required]),
+            email: new FormControl('', [Validators.email]),
             password: new FormControl('', [Validators.required]),
         });
         if (this.storageService.isLoggedIn()) {
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
                 localStorage.setItem('analyse',response.analyse);
                 localStorage.setItem('visualisation',response.visualisation);
                 localStorage.setItem('tracabilite',response.tracabilite);
-                console.log(response)
+               
                 // localStorage.setItem('visualisation',response.visualisation)
                 this.s.updateLoggedInState(true);
                 // redirect to dashboard

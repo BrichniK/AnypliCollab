@@ -1,9 +1,8 @@
 <div class="flex align-items-center justify-content-center">
     <div class="form-container" style="max-width: 30rem;">
-        <div>
-            <img  src="assets/images/logo2.png" class="div-image" style="width: 60%; height: 30%;margin-left: 80%;">
+        <div class="text-center">
+            <img src="assets/images/logo2.png" class="logo-image" alt="Logo" />
         </div>
-       
 
         <form [formGroup]="signupForm" (ngSubmit)="register()" class="signup-form">
             <div class="form-content">
@@ -14,21 +13,43 @@
 
                 <div class="form-group">
                     <label for="name" class="label-text">Name</label>
-                    <input formControlName="name" type="text" id="name" placeholder="Username" pInputText class="input-field">
+                    <input formControlName="name" type="text" id="name" placeholder="Name" pInputText class="input-field">
+                    <div *ngIf="formSubmitted && name?.invalid" class="error-text">
+                        Name is required.
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="email" class="label-text">Email</label>
                     <input formControlName="email" type="email" id="email" placeholder="Email address" pInputText class="input-field">
+                    <div *ngIf="formSubmitted && email?.invalid" class="error-text">
+                        <ng-container *ngIf="email?.errors?.['required']">Email is required.</ng-container>
+                        <ng-container *ngIf="email?.errors?.['email']">Invalid email address.</ng-container>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="password" class="label-text">Password</label>
                     <input formControlName="password" type="password" id="password" placeholder="Password" pInputText class="input-field">
+                    <div *ngIf="formSubmitted && password?.invalid" class="error-text">
+                        Password is required.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role" class="label-text">Role</label>
+                    <select formControlName="role" id="role" class="input-field">
+                        <option value="">Select role</option>
+                        <option value="COLLAB">COLLAB</option>
+                        <option value="MANAGER">MANAGER</option>
+                    </select>
+                    <div *ngIf="formSubmitted && role?.invalid" class="error-text">
+                        Role is required.
+                    </div>
                 </div>
 
                 <div class="flex align-items-center justify-content-between mb-5">
-                    <a [routerLink]="['/login']" class="account-link">Have an account?</a>
+                    <a [routerLink]="['/login']" class="account-link">Already have an account?</a>
                 </div>
 
                 <button pButton type="submit" [disabled]="signupForm.invalid" label="Sign Up" class="signup-button"></button>

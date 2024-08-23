@@ -11,14 +11,14 @@ export class AuthService {
     private isLoggedIn$ = this.authSubject.asObservable();
     token!: any;
     currentUser = {};
-    endpoint: string = 'http://localhost:4200/auth';
+    endpoint: string = 'http://localhost:8080/auth/';
 
     constructor(private http: HttpClient, private router: Router) {}
 
     signin(data: any) {
         {
             console.log('user signin ', data);
-            return this.http.post(this.endpoint + 'signin', data);
+            return this.http.post(this.endpoint + 'login', data);
         }
     }
 

@@ -1,11 +1,11 @@
 export interface User {
-    id: string; // Changed from number to string to match MongoDB ObjectId type
-    name: string;
-    password: string;
-    email: string;
-    active: boolean;
-    role: Role;
-    imageURL: string;
+    id: string; 
+    name?: string;
+    password?: string;
+    email?: string;
+    active?: boolean;
+    role?: Role;
+    imageURL?: string;
   }
   
   export enum Role {

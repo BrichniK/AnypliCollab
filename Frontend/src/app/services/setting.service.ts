@@ -23,8 +23,8 @@ removeUser(id: String): Observable<void> {
   return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
 }
 
-updateUser(id: string, user: User): Observable<User> {
-  return this.http.put<User>(`${this.baseUrl}/update/${id}`, user);
+updateUser(user: User): Observable<User> {
+  return this.http.put<User>(`${this.baseUrl}/update/${user.id}`, user);
 }
 
 }

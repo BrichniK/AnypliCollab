@@ -1,33 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { User,Role } from 'src/app/models/user';
 import { settingService } from 'src/app/services/setting.service';
-import { Role, User } from 'src/app/models/user';
-import { MessageService } from 'primeng/api';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+declare const require: any;
+const jsPDF = require('jspdf');
+require('jspdf-autotable');
 
 @Component({
   selector: 'app-settings',
   templateUrl: './setting.component.html',
   styleUrls: ['./setting.component.css'],
-  providers: [MessageService]  // PrimeNG MessageService provider
+  providers: [MessageService] 
 })
 export class SettingsComponent implements OnInit {
-  users: User[] = [];  // List of users
-  loading: boolean = true;  // Show loading spinner
-  boardDialog: boolean = false;  // Dialog visibility
-  selectedUser: User = {} as User;  // Selected user for editing
-  selectedImageURL: string | ArrayBuffer | null = null;  // Selected profile image
-  submitted: boolean = false;  // Form submission status
-  roles: { label: string, value: Role }[] = [  // User roles
-    { label: 'Manager', value: Role.MANAGER },
-    { label: 'Collab', value: Role.COLLAB }
-  ];
+
+  users: User[] = [];
+  loading: boolean = true;
+  userDialog: boolean = false;
+  user: User = {} as User;
+  selectedUsers: User[] = [];
+  isAdmin: boolean = false;
+  exportColumns: any[] | undefined;
+  cols: any[] | undefined;
+  countUsers: number = 0;
+  roles: any[] = Object.values(Role);
+  selectedRole: Role = Role.COLLAB;
+  submitted: boolean = false;
+  userImageUrl: string | ArrayBuffer | null = '';
+  registerForm!: FormGroup;
+
+
 
   constructor(
-    private settingService: settingService,
-    private messageService: MessageService
+
+      private messageService: MessageService,
+      private settingService: settingService,
   ) {}
 
   ngOnInit(): void {
-    this.getAll();  // Load users
+      this.getAll();
+
+
+
+      this.registerForm = new FormGroup({
+          name: new FormControl('', [Validators.required]),
+          email: new FormControl('', [Validators.required, Validators.email]),
+          role: new FormControl(Role.COLLAB, [Validators.required]),
+          active: new FormControl(true),
+      });
   }
 
   getAll() {
@@ -43,77 +64,111 @@ export class SettingsComponent implements OnInit {
     );
   }
 
-  deleteUser(userId: string) {
-    this.settingService.removeUser(userId).subscribe(
-      () => {
-        this.users = this.users.filter(user => user.id !== userId);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'User Deleted',
-          life: 3000,
-        });
-      },
-      (error) => {
-        console.error('Error deleting user:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to delete user',
-          life: 3000,
-        });
-      }
-    );
+  openNew() {
+      this.user = {} as User;
+      this.user.active = true;
+      this.user.role = Role.COLLAB;
+      this.userDialog = true;
   }
 
-  openDialog(user: User) {
-    this.selectedUser = { ...user };  // Clone the user data
-    this.boardDialog = true;  // Open dialog
+  editUser(user: User) {
+      this.user = { ...user };
+      this.userDialog = true;
+  }
+
+  deleteUser(user: User) {
+      this.settingService.removeUser(user.id).subscribe({
+          next: (res) => {
+              this.users = this.users.filter((val) => val.id !== user.id);
+          },
+      });
+  }
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '../../../assets/images/Avatars/';  
   }
 
   hideDialog() {
-    this.boardDialog = false;  // Close dialog
-  }
-
-  onImageSelected(event: Event) {
-    const fileInput = event.target as HTMLInputElement;
-    if (fileInput.files && fileInput.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedImageURL = e.target.result;
-        this.selectedUser.imageURL = e.target.result;  // Base64 image string
-      };
-      reader.readAsDataURL(fileInput.files[0]);
-    }
+      this.userDialog = false;
+      this.submitted = false;
   }
 
   save() {
     this.submitted = true;
 
-    this.settingService.updateUser(this.selectedUser.id, {
-      ...this.selectedUser,
-      imageURL: this.selectedUser.imageURL,
-      password: this.selectedUser.password,  // Ensure password is handled correctly in the backend
-    }).subscribe(
-      (response) => {
+    if (!this.user.name || !this.user.email || !this.user.password) {
         this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'User Updated',
-          life: 3000,
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Name, Email, and Password are required.',
+            life: 3000,
         });
-        this.hideDialog();
-        this.getAll();  // Reload the user list
-      },
-      (error) => {
-        console.error('Error updating user:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to update user',
-          life: 3000,
-        });
-      }
-    );
-  }
+        return;
+    }
+
+    this.loading = true;
+
+    if (this.user.id) {
+        this.settingService.updateUser(this.user).subscribe(
+            (updatedUser) => {
+                const index = this.findIndexById(this.user.id);
+                if (index !== -1) {
+                    // Update the user in the local array
+                    this.users[index] = updatedUser;
+                }
+
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'User Updated',
+                    life: 3000,
+                });
+
+                // Update the UI
+                this.users = [...this.users];
+                this.userDialog = false;
+                this.loading = false;
+                this.submitted = false;
+            },
+            (error) => {
+                console.error(error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to update User',
+                    life: 3000,
+                });
+                this.loading = false;
+                this.submitted = false;
+            }
+        );
+    }
 }
+
+
+  
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.userImageUrl = e.target!.result;
+        };
+        reader.readAsDataURL(file);
+
+        this.user.imageURL = file.name;
+    }
+}
+
+  findIndexById(_id: String) {
+    let index = -1;
+    for (let i = 0; i < this.users.length; i++) {
+        if (this.users[i].id === _id) {
+            index = i;
+            break;
+        }
+    }
+    return index
+
+}
+      }

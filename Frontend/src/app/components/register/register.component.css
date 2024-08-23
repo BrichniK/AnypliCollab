@@ -1,0 +1,113 @@
+:host ::ng-deep .p-password input {
+    width: 100%;
+    padding: 1rem;
+}
+
+:host ::ng-deep .pi-eye,
+:host ::ng-deep .pi-eye-slash {
+    transform: scale(1.6);
+    margin-right: 1rem;
+    color: var(--primary-color) !important;
+}
+
+.flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.form-container {
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.logo-image {
+    width: 60%;
+    height: auto;
+    margin: 0 auto 2rem;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mb-5 {
+    margin-bottom: 2rem;
+}
+
+.welcome-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.subtext {
+    font-size: 1rem;
+    color: #666;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.label-text {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.error-text {
+    color: #e74c3c;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.signup-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+.signup-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.account-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.account-link:hover {
+    text-decoration: underline;
+}
