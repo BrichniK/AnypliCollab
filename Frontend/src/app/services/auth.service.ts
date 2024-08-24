@@ -18,13 +18,14 @@ export class AuthService {
     signin(data: any) {
         {
             console.log('user signin ', data);
-            return this.http.post(this.endpoint + 'login', data);
+            return this.http.post(this.endpoint + 'signin', data);
         }
     }
 
     register(data: any) {
         return this.http.post(this.endpoint + 'signup', data);
     }
+    
     public getCart(){
         return localStorage.getItem('cart')
     }

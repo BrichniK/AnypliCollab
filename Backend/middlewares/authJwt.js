@@ -32,7 +32,7 @@ const isAdmin = async (req, res, next) => {
 
     const roles = await Role.find({ _id: { $in: user.roles } }).exec();
 
-    if (roles.some(role => role.name === "Admin")) {
+    if (roles.some(role => role.name === "ADMIN")) {
       return next();
     }
 
@@ -51,7 +51,7 @@ const isManager = async (req, res, next) => {
 
     const roles = await Role.find({ _id: { $in: user.roles } }).exec();
 
-    if (roles.some(role => role.name === "Manager")) {
+    if (roles.some(role => role.name === "MANAGER")) {
       return next();
     }
 
@@ -70,7 +70,7 @@ const isCollab = async (req, res, next) => {
 
     const roles = await Role.find({ _id: { $in: user.roles } }).exec();
 
-    if (roles.some(role => role.name === "Collab")) {
+    if (roles.some(role => role.name === "COLLAB")) {
       return next();
     }
 
@@ -88,7 +88,7 @@ const isManagerOrCollab = async (req, res, next) => {
 
     const roles = await Role.find({ _id: { $in: user.roles } }).exec();
 
-    if (roles.some(role => role.name === "Manager") || roles.some(role => role.name === "Collab")) {
+    if (roles.some(role => role.name === "MANAGER") || roles.some(role => role.name === "COLLAB")) {
       return next();
     }
 
@@ -107,7 +107,7 @@ const isAdminOrManager = async (req, res, next) => {
 
     const roles = await Role.find({ _id: { $in: user.roles } }).exec();
 
-    if (roles.some(role => role.name === "Manager") || roles.some(role => role.name === "Admin")) {
+    if (roles.some(role => role.name === "MANAGER") || roles.some(role => role.name === "ADMIN")) {
       return next();
     }
 

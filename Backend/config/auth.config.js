@@ -1,4 +1,4 @@
+// config/auth.js
 module.exports = {
-    secret: "brichni-secret-key"
-  };
-  
+  JWT_Secret: "289d4fd4839eaf168d057fc553d2c7e6da13f408cbefa0a58af4e16c1348912d19758be4e6ccdf9e105eb3ebbac80c856579ff454f9624bdae4f1ecbc420dbe2"
+};

@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { JWT_Secret } = require ('../config/auth')
-
+require('dotenv').config();
 exports.signup = async (req, res, next) => {
     try {
         const userData = req.body;
@@ -14,16 +14,16 @@ exports.signup = async (req, res, next) => {
                 name: userData.name,
                 email: userData.email,
                 password: userData.password,
-                role: userData.role // Assign the role
+                role: userData.role 
             },
-            select: { // Ensure the role is selected
+            select: { 
                 id: true,
                 name: true,
                 email: true,
                 role: true,
             }
         });
-        console.log('JWT_SECRET_KEY:', process.env.JWT_SECRET_KEY);
+
         console.log("User created:", newUser);
         res.status(201).json(newUser);
     } catch (err) {
@@ -34,7 +34,6 @@ exports.signup = async (req, res, next) => {
 
 
 exports.login = async (req, res) => {
-  
     try {
       const { email, password } = req.body;
   
@@ -55,7 +54,7 @@ exports.login = async (req, res) => {
           email: user.email,
           roles: user.role,
         },
-        process.env.JWT_Secret,
+        process.env.JWT_Secret,  
         { expiresIn: '1h' }
       );
   
@@ -65,3 +64,60 @@ exports.login = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   };
+
+  exports.signout = async (req, res) => {
+    try {
+      req.session = null;
+      return res.status(200).send({ message: "You've been signed out!" });
+    } catch (err) {
+      this.next(err);
+    }
+  };
+
+  exports.forgotPassword = async (req, res) => {
+    try {
+      const user = await User.findOne({ email: req.body.email });
+      if (!user) {
+        return res.status(404).send({ message: "User not found" });
+      }
+  
+      const token = crypto.randomBytes(20).toString("hex");
+  
+      user.resetPasswordToken = token;
+      user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+  
+      await user.save();
+  
+      const resetUrl = `http://${req.headers.host}/reset-password/${token}`;
+  
+      // Envoyer un SMS avec Twilio
+    //   client.messages
+    //     .create({
+    //       body: `You requested a password reset. Click the link to reset your password: ${resetUrl}`,
+    //       from: twilioConfig.fromPhone,
+    //       to: `+${user.phoneNumber}`
+    //     })
+    //     .then(message => {
+    //       console.log(`SMS sent: ${message.sid}`);
+    //       res.status(200).send({ message: "Password reset SMS sent" });
+    //     })
+    //     .catch(error => {
+    //       console.error(error);
+    //       res.status(500).send({ message: "Failed to send SMS" });
+    //     });
+  } catch (err) {
+      res.status(500).send({ message: err.message });
+    }
+  };
+
+  exports.signout = async (req, res) => {
+    try {
+      req.session = null;
+      return res.status(200).send({ message: "You've been signed out!" });
+    } catch (err) {
+      this.next(err);
+    }
+  };
+
+  
+  

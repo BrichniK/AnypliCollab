@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
                 // localStorage.setItem('visualisation',response.visualisation)
                 this.s.updateLoggedInState(true);
                 // redirect to dashboard
-                this.router.navigateByUrl('/dashboard');
+                this.router.navigateByUrl('/board/show');
             },
             (error: any) => {
                 console.log(error);
