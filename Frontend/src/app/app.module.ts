@@ -22,6 +22,14 @@ import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ProfileComponent } from './components/profile/profile.component';
+import { EditprofileComponent } from './components/editprofile/editprofile.component';
+import { ReclamationComponent } from './components/reclamation/reclamation.component';
+import { DashbordadminComponent } from './components/dashbordadmin/dashbordadmin.component';
+import { UserreclamationComponent } from './components/userreclamation/userreclamation.component';
+import { TableModule } from 'primeng/table';
+import { ChartModule } from 'primeng/chart';
+import { DashboardComponent } from './components/dashbord/dashbord.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +45,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BoardDetailComponent,
     SettingsComponent,
     ActivityComponent,
+    ProfileComponent,
+    EditprofileComponent,
+    ReclamationComponent,
+    DashbordadminComponent,
+    UserreclamationComponent,
+
+  
   ],
   imports: [
     BrowserModule,
@@ -48,7 +63,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonModule,
     DialogModule,
     DropdownModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    TableModule,
+    ChartModule
   ],
   providers: [MessageService], // Provide MessageService here
   bootstrap: [AppComponent],

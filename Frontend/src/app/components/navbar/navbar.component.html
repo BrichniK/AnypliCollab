@@ -1,18 +1,22 @@
 <nav class="navbar">
-  <img  src="assets/images/p.png" class="div-image" style="width: 2%; height: 2%;margin-left: 0%;">
-    <div class="navbar-brand">
-      <a href="#">AnypliCollab</a>
+  <img src="assets/images/p.png" class="div-image" style="width: 2%; height: 2%; margin-left: 0%;">
+  <div class="navbar-brand">
+    <a href="#">AnypliCollab</a>
+  </div>
+  <div class="navbar-menu">
+    <button (click)="toggleSidebar()">☰ Menu</button>
+  </div>
+  <div class="navbar-actions">
+    <button class="icon-button" (click)="toggleProfileDropdown()">
+      <i class="fas fa-user-circle"></i>
+    </button>
+    <div class="profile-dropdown" *ngIf="isProfileDropdownOpen">
+      <!-- <button class="dropdown-item" (click)="editProfile()">Edit Profile</button> -->
+      <button class="dropdown-item" >My Tasks</button>
+      <button class="dropdown-item" [routerLink]="['/reclamation']">Claim</button>
     </div>
-    <div class="navbar-menu">
-      <button (click)="toggleSidebar()">☰ Menu</button>
-    </div>
-    <div class="navbar-actions">
-      <button class="icon-button" (click)="profile()">
-        <i class="fas fa-user-circle"></i>
-      </button>
-      <button class="icon-button" (click)="logout()">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
-    </div>
-  </nav>
-  
+    <button class="icon-button" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+    </button>
+  </div>
+</nav>

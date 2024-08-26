@@ -17,10 +17,16 @@ export class SidebarComponent implements OnInit {
       this.isOpen = state;
     });
   }
+
   showBoards() {
-    this.router.navigate(['/board']); // Navigates to the board route
+    this.router.navigate(['/board']); 
   }
+
   setting() {
-    this.router.navigate(['/setting']); // Navigates to the board route
+    this.router.navigate(['/setting']); 
+  }
+
+  dashboard() {
+    this.router.navigate(['/dashboard']); 
   }
 }

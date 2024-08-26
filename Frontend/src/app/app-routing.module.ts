@@ -9,6 +9,11 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
 import { BoardDetailComponent } from './components/board-detail/board-detail.component';
 import { SettingsComponent } from './components/setting/setting.component';
 import { ActivityComponent } from './components/activity/activity.component';
+import { ReclamationComponent } from './components/reclamation/reclamation.component';
+import { UserreclamationComponent } from './components/userreclamation/userreclamation.component';
+import { DashbordadminComponent } from './components/dashbordadmin/dashbordadmin.component';
+import { DashboardComponent } from './components/dashbord/dashbord.component';
+
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -19,6 +24,10 @@ const routes: Routes = [
   { path: 'board/showById/:id', component: BoardDetailComponent },
   { path: 'user/show', component: SettingsComponent },
   { path: 'activity',component: ActivityComponent  },
+  { path: 'addreclamation',component: UserreclamationComponent  },
+  { path: 'reclamation',component: ReclamationComponent  },
+  { path: 'admindashbord',component: DashbordadminComponent  },
+  { path: 'dashbord',component: DashboardComponent  },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path:'**',component:NotfoundComponent},
 ];

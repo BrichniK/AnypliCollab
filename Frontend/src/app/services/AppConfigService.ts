@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { AppConfig } from '../layout/service/app.layout.service';
+import { AppConfig } from './layout.service';
 //import { AppConfig } from '../domain/appconfig';
 
 @Injectable()

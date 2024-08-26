@@ -1,6 +1,7 @@
 <div class="sidebar" [class.open]="isOpen">
     <ul>
-      <li><a href="#">Dashboard</a></li>
+      <li>
+        <a [routerLink]="['/dashboard']" class="view-activities-button">Dashboard</a></li>
       <li>
       <a [routerLink]="['/board/show']" class="view-activities-button">Boards</a>
     </li>

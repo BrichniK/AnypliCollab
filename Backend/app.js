@@ -4,8 +4,10 @@ const cookieSession = require('cookie-session');
 const logger = require('morgan');
 const createError = require('http-errors');
 const http = require('http');
+
 require('dotenv').config();
 const cors = require('cors');
+
 
 // Routers
 const authRouter = require('./routes/auth.route');
@@ -13,10 +15,12 @@ const taskRouter = require('./routes/task.route');
 const activityRouter = require('./routes/activity.route');
 const boardRouter = require('./routes/board.route');
 const userRouter = require('./routes/user.router');
-
+const reclamationRouter = require('./routes/reclamation.route');
 const app = express();
+
 console.log("JWT Secret:", process.env.JWT_Secret);
 // CORS setup
+
 app.use(cors({
   origin: 'http://localhost:4200',
 }));
@@ -38,12 +42,14 @@ app.use(cookieSession({
   secure: process.env.NODE_ENV === 'production', 
 }));
 
+
 // Routes
 app.use('/auth', authRouter);
 app.use('/task', taskRouter);
 app.use('/activity', activityRouter);
 app.use('/board', boardRouter);
 app.use('/user', userRouter);
+app.use('/reclamation', reclamationRouter);
 
 app.get("/welcome", (req, res) => {
   res.json({ message: "Welcome to AnypliCollab application." });

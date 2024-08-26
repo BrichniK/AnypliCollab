@@ -120,4 +120,28 @@ exports.login = async (req, res) => {
   };
 
   
+  exports.resetPassword = async (req, res) => {
+    try {
+      const user = await User.findOne({
+        resetPasswordToken: req.params.token,
+        resetPasswordExpires: { $gt: Date.now() }
+      });
+  
+      if (!user) {
+        return res.status(400).send({ message: "Password reset token is invalid or has expired." });
+      }
+  
+      user.password = bcrypt.hashSync(req.body.password, 8);
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+  
+      await user.save();
+  
+      res.status(200).send({ message: "Password has been reset" });
+    } catch (err) {
+      res.status(500).send({ message: err.message });
+    }
+  };
+
+  
   
