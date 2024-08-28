@@ -42,6 +42,7 @@
                         <option value="">Select role</option>
                         <option value="COLLAB">COLLAB</option>
                         <option value="MANAGER">MANAGER</option>
+                        <option value="ADMIN">ADMIN</option>
                     </select>
                     <div *ngIf="formSubmitted && role?.invalid" class="error-text">
                         Role is required.
@@ -52,7 +53,7 @@
                     <a [routerLink]="['/login']" class="account-link">Already have an account?</a>
                 </div>
 
-                <button pButton type="submit" [disabled]="signupForm.invalid" label="Sign Up" class="signup-button"></button>
+                <button pButton type="submit" [disabled]="signupForm.invalid" label="Sign Up" class="signup-button"> Sign Up</button>
             </div>
         </form>
     </div>

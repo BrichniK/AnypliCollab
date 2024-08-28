@@ -1,7 +1,7 @@
 .sidebar {
     width: 213px;
     height: calc(100% - 60px); /* Adjust height to account for the navbar (assuming navbar is 60px high) */
-    background-color: #3c9ca5;
+    background-color: #346ca8;
     position: fixed;
     top: 52px; /* Adjust this to match the height of your navbar */
     left: 0;

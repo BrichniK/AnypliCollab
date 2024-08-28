@@ -3,7 +3,7 @@ import { BoardService } from 'src/app/services/boards.service';
 import { Board } from 'src/app/models/board';
 import { MessageService } from 'primeng/api';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-board',
@@ -11,6 +11,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
+
   boards: Board[] = [];
   loading: boolean = true;
   board: Board = new Board();
@@ -22,7 +23,6 @@ export class BoardComponent implements OnInit {
     private boardService: BoardService,
     private messageService: MessageService,
     private router: Router,
-    private _route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -89,7 +89,7 @@ export class BoardComponent implements OnInit {
           life: 3000,
         });
         this.boards = [...this.boards];
-        this.board = new Board(); // Reset the board model
+        this.board = new Board();
         this.loading = false;
         this.boardDialog = false;
         this.submitted = false;
@@ -116,7 +116,6 @@ export class BoardComponent implements OnInit {
     this.boardDialog = true; // Open the dialog
   }
 
-
   deleteBoard(boardId: string) {
     this.boardService.removeBoard(boardId).subscribe(
       () => {
@@ -141,6 +140,11 @@ export class BoardComponent implements OnInit {
   }
 
   openBoardDetail(id: string): void {
-    this.router.navigate(['/board/showById', id]);
+    const selectedBoard = this.boards.find(board => board.id === id);
+    if (selectedBoard) {
+      this.router.navigate(['/board/showById', id], {
+        queryParams: { wallpaper: selectedBoard.wallpaper }
+      });
+    }
   }
 }

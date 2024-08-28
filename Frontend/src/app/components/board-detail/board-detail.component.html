@@ -1,26 +1,76 @@
 <div *ngIf="board">
   <h2>{{ board.name }}</h2>
 
-  <!-- Task creation form -->
-  <div>
-    <input [(ngModel)]="newTask.title" placeholder="Task Title" />
-    <input [(ngModel)]="newTask.description" placeholder="Task Description" />
-    <select [(ngModel)]="newTask.status">
-      <option value="ToDo">To Do</option>
-      <option value="Proceeding">Proceeding</option>
-      <option value="Done">Done</option>
-    </select>
-    <select [(ngModel)]="newTask.priority">
-      <option value="High">High</option>
-      <option value="Low">Low</option>
-    </select>
-    <input type="date" [(ngModel)]="newTask.deadline" />
+  <!-- Button to show the task form -->
+  <button (click)="showTaskForm = true" class="add-task-button">+</button>
 
-    <button (click)="addTask()">Add Task</button>
+  <!-- Display task form -->
+  <div *ngIf="showTaskForm" class="task-form-container">
+    <h3>Add New Task</h3>
+    <form (ngSubmit)="addTask()">
+      <input [(ngModel)]="newTask.title" name="title" placeholder="Task Title" required />
+      <input [(ngModel)]="newTask.description" name="description" placeholder="Task Description" required />
+      <select [(ngModel)]="newTask.status" name="status" required>
+        <option value="ToDo">To Do</option>
+        <option value="Proceeding">Proceeding</option>
+        <option value="Done">Done</option>
+      </select>
+      <select [(ngModel)]="newTask.priority" name="priority" required>
+        <option value="High">High</option>
+        <option value="Low">Low</option>
+      </select>
+      <input type="date" [(ngModel)]="newTask.deadline" name="deadline" required />
+      <select [(ngModel)]="newTask.userId" name="userId" required>
+        <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+      </select>
+      <div>
+        <button style="width: fit-content;" type="submit">Add Task</button>
+        <button style="width: fit-content;" type="button" (click)="showTaskForm = false">Back to List</button>
+      </div>
+    </form>
   </div>
 
+  <!-- Display task list if not showing the form -->
+  <div *ngIf="!showTaskForm">
+    <div *ngFor="let task of board.tasks" class="task-card">
+      <h3>{{ task.title }}</h3>
+      <p>{{ task.description }}</p>
+      <p><strong>Deadline:</strong> {{ task.deadline | date }}</p>
+      <p><strong>Assigned to:</strong> {{ getUserName(task.userId || '') }}</p>
+      
+      <!-- Status Display -->
+      <p><strong>Status:</strong> {{ task.status }}</p>
+      
+      <!-- Edit Button -->
+      <button (click)="updateTaskStatus(task)" *ngIf="task.status === 'To Do' || task.status === 'Proceeding'">
+        Edit
+      </button>
 
-  <div *ngFor="let task of board.tasks">
-    <p>{{ task.title }} - {{ task.description }} - {{ task.deadline | date }}</p>
+      <!-- Conditional form to update the task's status -->
+      <div *ngIf="task.status">
+        <select [(ngModel)]="task.status" name="status">
+          <option value="Proceeding">Proceeding</option>
+          <option value="Done">Done</option>
+        </select>
+        <button (click)="updateTaskStatus(task)">Save</button>
+        <button (click)="task.status ">Cancel</button>
+      </div>
+    </div>
   </div>
+  <div class="file-upload-container">
+    <h3>Upload a File (Image or PDF)</h3>
+    <input type="file" (change)="onFileSelected($event)" accept=".jpg,.jpeg,.png,.pdf" />
+    <button (click)="uploadFile()" [disabled]="!selectedFile">Upload File</button>
+
+    <!-- Display Uploaded File -->
+    <div *ngIf="board.uploadedFileUrl" class="uploaded-file-container">
+      <p>Uploaded File:</p>
+
+      <!-- Display Image if it's an image -->
+      <img *ngIf="isImageFile(board.uploadedFileUrl)" [src]="board.uploadedFileUrl" alt="Uploaded Image" class="uploaded-image" />
+
+      <!-- Display PDF Link if it's a PDF -->
+      <a *ngIf="isPdfFile(board.uploadedFileUrl)" [href]="board.uploadedFileUrl" target="_blank">View Uploaded PDF</a>
+    </div>
+
 </div>

@@ -2,18 +2,23 @@ const { PrismaClient, Role } = require("@prisma/client");
 const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { JWT_Secret } = require ('../config/auth')
+const { JWT_Secret } = require ('../config/auth');
 require('dotenv').config();
-exports.signup = async (req, res, next) => {
+
+
+  exports.signup = async (req, res, next) => {
     try {
         const userData = req.body;
         console.log("Request body:", userData);
+
+        // Hash the password before storing it
+       
 
         const newUser = await prisma.user.create({
             data: {
                 name: userData.name,
                 email: userData.email,
-                password: userData.password,
+                password: bcrypt.hashSync(req.body.password, 8), 
                 role: userData.role 
             },
             select: { 
@@ -30,41 +35,44 @@ exports.signup = async (req, res, next) => {
         console.error(err.message);
         res.status(500).json({ error: 'Internal server error' });
     }
-};
-
-
-exports.login = async (req, res) => {
-    try {
-      const { email, password } = req.body;
-  
-    
-      const user = await prisma.user.findUnique({
-        where: { email }
-        
-      });
-  
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid email or password' });
-      }
-  
-
-      const token = jwt.sign(
-        {
-          userId: user.id,
-          email: user.email,
-          roles: user.role,
-        },
-        process.env.JWT_Secret,  
-        { expiresIn: '1h' }
-      );
-  
-      res.status(200).json({ token });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).json({ error: 'Internal server error' });
-    }
   };
+  exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
+    // Find the user by email
+    const user = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // Validate the password
+    const passwordIsValid = bcrypt.compareSync(password, user.password);
+
+    if (!passwordIsValid) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // Generate JWT token if password is valid
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        email: user.email,
+        roles: user.role,
+      },
+      process.env.JWT_SECRET,  // Ensure your environment variable is correct
+      { expiresIn: '1h' }
+    );
+
+    return res.status(200).json({ token });
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+  };
   exports.signout = async (req, res) => {
     try {
       req.session = null;
@@ -73,7 +81,6 @@ exports.login = async (req, res) => {
       this.next(err);
     }
   };
-
   exports.forgotPassword = async (req, res) => {
     try {
       const user = await User.findOne({ email: req.body.email });
@@ -109,7 +116,6 @@ exports.login = async (req, res) => {
       res.status(500).send({ message: err.message });
     }
   };
-
   exports.signout = async (req, res) => {
     try {
       req.session = null;
@@ -118,8 +124,6 @@ exports.login = async (req, res) => {
       this.next(err);
     }
   };
-
-  
   exports.resetPassword = async (req, res) => {
     try {
       const user = await User.findOne({

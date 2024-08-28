@@ -3,6 +3,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { User,Role } from 'src/app/models/user';
 import { settingService } from 'src/app/services/setting.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 declare const require: any;
 const jsPDF = require('jspdf');
 require('jspdf-autotable');
@@ -36,13 +37,13 @@ export class SettingsComponent implements OnInit {
 
       private messageService: MessageService,
       private settingService: settingService,
+      private authService : AuthService
   ) {}
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
       this.getAll();
-
-
-
+      
       this.registerForm = new FormGroup({
           name: new FormControl('', [Validators.required]),
           email: new FormControl('', [Validators.required, Validators.email]),

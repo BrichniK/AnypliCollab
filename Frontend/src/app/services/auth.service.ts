@@ -113,7 +113,7 @@ export class AuthService {
     }
     public isAdmin() {
         const userRole = this.getRole();
-        if (userRole === 'ROLE_ADMIN') {
+        if (userRole === 'ADMIN') {
             return true;
         }
         return false;

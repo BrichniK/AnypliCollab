@@ -22,10 +22,10 @@
           <td>{{ user.role }}</td>
           <td>
             <!-- Edit Button: Opens the dialog for editing -->
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)"></button>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)"> Edit</button>
             
             <!-- Delete Button: Opens the confirmation dialog for deleting -->
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteUser(user)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteUser(user)"> Delete </button>
           </td>
         </tr>
       </tbody>
@@ -72,7 +72,9 @@
     </ng-template>
     <ng-template pTemplate="footer">
       <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"></button>
+      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
+      
+      ></button>
     </ng-template>
   </p-dialog>
 </div>

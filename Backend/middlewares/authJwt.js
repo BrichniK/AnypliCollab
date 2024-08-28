@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
-const User = require('../models/user.model');
-const Role = require('../models/role.model');
+const { PrismaClient } = require("@prisma/client");
 
+const prisma = new PrismaClient(); 
 
-
-verifyToken = (req, res, next) => {
+// Marked the function as async
+const verifyToken = async (req, res, next) => {
   let token = req.headers["authorization"];
 
   if (!token) {
@@ -23,16 +23,18 @@ verifyToken = (req, res, next) => {
   });
 };
 
+// Marked the function as async
 const isAdmin = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId).exec();
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+    });
+
     if (!user) {
       return res.status(404).send({ message: "User not found" });
     }
 
-    const roles = await Role.find({ _id: { $in: user.roles } }).exec();
-
-    if (roles.some(role => role.name === "ADMIN")) {
+    if (user.role === "ADMIN") {
       return next();
     }
 
@@ -42,16 +44,18 @@ const isAdmin = async (req, res, next) => {
   }
 };
 
+// Marked the function as async
 const isManager = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId).exec();
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+    });
+
     if (!user) {
       return res.status(404).send({ message: "User not found" });
     }
 
-    const roles = await Role.find({ _id: { $in: user.roles } }).exec();
-
-    if (roles.some(role => role.name === "MANAGER")) {
+    if (user.role === "MANAGER") {
       return next();
     }
 
@@ -61,16 +65,18 @@ const isManager = async (req, res, next) => {
   }
 };
 
+// Marked the function as async
 const isCollab = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId).exec();
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+    });
+
     if (!user) {
-      return res.status(404).send({ message: "Collab not found" });
+      return res.status(404).send({ message: "User not found" });
     }
 
-    const roles = await Role.find({ _id: { $in: user.roles } }).exec();
-
-    if (roles.some(role => role.name === "COLLAB")) {
+    if (user.role === "COLLAB") {
       return next();
     }
 
@@ -79,16 +85,19 @@ const isCollab = async (req, res, next) => {
     return res.status(500).send({ message: err.message });
   }
 };
+
+// Marked the function as async
 const isManagerOrCollab = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId).exec();
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+    });
+
     if (!user) {
       return res.status(404).send({ message: "User not found" });
     }
 
-    const roles = await Role.find({ _id: { $in: user.roles } }).exec();
-
-    if (roles.some(role => role.name === "MANAGER") || roles.some(role => role.name === "COLLAB")) {
+    if (user.role === "MANAGER" || user.role === "COLLAB") {
       return next();
     }
 
@@ -98,20 +107,22 @@ const isManagerOrCollab = async (req, res, next) => {
   }
 };
 
+// Marked the function as async
 const isAdminOrManager = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId).exec();
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+    });
+
     if (!user) {
       return res.status(404).send({ message: "User not found" });
     }
 
-    const roles = await Role.find({ _id: { $in: user.roles } }).exec();
-
-    if (roles.some(role => role.name === "MANAGER") || roles.some(role => role.name === "ADMIN")) {
+    if (user.role === "ADMIN" || user.role === "MANAGER") {
       return next();
     }
 
-    return res.status(403).send({ message: "Require Manager or Admin Role!" });
+    return res.status(403).send({ message: "Require Admin or Manager Role!" });
   } catch (err) {
     return res.status(500).send({ message: err.message });
   }
@@ -124,6 +135,6 @@ const authJwt = {
   isCollab,
   isManagerOrCollab,
   isAdminOrManager
-  
 };
+
 module.exports = authJwt;
