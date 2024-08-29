@@ -151,3 +151,70 @@ exports.delete = async function deleteTask(req, res) {
         });
     }
 };
+
+exports.getTasksCount = async (req, res) => {
+    try {
+      const count = await prisma.task.count();
+      res.json({ totalTasks: count });
+    } catch (error) {
+      console.error('Error fetching task count:', error);
+      res.status(500).json({ error: 'Failed to get total tasks' });
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
+
+exports.countTasksByStatus = async (req, res) => {
+    try {
+      // Count tasks with status 'ToDo'
+      const todoCount = await prisma.task.count({
+        where: { status: 'ToDo' },
+      });
+  
+      // Count tasks with status 'Proceeding'
+      const proceedingCount = await prisma.task.count({
+        where: { status: 'Proceeding' },
+      });
+  
+      // Count tasks with status 'Done'
+      const doneCount = await prisma.task.count({
+        where: { status: 'Done' },
+      });
+  
+      // Return the counts in the response
+      res.json({
+        ToDo: todoCount,
+        Proceeding: proceedingCount,
+        Done: doneCount,
+      });
+    } catch (error) {
+      console.error('Error counting tasks by status:', error);
+      res.status(500).json({ error: 'Failed to count tasks by status' });
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
+
+  exports.countTasksByPriority = async (req, res) => {
+    try {
+ 
+      const highCount = await prisma.task.count({
+        where: { priority: 'High' },
+      });
+
+      const lowCount = await prisma.task.count({
+        where: { priority: 'Low' },
+      });
+  
+      res.json({
+        High: highCount,
+        Low: lowCount,
+
+      });
+    } catch (error) {
+      console.error('Error counting tasks by priority:', error);
+      res.status(500).json({ error: 'Failed to count tasks by priority' });
+    } finally {
+      await prisma.$disconnect();
+    }
+  };

@@ -33,10 +33,10 @@ updateBoard(id: string, board: Board): Observable<Board> {
 }
 
 getTasksByBoardId(boardId: string): Observable<Task[]> {
-  // The API is expected to return an object with 'status' and 'data' properties
+ 
   return this.http.get<{ status: boolean; data: Task[] }>(`${this.baseUrl}/tasks/${boardId}`)
     .pipe(
-      // Map the response to extract the 'data' property (array of tasks)
+  
       map(response => response.data)
     );
 }
@@ -44,6 +44,11 @@ addTaskToBoard(id: string, task: Task): Observable<Task> {
   return this.http.post<Task>(`${this.baseUrl}/${id}/addTask`, task);
 }
 
+
+getTotalBoards(): Observable<number> {
+  return this.http.get<{ totalBoards: number }>(`${this.baseUrl}/dashboard/total-boards`)
+    .pipe(map(response => response.totalBoards));
+}
 
 
 }

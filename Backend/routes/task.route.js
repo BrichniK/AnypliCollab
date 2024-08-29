@@ -9,5 +9,8 @@ router.get('/show', [verifyToken],taskController.show);
 router.get('/showById/:taskid', taskController.showById);
 router.put('/update/:taskid',[verifyToken,authJwt.isManagerOrCollab], taskController.update);
 router.delete('/delete/:taskid',[verifyToken,authJwt.isAdminOrManager], taskController.delete);
+router.get('/dashboard/total-tasks', taskController.getTasksCount);
+router.get('/status-count', taskController.countTasksByStatus);
+router.get('/priority-count', taskController.countTasksByPriority);
 
 module.exports = router;

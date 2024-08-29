@@ -9,5 +9,6 @@ router.get('/show',[verifyToken,authJwt.isAdmin], userController.show);
 router.get('/showById/:id', [verifyToken,authJwt.isAdmin],userController.showById);
 router.put('/update/:userid',[verifyToken,authJwt.isAdmin], userController.update);
 router.delete('/delete/:userid', [verifyToken,authJwt.isAdmin],userController.deleteUser);
+router.get('/dashboard/total-users', userController.getUserCount);
 
 module.exports = router;

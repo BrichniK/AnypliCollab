@@ -187,3 +187,15 @@ exports.getTasksByBoardId = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getBoardCount = async (req, res) => {
+  try {
+    const count = await prisma.board.count();
+    res.json({ totalBoards: count });
+  } catch (error) {
+    console.error('Error fetching boards count:', error);
+    res.status(500).json({ error: 'Failed to get total boards' });
+  } finally {
+    await prisma.$disconnect();
+  }
+};

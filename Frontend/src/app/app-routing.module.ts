@@ -11,8 +11,9 @@ import { SettingsComponent } from './components/setting/setting.component';
 import { ActivityComponent } from './components/activity/activity.component';
 import { ReclamationComponent } from './components/reclamation/reclamation.component';
 import { UserreclamationComponent } from './components/userreclamation/userreclamation.component';
-import { DashbordadminComponent } from './components/dashbordadmin/dashbordadmin.component';
 import { DashboardComponent } from './components/dashbord/dashbord.component';
+import { AdminDashboardComponent } from './components/admindashboard/admindashboard.component';
+
 
 
 const routes: Routes = [
@@ -26,7 +27,7 @@ const routes: Routes = [
   { path: 'activity',component: ActivityComponent  },
   { path: 'addreclamation',component: UserreclamationComponent  },
   { path: 'reclamation',component: ReclamationComponent  },
-  { path: 'admindashbord',component: DashbordadminComponent  },
+  { path: 'admindashbord',component: AdminDashboardComponent  },
   { path: 'dashbord',component: DashboardComponent  },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path:'**',component:NotfoundComponent},

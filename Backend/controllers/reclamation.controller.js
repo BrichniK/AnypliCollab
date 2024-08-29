@@ -143,3 +143,15 @@ exports.delete = async (req, res) => {
     });
   }
 };
+
+exports.getReclaCount = async (req, res) => {
+  try {
+    const count = await prisma.reclamation.count();
+    res.json({ totalRecla: count });
+  } catch (error) {
+    console.error('Error fetching recla count:', error);
+    res.status(500).json({ error: 'Failed to get total reclas' });
+  } finally {
+    await prisma.$disconnect();
+  }
+};

@@ -1,0 +1,63 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Admin Dashboard</h1>
+  </header>
+
+  <main class="dashboard-main">
+    <section class="stats-section">
+      <div class="stat-card">
+        <h2>Total Users</h2>
+        <p>{{ totalUsers }}</p>
+      </div>
+      <div class="stat-card">
+        <h2>Total Boards</h2>
+        <p>{{ totalBoards }}</p>
+      </div>
+
+   
+      <div class="stat-card">
+        <h2>Tasks - To Do</h2>
+        <p>{{ taskCounts?.ToDo }}</p>
+      </div>
+      <div class="stat-card">
+        <h2>Tasks - Proceeding</h2>
+        <p>{{ taskCounts?.Proceeding }}</p>
+      </div>
+      <div class="stat-card">
+        <h2>Tasks - Done</h2>
+        <p>{{ taskCounts?.Done }}</p>
+      </div>
+    </section>
+
+    <section class="charts-section">
+      <div class="chart">
+        <h3>Task Status</h3>
+        <canvas id="statusChart"></canvas>
+      </div>
+      <div class="chart">
+        <h3>Priority Distribution</h3>
+        <canvas id="priorityChart"></canvas>
+      </div>
+    </section>
+
+    <!-- <section class="table-section">
+      <h3>Recent Activities</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Activity</th>
+            <th>Date</th>
+            <th>User</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let activity of activities">
+            <td>{{ activity.description }}</td>
+            <td>{{ activity.date | date:'short' }}</td>
+            <td>{{ activity.user }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section> -->
+  </main>
+</div>

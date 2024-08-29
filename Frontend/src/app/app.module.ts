@@ -25,11 +25,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditprofileComponent } from './components/editprofile/editprofile.component';
 import { ReclamationComponent } from './components/reclamation/reclamation.component';
-import { DashbordadminComponent } from './components/dashbordadmin/dashbordadmin.component';
 import { UserreclamationComponent } from './components/userreclamation/userreclamation.component';
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
-import { DashboardComponent } from './components/dashbord/dashbord.component';
+import { AdminDashboardComponent } from './components/admindashboard/admindashboard.component';
+// import { AdminDashboardComponent } from './components/admindashboard/admindashboard.component';
+
 
 @NgModule({
   declarations: [
@@ -48,8 +49,10 @@ import { DashboardComponent } from './components/dashbord/dashbord.component';
     ProfileComponent,
     EditprofileComponent,
     ReclamationComponent,
-    DashbordadminComponent,
     UserreclamationComponent,
+    // AdminDashboardComponent
+    AdminDashboardComponent
+
 
   
   ],

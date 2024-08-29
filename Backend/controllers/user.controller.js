@@ -174,3 +174,16 @@ exports.add = async function createTask(req, res) {
   };
   
 
+
+  exports.getUserCount = async (req, res) => {
+    try {
+      const count = await prisma.user.count();
+      res.json({ totalUsers: count });
+    } catch (error) {
+      console.error('Error fetching user count:', error);
+      res.status(500).json({ error: 'Failed to get total users' });
+    } finally {
+      await prisma.$disconnect();
+    }
+  };
+

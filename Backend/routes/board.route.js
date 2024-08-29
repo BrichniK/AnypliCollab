@@ -11,5 +11,6 @@ router.delete('/delete/:boardid', [verifyToken,authJwt.isAdminOrManager],boardCo
 router.put('/update/:id', [verifyToken,authJwt.isAdminOrManager],boardController.updateBoard);
 router.post('/:boardid/addTask', [verifyToken,authJwt.isAdminOrManager],boardController.addTask);
 router.get('/tasks/:boardid', boardController.getTasksByBoardId);
+router.get('/dashboard/total-boards', boardController.getBoardCount);
 
 module.exports = router;
