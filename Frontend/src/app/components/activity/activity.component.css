@@ -1,22 +1,97 @@
+/* General container for the activities */
+.activity-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Loading spinner styles */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.spinner {
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Activity list container */
 .activity-list {
-    background-color: #ffffff;
-    border-radius: 6px;
-    padding: 10px;
-    margin: 10px 0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Activity card styles */
+.activity-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.activity-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Activity line styling with colored name and description */
+.activity-line {
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+/* Name in blue color */
+.activity-name {
+  color: #3c9f1b; /* Blue color */
+}
+
+/* Description in green color */
+.activity-description {
+  color: #0c0100; /* Green color */
+}
+
+/* Date in yellow color */
+.activity-date {
+  font-size: 0.9em;
+  color: #f1530f; /* Yellow color */
+  margin-top: 5px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .activity-container {
+    padding: 15px;
   }
-  
-  .activity-item {
-    border-bottom: 1px solid #e0e0e0;
-    padding: 8px 0;
+
+  .activity-card {
+    padding: 8px;
   }
-  
-  .activity-item p {
-    margin: 0;
-    font-size: 14px;
+
+  .activity-line {
+    font-size: 1em;
   }
-  
-  .activity-item strong {
-    color: #555;
+
+  .activity-date {
+    font-size: 0.85em;
   }
-  
+}

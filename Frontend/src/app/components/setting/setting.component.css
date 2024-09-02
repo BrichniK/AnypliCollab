@@ -106,6 +106,12 @@ h1 {
   border-collapse: collapse;
   margin: 20px 0;
 }
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
 .user-table th, .user-table td {
   padding: 12px;
@@ -131,17 +137,23 @@ h1 {
 
 /* Dialog styling */
 .p-dialog {
-  background-color: #f0f0f0; /* Grey background for dialog */
+  /* Solid white background */
   border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Elevated shadow */
+  opacity: 1; /* Ensure full opacity */
+  z-index: 1050; /* Ensure it appears above other content */
 }
 
-.p-dialog .p-dialog-header {
-  background-color: #007ad9; /* Primary color for header */
-  color: #fff; /* Text color for header */
+/* Dialog Content Styling */
+.p-dialog .p-dialog-content {
+  background-color: #ffffff; /* Solid white background for content */
+  opacity: 1; /* Ensure full opacity */
+  padding: 20px; /* Add padding for spacing */
 }
 
-.p-dialog .p-dialog-header .p-dialog-title {
-  font-size: 18px;
+/* Dialog Backdrop Styling */
+.p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black backdrop */
 }
 
 /* Responsive design for dialog */

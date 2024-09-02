@@ -35,7 +35,7 @@ model User {
   name     String
   imageURL String? 
   role     Role     @default(COLLAB)
-  activity Activity?
+  activities Activity[] 
   boardUsers BoardUser[]
   tasks    Task[]   @relation("UserTasks")  // Add this line
 }

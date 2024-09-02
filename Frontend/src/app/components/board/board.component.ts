@@ -55,8 +55,9 @@ export class BoardComponent implements OnInit {
   loadWallpapers() {
     this.wallpapers = [
       'assets/images/Boards/b1.jpeg',
-      'assets/images/Boards/b2.jpg',
       'assets/images/Boards/b3.png',
+      'assets/images/Boards/b5.jpeg',
+      'assets/images/Boards/b4.jpeg',
     ];
   }
 
@@ -147,4 +148,5 @@ export class BoardComponent implements OnInit {
       });
     }
   }
+  
 }

@@ -1,8 +1,18 @@
-<h2>Activity Log</h2>
-<div class="activity-list">
-  <div *ngFor="let activity of activities" class="activity-item">
-    <p><strong>User ID:</strong> {{ activity.userId }}</p>
-    <p><strong>Description:</strong> {{ activity.description }}</p>
-    <p><strong>Date:</strong> {{ activity.date | date:'short' }}</p>
+<div class="activity-container">
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading" class="activity-list">
+    <div *ngFor="let activity of activities" class="activity-card">
+      <p class="activity-line">
+        <span class="activity-name">{{ activity.user?.name   || 'Unknown User' }}</span>
+        &nbsp;
+        <span class="activity-description">{{ activity.description }}</span>
+      </p>
+      <p class="activity-date">
+        {{ activity.date | date: 'medium' }}
+      </p>
+    </div>
   </div>
 </div>

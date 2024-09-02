@@ -97,7 +97,7 @@ export class AdminDashboardComponent implements OnInit {
           labels: ['To Do', 'Proceeding', 'Done'],
           datasets: [{
             data: [this.taskCounts.ToDo, this.taskCounts.Proceeding, this.taskCounts.Done],
-            backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
+            backgroundColor: ['#ff6384', '#36a2eb', '#1aa62f']
           }]
         }
       });

@@ -17,7 +17,7 @@ export class TaskComponent implements OnInit {
    
     title: '',
     description: '',
-    status: 'To Do',
+    status: 'ToDo',
     priority: 'Low',
     deadline: new Date()
   };

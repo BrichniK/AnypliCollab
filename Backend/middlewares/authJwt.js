@@ -4,15 +4,15 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient(); 
 
-// Marked the function as async
-const verifyToken = async (req, res, next) => {
+
+const verifyToken = (req, res, next) => {
   let token = req.headers["authorization"];
 
   if (!token) {
     return res.status(403).send({ message: "No token provided!" });
   }
 
-  token = token.split(' ')[1]; 
+  token = token.split(' ')[1]; // Si le token est envoyé comme 'Bearer <token>'
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
@@ -23,28 +23,40 @@ const verifyToken = async (req, res, next) => {
   });
 };
 
-// Marked the function as async
+
+
 const isAdmin = async (req, res, next) => {
   try {
+    // Ensure req.userId is set by authentication middleware
+    if (!req.userId) {
+      return res.status(401).send({ message: "User not authenticated" });
+    }
+
+    // Find user by ID
     const user = await prisma.user.findUnique({
       where: { id: req.userId },
     });
 
+    // Check if user exists
     if (!user) {
       return res.status(404).send({ message: "User not found" });
     }
 
+    // Check if user has ADMIN role
     if (user.role === "ADMIN") {
-      return next();
+      return next(); // User is admin, proceed to the next middleware
     }
 
+    // If user is not an admin, send a forbidden response
     return res.status(403).send({ message: "Require Admin Role!" });
   } catch (err) {
-    return res.status(500).send({ message: err.message });
+    // Handle any unexpected errors
+    console.error("Error in isAdmin middleware:", err.message);
+    return res.status(500).send({ message: "Internal server error" });
   }
 };
 
-// Marked the function as async
+
 const isManager = async (req, res, next) => {
   try {
     const user = await prisma.user.findUnique({
@@ -65,7 +77,7 @@ const isManager = async (req, res, next) => {
   }
 };
 
-// Marked the function as async
+
 const isCollab = async (req, res, next) => {
   try {
     const user = await prisma.user.findUnique({
@@ -86,7 +98,7 @@ const isCollab = async (req, res, next) => {
   }
 };
 
-// Marked the function as async
+
 const isManagerOrCollab = async (req, res, next) => {
   try {
     const user = await prisma.user.findUnique({
@@ -107,7 +119,7 @@ const isManagerOrCollab = async (req, res, next) => {
   }
 };
 
-// Marked the function as async
+
 const isAdminOrManager = async (req, res, next) => {
   try {
     const user = await prisma.user.findUnique({

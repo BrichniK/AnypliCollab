@@ -119,10 +119,10 @@ exports.addTask = async (req, res) => {
         deadline: new Date(deadline),
         priority: priority || 'Low',
         board: {
-          connect: { id: boardid },  // Connect task to the board by ID
+          connect: { id: boardid }, 
         },
         user: {
-          connect: { id: userId },  // Connect task to the user by ID
+          connect: { id: userId },  
         },
       },
     });
@@ -138,6 +138,17 @@ exports.addTask = async (req, res) => {
   }
 };
 
+exports.getBoardsCount = async (req, res) => {
+  try {
+    const count = await prisma.board.count();
+    res.json({ totalBoards: count });
+  } catch (error) {
+    console.error('Error fetching board count:', error);
+    res.status(500).json({ error: 'Failed to get total boards' });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
 
 
 
@@ -188,14 +199,31 @@ exports.getTasksByBoardId = async (req, res) => {
   }
 };
 
-exports.getBoardCount = async (req, res) => {
+exports.getURL = async (req, res) => {
   try {
-    const count = await prisma.board.count();
-    res.json({ totalBoards: count });
+    const { boardid } = req.params;
+
+    if (!boardid) {
+      return res.status(400).json({ error: 'Board ID is required' });
+    }
+
+    // Fetch the board with its wallpaper
+    const board = await prisma.board.findUnique({
+      where: { id: boardid },
+      select: { wallpaper: true }, // Only select the wallpaper field
+    });
+
+    if (!board) {
+      return res.status(404).json({ error: 'Board not found' });
+    }
+
+    res.json({
+      status: true,
+      data: board.wallpaper, // Return the wallpaper
+    });
   } catch (error) {
-    console.error('Error fetching boards count:', error);
-    res.status(500).json({ error: 'Failed to get total boards' });
-  } finally {
-    await prisma.$disconnect();
+    console.error('Error fetching wallpaper:', error);
+    res.status(500).json({ message: error.message });
   }
 };
+

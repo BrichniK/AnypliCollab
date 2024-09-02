@@ -19,6 +19,7 @@ const reclamationRouter = require('./routes/reclamation.route');
 const app = express();
 
 console.log("JWT Secret:", process.env.JWT_Secret);
+
 // CORS setup
 
 app.use(cors({

@@ -2,46 +2,58 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 
-exports.add = async function createActivity(req, res) {
-    try {
-      console.log(req.body); 
-      const activity = await prisma.activity.create({
-        data: req.body,
-      });
-  
-      res.status(201).json({
-        status: true,
-        message: "activity Successfully Created",
-        data: activity,
-      });
-    } catch (error) {
-      console.error("Error creating activity:", error);
-      res.status(500).json({
-        status: false,
-        message: 'server error',
-      });
-    }
+
+exports.show = async function getActivitys(req, res) {
+  try {
+   
+    const activities = await prisma.activity.findMany({
+      where: {
+        description: {
+          contains: "Added board", 
+        },
+      },
+      include: {
+        user: true, 
+      },
+      orderBy: {
+        date: 'desc', 
+      },
+    });
+
+    res.json({
+      status: true,
+      message: "Board-related activities successfully fetched",
+      data: activities,
+    });
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+    res.status(500).json({
+      status: false,
+      message: "Server error",
+    });
   }
+};
+
   
   
 
-exports.show = async function getActivitys(req, res) {
-    try {
-      const activitys = await prisma.activity.findMany();
+// exports.show = async function getActivitys(req, res) {
+//     try {
+//       const activitys = await prisma.activity.findMany();
   
-      res.json({
-        status: true,
-        message: "Activitys Successfully fetched",
-        data: activitys,
-      });
-    } catch (error) {
-      console.error("Error fetching Activitys:", error);
-      res.status(500).json({
-        status: false,
-        message: "Server error",
-      });
-    }
-  };
+//       res.json({
+//         status: true,
+//         message: "Activitys Successfully fetched",
+//         data: activitys,
+//       });
+//     } catch (error) {
+//       console.error("Error fetching Activitys:", error);
+//       res.status(500).json({
+//         status: false,
+//         message: "Server error",
+//       });
+//     }
+//   };
   
 
   exports.showById = async function getActivity(req, res) {
@@ -150,4 +162,23 @@ exports.show = async function getActivitys(req, res) {
     }
   };
   
+  exports.add = async function createActivity(req, res) {
+    try {
+      console.log(req.body); 
+      const activity = await prisma.activity.create({
+        data: req.body,
+      });
   
+      res.status(201).json({
+        status: true,
+        message: "activity Successfully Created",
+        data: activity,
+      });
+    } catch (error) {
+      console.error("Error creating activity:", error);
+      res.status(500).json({
+        status: false,
+        message: 'server error',
+      });
+    }
+  }

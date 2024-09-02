@@ -11,7 +11,7 @@
       <i class="fas fa-user-circle"></i>
     </button>
     <div class="profile-dropdown" *ngIf="isProfileDropdownOpen">
-      <!-- <button class="dropdown-item" (click)="editProfile()">Edit Profile</button> -->
+      <button class="dropdown-item" (click)="editProfile()">Edit Profile</button>
       <button class="dropdown-item" >My Tasks</button>
       <button class="dropdown-item" [routerLink]="['/reclamation']">Claim</button>
     </div>

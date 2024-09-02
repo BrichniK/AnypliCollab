@@ -3,6 +3,9 @@ const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { JWT_Secret } = require ('../config/auth');
+const config = require ('../config/auth.config')
+const crypto = require("crypto");
+
 require('dotenv').config();
 
 
@@ -37,41 +40,33 @@ require('dotenv').config();
     }
   };
   exports.login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // Find the user by email
-    const user = await prisma.user.findUnique({
-      where: { email }
-    });
-
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+    try {
+      const { email, password } = req.body;
+      const user = await prisma.user.findUnique({
+        where: { email }
+      });
+  
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+  
+      const passwordIsValid = bcrypt.compareSync(password, user.password);
+  
+      if (!passwordIsValid) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+      const token = jwt.sign({ id: user.id }, config.secret, {
+        algorithm: 'HS256',
+        allowInsecureKeySizes: true,
+        expiresIn: 86400, // 24 hours
+      });
+      console.log(`User ID: ${user.id}`);
+      // console.log ('rrrrr',token)
+      return res.status(200).json({ token, id: user.id });
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: 'Internal server error' });
     }
-
-    // Validate the password
-    const passwordIsValid = bcrypt.compareSync(password, user.password);
-
-    if (!passwordIsValid) {
-      return res.status(401).json({ error: 'Invalid email or password' });
-    }
-
-    // Generate JWT token if password is valid
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-        roles: user.role,
-      },
-      process.env.JWT_SECRET,  // Ensure your environment variable is correct
-      { expiresIn: '1h' }
-    );
-
-    return res.status(200).json({ token });
-  } catch (err) {
-    console.error(err.message);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
   };
   exports.signout = async (req, res) => {
     try {

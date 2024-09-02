@@ -4,10 +4,10 @@ export interface Task {
   id : string
   title: string;
   description: string;
-  status: 'To Do' | 'Proceeding' | 'Done';
+  status: 'ToDo' | 'Proceeding' | 'Done';
   priority: 'Low' | 'High';
   deadline: Date;
-  userId?: string; // Add this field to reference the user
+  userId?: string;
 }
 
 export class Board {
@@ -15,6 +15,6 @@ export class Board {
   name!: string;
   tasks!: Task[];
   wallpaper!: string;
-  users!: User[]; // Add this if not already present
+  users!: User[]; 
   uploadedFileUrl?: string
 }

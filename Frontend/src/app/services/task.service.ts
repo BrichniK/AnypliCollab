@@ -31,6 +31,10 @@ getTotalTasks(): Observable<number> {
     .pipe(map(response => response.totalTasks));
 }
 
+updateTaskStatus(id: string, newStatus: 'ToDo' | 'Proceeding' | 'Done'): Observable<Task> {
+  return this.http.patch<Task>(`${this.baseUrl}/update-status/${id}`, { status: newStatus });
+}
+
 countTasksByStatus(): Observable<{ ToDo: number, Proceeding: number, Done: number }> {
   return this.http.get<{ ToDo: number, Proceeding: number, Done: number }>(`${this.baseUrl}/status-count`);
 }

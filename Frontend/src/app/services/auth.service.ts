@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -15,11 +16,20 @@ export class AuthService {
 
     constructor(private http: HttpClient, private router: Router) {}
 
-    signin(data: any) {
-        {
-            console.log('user signin ', data);
-            return this.http.post(this.endpoint + 'signin', data);
-        }
+    signin(data: any): Observable<any> {
+        return this.http.post(this.endpoint + 'signin', data).pipe(
+            tap((response: any) => {
+                const token = response.token; // Access the correct token field
+                if (token) {
+                    this.setToken(token); // Store the token
+                    console.log('Token stored:', token); // Log after storing
+                    
+                    this.updateLoggedInState(true);
+                } else {
+                    console.log('Token not found in response'); // Log if token is not found
+                }
+            })
+        );
     }
 
     register(data: any) {
@@ -44,8 +54,10 @@ export class AuthService {
       }
 
       public getToken(): string | null {
-        return localStorage.getItem('token');
-      }
+        const token = localStorage.getItem('token');
+        console.log('Retrieved token:', token); // Debug log to check token value
+        return token;
+    }
 
     public updateLoggedInState(status: boolean) {
         this.authSubject.next(status);
@@ -118,6 +130,19 @@ export class AuthService {
         }
         return false;
     }
+      
+      public isCollab(): boolean {
+        const userRole = this.getRole();
+        return userRole === 'COLLAB';
+      }
+
+
+      public isManager(): boolean {
+        const userRole = this.getRole();
+        return userRole === 'MANAGER';
+      }
+      
+
     public getname(): string | null {
         return localStorage.getItem('name');
     }

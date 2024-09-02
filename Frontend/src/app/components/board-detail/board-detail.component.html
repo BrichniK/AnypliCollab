@@ -1,17 +1,15 @@
-<div *ngIf="board">
+<div *ngIf="board" class="board-detail-container">
   <h2>{{ board.name }}</h2>
 
-  <!-- Button to show the task form -->
   <button (click)="showTaskForm = true" class="add-task-button">+</button>
 
-  <!-- Display task form -->
   <div *ngIf="showTaskForm" class="task-form-container">
     <h3>Add New Task</h3>
     <form (ngSubmit)="addTask()">
       <input [(ngModel)]="newTask.title" name="title" placeholder="Task Title" required />
       <input [(ngModel)]="newTask.description" name="description" placeholder="Task Description" required />
       <select [(ngModel)]="newTask.status" name="status" required>
-        <option value="ToDo">To Do</option>
+        <option value="ToDo">ToDo</option>
         <option value="Proceeding">Proceeding</option>
         <option value="Done">Done</option>
       </select>
@@ -30,30 +28,19 @@
     </form>
   </div>
 
-  <!-- Display task list if not showing the form -->
   <div *ngIf="!showTaskForm">
     <div *ngFor="let task of board.tasks" class="task-card">
       <h3>{{ task.title }}</h3>
       <p>{{ task.description }}</p>
       <p><strong>Deadline:</strong> {{ task.deadline | date }}</p>
       <p><strong>Assigned to:</strong> {{ getUserName(task.userId || '') }}</p>
-      
-      <!-- Status Display -->
       <p><strong>Status:</strong> {{ task.status }}</p>
-      
-      <!-- Edit Button -->
-      <button (click)="updateTaskStatus(task)" *ngIf="task.status === 'To Do' || task.status === 'Proceeding'">
-        Edit
-      </button>
-
-      <!-- Conditional form to update the task's status -->
       <div *ngIf="task.status">
         <select [(ngModel)]="task.status" name="status">
           <option value="Proceeding">Proceeding</option>
           <option value="Done">Done</option>
         </select>
         <button (click)="updateTaskStatus(task)">Save</button>
-        <button (click)="task.status ">Cancel</button>
       </div>
     </div>
   </div>
@@ -72,5 +59,5 @@
       <!-- Display PDF Link if it's a PDF -->
       <a *ngIf="isPdfFile(board.uploadedFileUrl)" [href]="board.uploadedFileUrl" target="_blank">View Uploaded PDF</a>
     </div>
-
+  </div>
 </div>

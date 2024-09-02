@@ -14,27 +14,26 @@ import { TaskService } from 'src/app/services/task.service';
 export class BoardDetailComponent implements OnInit {
   board: Board | undefined;
   loading: boolean = true;
-  boardDialog: boolean = false;
   showTaskForm: boolean = false;
   selectedFile: File | null = null;
   uploadedFileUrl: string | null = null;
 
   newTask: Task = {
-    id : '',
+    id: '',
     title: '',
     description: '',
-    status: 'To Do',
+    status: 'ToDo',
     priority: 'Low',
     deadline: new Date(),
   };
-  users: User[] = []; // List of users
+  users: User[] = []; 
 
   constructor(
     private boardService: BoardService,
     private route: ActivatedRoute,
     private renderer: Renderer2,
     private settingService: settingService,
-    private taskService : TaskService
+    private taskService: TaskService
   ) {}
 
   ngOnInit(): void {
@@ -50,8 +49,8 @@ export class BoardDetailComponent implements OnInit {
         (response) => {
           this.board = response;
           this.loading = false;
-          if (this.board && this.board.wallpaper) {
-            this.setWallpaper(this.board.wallpaper);
+          if (this.board) {
+            this.loadWallpaper(boardId);
           }
         },
         (error) => {
@@ -60,6 +59,18 @@ export class BoardDetailComponent implements OnInit {
         }
       );
     }
+  }
+
+  loadWallpaper(boardId: string) {
+    this.boardService.getwallpaper(boardId).subscribe(
+      (wallpaperUrl) => {
+        this.setWallpaper(wallpaperUrl);
+        console.log('wallpaper',wallpaperUrl)
+      },
+      (error) => {
+        console.error('Error loading wallpaper:', error);
+      }
+    );
   }
 
   getUsers() {
@@ -81,7 +92,6 @@ export class BoardDetailComponent implements OnInit {
       this.boardService.getTasksByBoardId(boardId).subscribe(
         (tasks) => {
           if (Array.isArray(tasks)) {
-          
             if (this.board) {
               this.board.tasks = tasks;
             }
@@ -105,7 +115,6 @@ export class BoardDetailComponent implements OnInit {
   }
 
   setWallpaper(url: string) {
-    console.log('Setting wallpaper:', url);
     const boardDetailContainer = document.querySelector('.board-detail-container');
     if (boardDetailContainer) {
       this.renderer.setStyle(boardDetailContainer, 'backgroundImage', `url(${url})`);
@@ -117,74 +126,6 @@ export class BoardDetailComponent implements OnInit {
   toggleTaskForm() {
     this.showTaskForm = !this.showTaskForm;
   }
-
-  addTask(): void {
-    const boardId = this.route.snapshot.paramMap.get('id');
-  
-    if (this.board && this.newTask.title && this.newTask.description) {
-      this.boardService.addTaskToBoard(boardId!, this.newTask).subscribe(
-        (task: Task) => {
-          // Update the board's tasks list
-          if (this.board?.tasks) {
-            this.board.tasks.push(task);
-          } else if (this.board) {
-            this.board.tasks = [task];
-          }
-
-          // Reset the newTask object and close the form
-          this.newTask = {
-            id : '',
-            title: '',
-            description: '',
-            status: 'To Do',
-            deadline: new Date(),
-            priority: 'Low'
-          };
-          this.showTaskForm = false;
-        },
-        (error) => {
-          console.error('Error adding task:', error);
-        }
-      );
-    }
-  }
-
-
-  updateTaskStatus(task: Task) {
-    // Determine the next status based on the current status
-    let newStatus: 'To Do' | 'Proceeding' | 'Done';
-
-    switch (task.status) {
-      case 'To Do':
-        newStatus = 'Proceeding';
-        break;
-      case 'Proceeding':
-        newStatus = 'Done';
-        break;
-      case 'Done':
-      default:
-        newStatus = 'To Do';
-        break;
-    }
-
-    // Update the task status
-    const updatedTask: Task = { ...task, status: newStatus };
-
-    this.taskService.updateTask(task.id, updatedTask).subscribe(
-      (response) => {
-        console.log('Task status updated successfully:', response);
-        // Update the local task with the response
-        if (this.board) {
-         
-
-        }
-      },
-      (error) => {
-        console.error('Error updating task status:', error);
-      }
-    );
-  }
-
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -217,5 +158,47 @@ isPdfFile(fileUrl: string): boolean {
   return fileUrl.match(/\.pdf$/i) !== null;
 }
   
+  addTask(): void {
+    const boardId = this.route.snapshot.paramMap.get('id');
   
+    if (this.board && this.newTask.title && this.newTask.description) {
+      this.boardService.addTaskToBoard(boardId!, this.newTask).subscribe(
+        (task: Task) => {
+          if (this.board?.tasks) {
+            this.board.tasks.push(task);
+          } else if (this.board) {
+            this.board.tasks = [task];
+          }
+          this.newTask = {
+            id: '',
+            title: '',
+            description: '',
+            status: 'ToDo',
+            deadline: new Date(),
+            priority: 'Low'
+          };
+          this.showTaskForm = false;
+        },
+        (error) => {
+          console.error('Error adding task:', error);
+        }
+      );
+    }
+  }
+
+  updateTaskStatus(task: Task) {
+    const updatedTask: Task = {
+      ...task,
+      status: task.status 
+    };
+  
+    this.taskService.updateTask(task.id, updatedTask).subscribe(
+      (response) => {
+        console.log('Task status updated successfully:', response);
+      },
+      (error) => {
+        console.error('Error updating task status:', error);
+      }
+    );
+  }
 }

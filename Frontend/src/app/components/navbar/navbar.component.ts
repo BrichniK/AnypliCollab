@@ -32,8 +32,8 @@ export class NavbarComponent {
     this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
   }
 
-  // editProfile() {
-  //   this.isProfileDropdownOpen = false; // Close the dropdown after clicking the button
-  //   this.router.navigate(['/edit-profile']); // Navigate to the edit profile page
-  // }
+  editProfile() {
+    this.isProfileDropdownOpen = false; // Close the dropdown after clicking the button
+    this.router.navigate(['/edit-profile']); // Navigate to the edit profile page
+  }
 }

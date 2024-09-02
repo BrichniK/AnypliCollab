@@ -2,17 +2,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Activity } from '../models/activity';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActivityService {
-  private activities: Activity[] = [
-    { id: 1, userId: 1, description: 'User 1 added a new task.', date: new Date() },
-    { id: 2, userId: 2, description: 'User 2 changed the task status.', date: new Date() }
-  ];
+  
+  private baseUrl = 'http://localhost:8080/activity';
 
-  getActivities(): Observable<Activity[]> {
-    return of(this.activities);
+  constructor(private http: HttpClient) {}
+
+  getAllAct(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/show`);
   }
 }

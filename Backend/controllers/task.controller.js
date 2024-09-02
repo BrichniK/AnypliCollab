@@ -96,12 +96,17 @@ exports.update = async function updateTask(req, res) {
         }
 
         const updatedTask = await prisma.task.update({
+            
             where: {
                 id: taskid,
             },
-            data: req.body, 
+            data: {
+                status: req.body.status,  
+                // priority: req.body.priority, 
+               
+            },
         });
-
+        console.log("Received data for updating task:", req.body);
         res.json({
             status: true,
             message: "Task Successfully updated",
@@ -195,7 +200,7 @@ exports.countTasksByStatus = async (req, res) => {
     }
   };
 
-  exports.countTasksByPriority = async (req, res) => {
+exports.countTasksByPriority = async (req, res) => {
     try {
  
       const highCount = await prisma.task.count({

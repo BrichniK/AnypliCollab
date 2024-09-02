@@ -29,8 +29,13 @@ import { UserreclamationComponent } from './components/userreclamation/userrecla
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
 import { AdminDashboardComponent } from './components/admindashboard/admindashboard.component';
-// import { AdminDashboardComponent } from './components/admindashboard/admindashboard.component';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core'; 
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -68,7 +73,15 @@ import { AdminDashboardComponent } from './components/admindashboard/admindashbo
     DropdownModule,
     BrowserAnimationsModule,
     TableModule,
-    ChartModule
+    ChartModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MessagesModule,
+    MessageModule,
+
   ],
   providers: [MessageService], // Provide MessageService here
   bootstrap: [AppComponent],

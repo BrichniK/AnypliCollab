@@ -13,7 +13,8 @@ import { ReclamationComponent } from './components/reclamation/reclamation.compo
 import { UserreclamationComponent } from './components/userreclamation/userreclamation.component';
 import { DashboardComponent } from './components/dashbord/dashbord.component';
 import { AdminDashboardComponent } from './components/admindashboard/admindashboard.component';
-
+import { AuthGuard } from './components/auth.guard';
+import { EditprofileComponent } from './components/editprofile/editprofile.component';
 
 
 const routes: Routes = [
@@ -27,8 +28,9 @@ const routes: Routes = [
   { path: 'activity',component: ActivityComponent  },
   { path: 'addreclamation',component: UserreclamationComponent  },
   { path: 'reclamation',component: ReclamationComponent  },
-  { path: 'admindashbord',component: AdminDashboardComponent  },
+  { path: 'admindashbord',component: AdminDashboardComponent },
   { path: 'dashbord',component: DashboardComponent  },
+  { path: 'edit-profile', component: EditprofileComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path:'**',component:NotfoundComponent},
 ];

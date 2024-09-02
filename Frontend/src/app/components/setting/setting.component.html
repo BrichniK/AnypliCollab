@@ -1,8 +1,11 @@
 <div class="container">
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
   <h1>User Management</h1>
   
   <!-- Loader -->
-  <div *ngIf="loading" class="loader">Loading...</div>
+
   
   <!-- Users List -->
   <div *ngIf="!loading && users.length > 0">
@@ -72,8 +75,8 @@
     </ng-template>
     <ng-template pTemplate="footer">
       <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-      <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="save()"
-      
+      <button pButton pRipple label="Save" class="p-button-text" (click)="save()"
+      Save
       ></button>
     </ng-template>
   </p-dialog>

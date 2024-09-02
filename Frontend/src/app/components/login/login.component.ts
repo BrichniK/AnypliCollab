@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { StorageService } from 'src/app/services/storage.service';
-
+import { Token } from '@angular/compiler';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -34,50 +34,52 @@ export class LoginComponent implements OnInit {
       this.isLoggedIn = true;
       this.roles = this.storageService.getUser().roles;
       console.log('this.isLoggedIn', this.isLoggedIn, 'this.roles', this.roles);
+      console.log('token',Token)
     }
   }
 
   login() {
     this.formSubmitted = true;
     if (this.loginForm.invalid) {
-      return alert('Please introduce your data');
+        return alert('Please introduce your data');
     }
+
     this.s.signin(this.loginForm.value).subscribe(
-      (response: any) => {
-        // Reset any previous error message
-        this.errorMessage = '';
+        (response: any) => {
+            console.log('Full response:', response); // Log the full response
 
-        // set the token in the localStorage
-        localStorage.setItem('token', response.accessToken);
-        localStorage.setItem('role', response.roles);
-        localStorage.setItem('id', response.id);
-        localStorage.setItem('tracabiliteMap', response.tracabiliteMap);
-        localStorage.setItem('analyse', response.analyse);
-        localStorage.setItem('visualisation', response.visualisation);
-        localStorage.setItem('tracabilite', response.tracabilite);
+            // Correctly access the token and role from the response
+            const token = response.token;
+            const role = response.role; // Assuming the role is returned as a single string
+            
+            if (token) {
+                // Store the token and role in localStorage
+                localStorage.setItem('token', token);
+                localStorage.setItem('role', role); // Store the role in localStorage
+                console.log('rrrrr', role)
+                this.s.updateLoggedInState(true);
 
-        this.s.updateLoggedInState(true);
-
-        // Redirect to dashboard
-        this.router.navigateByUrl('/board/show');
-      },
-      (error: any) => {
-        console.log(error);
-        this.s.updateLoggedInState(false);
-
-        if (error.status === 401) {
-          // Show error message for invalid credentials
-          this.errorMessage = 'Invalid email or password';
-        } else if (error.status === 404) {
-          // Handle other possible errors
-          this.errorMessage = 'Cannot get data!';
-        } else {
-          this.errorMessage = 'An unexpected error occurred.';
+                // Redirect to dashboard
+                this.router.navigateByUrl('/board/show');
+            } else {
+                console.error('Token is missing in the response.');
+            }
+        },
+        (error: any) => {
+            console.log(error);
+            this.s.updateLoggedInState(false);
+            if (error.status === 401) {
+                this.errorMessage = 'Invalid email or password';
+            } else if (error.status === 404) {
+                this.errorMessage = 'Cannot get data!';
+            } else {
+                this.errorMessage = 'An unexpected error occurred.';
+            }
         }
-      }
     );
-  }
+}
 
+  
   get name() {
     return this.loginForm.get('name');
   }
