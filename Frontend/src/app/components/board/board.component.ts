@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BoardService } from 'src/app/services/boards.service';
 import { Board } from 'src/app/models/board';
 import { MessageService } from 'primeng/api';
-import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
+import { moveItemInArray, CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 
 @Component({
@@ -57,7 +57,8 @@ export class BoardComponent implements OnInit {
       'assets/images/Boards/b1.jpeg',
       'assets/images/Boards/b3.png',
       'assets/images/Boards/b5.jpeg',
-      'assets/images/Boards/b4.jpeg',
+      'assets/images/Boards/b6.jpg',
+      'assets/images/Boards/b4.jpeg'
     ];
   }
 
@@ -148,5 +149,4 @@ export class BoardComponent implements OnInit {
       });
     }
   }
-  
 }

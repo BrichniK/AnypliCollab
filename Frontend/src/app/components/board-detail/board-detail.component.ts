@@ -40,6 +40,8 @@ export class BoardDetailComponent implements OnInit {
     this.getBoardDetail();
     this.getUsers(); 
     this.getTasks(); 
+    
+  
   }
 
   getBoardDetail() {
