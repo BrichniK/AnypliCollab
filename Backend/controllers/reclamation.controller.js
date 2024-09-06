@@ -2,16 +2,25 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 
-exports.addreclamation = async (req, res) => {
+exports.addReclamation = async (req, res) => {
   try {
-    const { commentaire, dateadd, datetrait } = req.body;
+    const { commentaire, dateadd, datetrait, userId } = req.body;
+
+    // Ensure userId is provided
+    if (!userId) {
+      return res.status(400).json({
+        status: false,
+        message: "User ID is required",
+      });
+    }
 
     const newReclamation = await prisma.reclamation.create({
       data: {
         commentaire,
-        dateadd: dateadd ? new Date(dateadd) : new Date(), 
+        dateadd: dateadd ? new Date(dateadd) : new Date(),
         datetrait: datetrait ? new Date(datetrait) : undefined,
-        statut: 'WAITING',  
+        statut: 'WAITING',
+        userId, // Directly use the userId field here
       },
     });
 
@@ -29,6 +38,8 @@ exports.addreclamation = async (req, res) => {
     });
   }
 };
+
+
 
 exports.show = async (req, res) => {
   try {
@@ -155,3 +166,98 @@ exports.getReclaCount = async (req, res) => {
     await prisma.$disconnect();
   }
 };
+
+exports.showByuserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const reclamations = await prisma.reclamation.findMany({
+      where: { userId },
+    });
+
+    if (reclamations.length === 0) {
+      return res.status(404).json({
+        status: false,
+        message: `No reclamations found for user with id ${userId}`,
+      });
+    }
+
+    res.json({
+      status: true,
+      message: "Reclamations successfully fetched",
+      data: reclamations,
+    });
+  } catch (error) {
+    console.error("Error fetching reclamations:", error);
+    res.status(500).json({
+      status: false,
+      message: "Error fetching reclamations",
+      error: error.message,
+    });
+  }
+};
+
+exports.updatestatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+  
+    const currentReclamation = await prisma.reclamation.findUnique({
+      where: { id },
+    });
+
+    if (!currentReclamation) {
+      return res.status(404).json({
+        status: false,
+        message: `Reclamation with id ${id} not found`,
+      });
+    }
+
+    const updatedStatus = await prisma.reclamation.update({
+      where: { id },
+      data: {
+        statut: status || currentReclamation.statut, 
+      },
+    });
+
+    res.json({
+      status: true,
+      message: "status successfully updated",
+      data: updatedStatus,
+    });
+  } catch (error) {
+    console.error("Error updating status:", error);
+    res.status(500).json({
+      status: false,
+      message: "Error updating status",
+      error: error.message,
+    });
+  }
+};
+
+
+exports.countRecla = async (req, res) => {
+  try {
+
+    const highCount = await prisma.reclamation.count({
+      where: { status: 'TREATED' },
+    });
+
+    const lowCount = await prisma.task.count({
+      where: { status: '  WAITING' },
+    });
+
+    res.json({
+      TREATED: highCount,
+      WAITING: lowCount,
+
+    });
+  } catch (error) {
+    console.error('Error counting RECLAMATION by STATUS:', error);
+    res.status(500).json({ error: 'Failed to count RECLAMATION by STATUS' });
+  } finally {
+    await prisma.$disconnect();
+  }
+};
+
+

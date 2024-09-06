@@ -1,34 +1,30 @@
-<h1 mat-dialog-title>Edit User</h1>
-<div mat-dialog-content>
-  <form [formGroup]="editForm">
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" />
-      <mat-error *ngIf="editForm.get('name')">
-        Name is required.
-      </mat-error>
-    </mat-form-field>
+<div *ngIf="isLoading" class="loading-message">Loading...</div>
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" />
-      <mat-error *ngIf="editForm.get('email')">
-        Email is required.
-      </mat-error>
-      <mat-error *ngIf="editForm.get('email')">
-        Enter a valid email.
-      </mat-error>
-    </mat-form-field>
+<div class="edit-profile-container">
+  <div class="edit-profile-title">Edit Profile</div>
+  <form [formGroup]="editForm" class="edit-profile-form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" formControlName="name" />
+      <div *ngIf="submitted && editForm.controls['name'].invalid" class="error-message">
+        Name is required
+      </div>
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Role</mat-label>
-      <mat-select formControlName="role">
-        <mat-option *ngFor="let role of roles" [value]="role">{{ role }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" />
+      <div *ngIf="submitted && editForm.controls['email'].invalid" class="error-message">
+        Valid email is required
+      </div>
+    </div>
+
+    <div class="image-preview-container">
+      <input type="file" (change)="onFileSelected($event)" />
+      <img *ngIf="userImageUrl" [src]="userImageUrl" alt="Profile Image" />
+    </div>
+
+    <button type="submit" [disabled]="errorMessage">Save</button>
   </form>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button color="primary" (click)="onSave()">Save</button>
 </div>

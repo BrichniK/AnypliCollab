@@ -35,22 +35,19 @@ export class ReclamationComponent implements OnInit {
     });
   }
 
-  addReclamation(): void {
-    const newReclamation: Reclamation = {
-      commentaire: this.reclamationForm.value.commentaire,
-      dateadd: new Date(),
-      dateupdate: new Date(), 
-      datetrait: new Date(), 
-      statut: 'WAITING', 
-    };
-
-    this.reclamationService.addReclamation(newReclamation).subscribe(() => {
-      this.getAllReclamations();
-      this.reclamationForm.reset();
-    });
-  }
-
   editReclamation(reclamation: Reclamation): void {
+    if (reclamation.statut === 'WAITING') {
+      // Update status to 'TREATED'
+      this.reclamationService.updateStatus(reclamation.id!, 'TREATED').subscribe(response => {
+        if (response.status) {
+          // Update local list
+          this.getAllReclamations();
+        } else {
+          console.error('Failed to update status:', response.message);
+        }
+      });
+    }
+
     this.isUpdating = true;
     this.selectedReclamation = reclamation;
 
@@ -60,25 +57,5 @@ export class ReclamationComponent implements OnInit {
       dateadd: reclamation.dateadd,
       dateupdate: reclamation.dateupdate
     });
-  }
-
-  updateReclamation(): void {
-    if (this.selectedReclamation) {
-      this.selectedReclamation.commentaire = this.reclamationForm.value.commentaire;
-      this.selectedReclamation.dateupdate = new Date(); // Update dateupdate field
-
-      this.reclamationService.updateReclamation(this.selectedReclamation).subscribe(() => {
-        this.getAllReclamations();
-        this.reclamationForm.reset();
-        this.isUpdating = false;
-        this.selectedReclamation = null;
-      });
-    }
-  }
-
-  cancelUpdate(): void {
-    this.reclamationForm.reset();
-    this.isUpdating = false;
-    this.selectedReclamation = null;
   }
 }

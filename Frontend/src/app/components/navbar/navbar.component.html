@@ -4,7 +4,7 @@
     <a href="#">AnypliCollab</a>
   </div>
   <div class="navbar-menu">
-    <button (click)="toggleSidebar()">☰ Menu</button>
+    <button  (click)="toggleSidebar()">☰ Menu</button>
   </div>
   <div class="navbar-actions">
     <button class="icon-button" (click)="toggleProfileDropdown()">
@@ -12,8 +12,8 @@
     </button>
     <div class="profile-dropdown" *ngIf="isProfileDropdownOpen">
       <button class="dropdown-item" (click)="editProfile()">Edit Profile</button>
-      <button class="dropdown-item" >My Tasks</button>
-      <button class="dropdown-item" [routerLink]="['/reclamation']">Claim</button>
+      <button class="dropdown-item" (click)="openMyTasks()">My Tasks</button>
+      <button class="dropdown-item" (click)="myrecla()">Claim</button>
     </div>
     <button class="icon-button" (click)="logout()">
       <i class="fas fa-sign-out-alt"></i>

@@ -1,41 +1,29 @@
 <div class="reclamation-container">
-    <form [formGroup]="reclamationForm" (ngSubmit)="isUpdating ? updateReclamation() : addReclamation()">
-      <div class="form-group">
-        <label for="commentaire">Commentaire</label>
-        <input type="text" id="commentaire" formControlName="commentaire" class="form-control">
-      </div>
-  
-      <div class="form-group" *ngIf="isUpdating">
-        <label for="dateadd">Date Added</label>
-        <input type="text" id="dateadd" formControlName="dateadd" class="form-control" [readonly]="true">
-      </div>
-  
-      <div class="form-group" *ngIf="isUpdating">
-        <label for="dateupdate">Last Updated</label>
-        <input type="text" id="dateupdate" formControlName="dateupdate" class="form-control" [readonly]="true">
-      </div>
-  
-      <button type="submit" class="btn btn-primary">{{ isUpdating ? 'Update' : '' }} Claim</button>
-      <button *ngIf="isUpdating" type="button" class="btn btn-secondary" (click)="cancelUpdate()">Cancel</button>
-    </form>
-  
-    <hr>
-  
-    <div class="reclamation-list">
-      <h3>Reclamation List</h3>
-      <ul class="list-group">
-        <li *ngFor="let reclamation of reclamations" class="list-group-item">
-          <strong>{{ reclamation.commentaire }}</strong>
-          <br>
-          <span>Date Added: {{ reclamation.dateadd | date:'short' }}</span>
-          <br>
-          <span>Last Updated: {{ reclamation.dateupdate | date:'short' }}</span>
-          <br>
-          <span>Statut: {{ reclamation.statut }}</span>
-          <br>
-          <button class="btn btn-warning btn-sm" (click)="editReclamation(reclamation)">Edit</button>
-        </li>
-      </ul>
-    </div>
+  <hr>
+
+  <div class="reclamation-list">
+    <h3>Reclamation List</h3>
+    <ul class="list-group">
+      <li *ngFor="let reclamation of reclamations" class="list-group-item">
+        <strong>{{ reclamation.commentaire }}</strong>
+        <br>
+        <span>Date Added: {{ reclamation.dateadd | date:'short' }}</span>
+        <br>
+        <span>Last Updated: {{ reclamation.dateupdate | date:'short' }}</span>
+        <br>
+        <span>Statut: {{ reclamation.statut }}</span>
+        <br>
+        <button 
+          class="btn" 
+          [ngClass]="{
+            'btn-warning': reclamation.statut === 'WAITING',
+            'btn-success': reclamation.statut === 'TREATED'
+          }" 
+          (click)="editReclamation(reclamation)"
+        >
+          {{ reclamation.statut === 'WAITING' ? 'Treated' : 'Already Treated' }}
+        </button>
+      </li>
+    </ul>
   </div>
-  
+</div>

@@ -16,5 +16,6 @@ export class Board {
   tasks!: Task[];
   wallpaper!: string;
   users!: User[]; 
-  uploadedFileUrl?: string
+  uploadedFileUrl?: string;
+  userId?: string;
 }

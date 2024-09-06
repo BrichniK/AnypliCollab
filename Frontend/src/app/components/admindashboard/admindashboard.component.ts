@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
+import { Chart , registerables} from 'chart.js';
 import { BoardService } from 'src/app/services/boards.service';
+import { ReclamationService } from 'src/app/services/reclamation.service';
 import { TaskService } from 'src/app/services/task.service';
 import { UsersService } from 'src/app/services/users.service';
 
@@ -16,11 +17,13 @@ export class AdminDashboardComponent implements OnInit {
   activities: any[] = [];
   taskCounts: { ToDo: number, Proceeding: number, Done: number } = { ToDo: 0, Proceeding: 0, Done: 0 };
   taskCountp: { High: number, Low: number } = { High: 0, Low: 0 };
-
+  reclaCount: { WAITING: number, TREATED: number } = { WAITING: 0, TREATED: 0 };
+  chart: any;
   constructor(
     private usersService: UsersService,
     private boardService: BoardService,
-    private tasksService: TaskService
+    private tasksService: TaskService,
+    private reclaservice:ReclamationService
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +90,17 @@ export class AdminDashboardComponent implements OnInit {
       }
     );
   }
+  loadReclaCounts() {
+    this.reclaservice.countReclaByStatus().subscribe(
+      (countp: { WAITING: number, TREATED: number }) => {
+        this.reclaCount = countp;
+        this.createReclaChart(); // Create priority chart
+      },
+      (error) => {
+        console.error('Error fetching task recla counts:', error);
+      }
+    );
+  }
 
   createStatusChart() {
     const statusCtx = (document.getElementById('statusChart') as HTMLCanvasElement).getContext('2d');
@@ -114,6 +128,22 @@ export class AdminDashboardComponent implements OnInit {
           datasets: [{
             label: 'Priority',
             data: [this.taskCountp.High, this.taskCountp.Low], // Corrected data order
+            backgroundColor: ['#ff6384', '#36a2eb']
+          }]
+        }
+      });
+    }
+  }
+  createReclaChart() {
+    const reclaCtx = (document.getElementById('RECLAChart') as HTMLCanvasElement).getContext('2d');
+    if (reclaCtx) {
+      new Chart(reclaCtx, {
+        type: 'bar',
+        data: {
+          labels: ['WAITING', 'TREATED'],
+          datasets: [{
+            label: 'RECLAMATION',
+            data: [this.reclaCount.TREATED, this.reclaCount.WAITING], // Corrected data order
             backgroundColor: ['#ff6384', '#36a2eb']
           }]
         }

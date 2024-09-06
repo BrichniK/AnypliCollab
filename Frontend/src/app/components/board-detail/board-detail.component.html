@@ -2,8 +2,10 @@
   <div class="board-content">
     <h2>{{ board.name }}</h2>
 
+    <!-- Button to Show Task Form -->
     <button (click)="showTaskForm = true" class="add-task-button">+</button>
 
+    <!-- Task Form -->
     <div *ngIf="showTaskForm" class="task-form-container">
       <h3>Add New Task</h3>
       <form (ngSubmit)="addTask()">
@@ -29,6 +31,7 @@
       </form>
     </div>
 
+    <!-- Task List -->
     <div *ngIf="!showTaskForm">
       <div *ngFor="let task of board.tasks" class="task-card">
         <h3>{{ task.title }}</h3>
@@ -44,6 +47,22 @@
           <button (click)="updateTaskStatus(task)">Save</button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Document Upload Section -->
+<div class="upload-section">
+  <h3>Upload Document</h3>
+  <input type="file" (change)="onFileSelected($event)" />
+  <button (click)="uploadFile()">Upload</button>
+  <div *ngIf="uploadedFileUrl">
+    <p>Uploaded File:</p>
+    <div *ngIf="isImageFile(uploadedFileUrl)">
+      <img [src]="uploadedFileUrl" alt="Uploaded Image" />
+    </div>
+    <div *ngIf="isPdfFile(uploadedFileUrl)">
+      <a [href]="uploadedFileUrl" target="_blank">View PDF</a>
     </div>
   </div>
 </div>

@@ -58,4 +58,9 @@
   th {
     background-color: #f4f4f4;
   }
+  .chart-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
   

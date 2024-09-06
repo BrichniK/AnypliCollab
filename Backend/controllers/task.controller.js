@@ -169,6 +169,35 @@ exports.getTasksCount = async (req, res) => {
     }
   };
 
+  exports.showByuserId = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const tasks = await prisma.task.findMany({
+        where: { userId },
+      });
+  
+      if (tasks.length === 0) {
+        return res.status(404).json({
+          status: false,
+          message: `No tasks found for user with id ${userId}`,
+        });
+      }
+  
+      res.json({
+        status: true,
+        message: "tasks successfully fetched",
+        data: tasks,
+      });
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      res.status(500).json({
+        status: false,
+        message: "Error fetching tasks",
+        error: error.message,
+      });
+    }
+  };
+
 exports.countTasksByStatus = async (req, res) => {
     try {
       // Count tasks with status 'ToDo'

@@ -14,7 +14,7 @@ export class ReclamationService {
 
   }
 
-    private baseUrl = 'http://localhost:8080/reclamation/';
+    private baseUrl = 'http://localhost:8080/reclamation';
 
     addReclamation(reclamation: Reclamation): Observable<Reclamation> {
         return this.http.post<Reclamation>(`${this.baseUrl}/addreclamation`, reclamation);
@@ -38,5 +38,17 @@ export class ReclamationService {
     getReclamationById(id: String):Observable<Reclamation>{
         return this.http.get<Reclamation>(`${this.baseUrl}/showById/${id}`);
     }
+    
+    getReclamationsByUserId(userId: string): Observable<any> {
+        return this.http.get(`${this.baseUrl}/user-reclas/${userId}`);
+      }
+
+      updateStatus(id: number, status: 'WAITING' | 'TREATED'): Observable<any> {
+        return this.http.put<any>(`${this.baseUrl}/updates/${id}`, { status });
+      }
+
+      countReclaByStatus(): Observable<{ WAITING: number, TREATED: number }> {
+        return this.http.get<{ WAITING: number, TREATED: number }>(`${this.baseUrl}/recla-count`);
+      }
 
 }

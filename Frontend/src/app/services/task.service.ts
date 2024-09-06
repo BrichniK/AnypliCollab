@@ -43,6 +43,11 @@ countTasksByPriority(): Observable<{ High: number, Low: number }> {
   return this.http.get<{ High: number, Low: number }>(`${this.baseUrl}/priority-count`);
 }
 
+getUserTasks(userId: string): Observable<{ data: Task[] }> {
+  return this.http.get<{ data: Task[] }>(`${this.baseUrl}/user-tasks/${userId}`);
+}
+
+
 }
 
 

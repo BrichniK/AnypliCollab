@@ -15,9 +15,9 @@ export class LoginComponent implements OnInit {
   showPassword: boolean = false;
   isLoggedIn = false;
   isLoginFailed = false;
-  errorMessage: string = '';  // To store the error message
+  errorMessage: string = ''; 
   roles: string[] = [];
-
+  isCollab:boolean=true;
   constructor(
     private router: Router,
     private s: AuthService,
@@ -38,46 +38,50 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login() {
-    this.formSubmitted = true;
-    if (this.loginForm.invalid) {
-        return alert('Please introduce your data');
-    }
+login() {
+  this.formSubmitted = true;
+  if (this.loginForm.invalid) {
+      return alert('Please introduce your data');
+  }
 
-    this.s.signin(this.loginForm.value).subscribe(
-        (response: any) => {
-            console.log('Full response:', response); // Log the full response
+  this.s.signin(this.loginForm.value).subscribe(
+      (response: any) => {
+          console.log('Full response:', response);
 
-            // Correctly access the token and role from the response
-            const token = response.token;
-            const role = response.role; // Assuming the role is returned as a single string
-            
-            if (token) {
-                // Store the token and role in localStorage
-                localStorage.setItem('token', token);
-                localStorage.setItem('role', role); // Store the role in localStorage
-                console.log('rrrrr', role)
-                this.s.updateLoggedInState(true);
+          const token = response.token;
+          const userId = response.id;
 
-                // Redirect to dashboard
-                this.router.navigateByUrl('/board/show');
-            } else {
-                console.error('Token is missing in the response.');
-            }
-        },
-        (error: any) => {
-            console.log(error);
-            this.s.updateLoggedInState(false);
-            if (error.status === 401) {
-                this.errorMessage = 'Invalid email or password';
-            } else if (error.status === 404) {
-                this.errorMessage = 'Cannot get data!';
-            } else {
-                this.errorMessage = 'An unexpected error occurred.';
-            }
-        }
-    );
+          if (token && userId) {
+             
+              const user = { id: userId, token: token }; 
+              this.storageService.saveUser(user);
+              
+              console.log('User saved to storage:', user);
+              this.s.updateLoggedInState(true);
+     
+              this.router.navigateByUrl('/board/show');
+              
+          } else {
+              console.error('Token or UserId is missing in the response.');
+          }
+      },
+      (error: any) => {
+          console.log(error);
+          this.s.updateLoggedInState(false);
+          if (error.status === 401) {
+              this.errorMessage = 'Invalid email or password';
+          } else if (error.status === 404) {
+              this.errorMessage = 'Cannot get data!';
+          } else {
+              this.errorMessage = 'An unexpected error occurred.';
+          }
+      }
+  );
 }
+
+
+
+
 
   
   get name() {
@@ -88,7 +92,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
-  // Toggle password visibility
+
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     const passwordInput = document.querySelector('input[name="password"]');

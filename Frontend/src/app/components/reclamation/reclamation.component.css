@@ -20,6 +20,12 @@
     font-weight: bold;
     margin-bottom: 5px;
   }
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+  }
+  
   
   .form-control {
     width: 100%;

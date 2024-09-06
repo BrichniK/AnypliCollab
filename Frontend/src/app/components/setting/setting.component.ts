@@ -4,6 +4,7 @@ import { User,Role } from 'src/app/models/user';
 import { settingService } from 'src/app/services/setting.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { NgModel } from '@angular/forms';
 declare const require: any;
 const jsPDF = require('jspdf');
 require('jspdf-autotable');
@@ -41,7 +42,7 @@ export class SettingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isAdmin = this.authService.isAdmin();
+ 
       this.getAll();
       
       this.registerForm = new FormGroup({

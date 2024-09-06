@@ -70,5 +70,9 @@ getTotalBoards(): Observable<number> {
     .pipe(map(response => response.totalBoards));
 }
 
+getBoardsByUserId(userId: string): Observable<any> {
+  return this.http.get(`${this.baseUrl}/user-boards/${userId}`);
+}
+
 
 }

@@ -41,7 +41,7 @@
   </div>
   
   <!-- Dialog for Updating User -->
-  <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="User Details" [modal]="true" class="p-fluid">
+  <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="User Details">
     <ng-template pTemplate="content">
       <img
         [src]="'../../../assets/images/Avatars/' + user.imageURL"
@@ -72,12 +72,10 @@
         <input type="file" (change)="onFileSelected($event)" />
         <div *ngIf="submitted && !user.imageURL" class="p-error">Image is required.</div>
       </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-      <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-      <button pButton pRipple label="Save" class="p-button-text" (click)="save()"
-      Save
-      ></button>
+   
+
+      <button pButton pRipple label="Cancel"  (click)="hideDialog()"></button>
+      <button pButton pRipple label="Save" (click)="save()"Save></button>
     </ng-template>
   </p-dialog>
 </div>

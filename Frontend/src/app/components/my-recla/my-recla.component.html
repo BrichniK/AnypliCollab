@@ -1,0 +1,43 @@
+<div class="reclamations-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="spinner-overlay">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Reclamations List -->
+  <div *ngIf="!isLoading && reclamations.length > 0; else noReclamations">
+    <h3>Your Reclamations</h3>
+    <div class="reclamations-list">
+      <div class="reclamation-item" *ngFor="let reclamation of reclamations">
+        <div class="reclamation-header">
+          <p class="date">{{ reclamation.dateadd | date:'short' }}</p>
+          <span class="status">{{ reclamation.statut }}</span>
+        </div>
+        <p class="commentaire">{{ reclamation.commentaire }}</p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noReclamations>
+    <p class="no-reclamations-message">No reclamations to treat.</p>
+  </ng-template>
+
+  <!-- Add Reclamation Button and Form -->
+  <div class="add-reclamation">
+    <button (click)="showReclamationForm = !showReclamationForm" class="add-task-button">+</button>
+    <div *ngIf="showReclamationForm" class="reclamation-form-container">
+      <form [formGroup]="reclamationForm" (ngSubmit)="addReclamation()">
+        <label for="commentaire">Commentaire:</label>
+        <input id="commentaire" formControlName="commentaire" required />
+
+        <button type="submit" [disabled]="reclamationForm.invalid">Add Reclamation</button>
+      </form>
+    </div>
+  </div>
+</div>

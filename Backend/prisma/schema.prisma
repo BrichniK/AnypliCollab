@@ -37,7 +37,8 @@ model User {
   role     Role     @default(COLLAB)
   activities Activity[] 
   boardUsers BoardUser[]
-  tasks    Task[]   @relation("UserTasks")  // Add this line
+  tasks    Task[]   @relation("UserTasks")
+  reclas    Reclamation[]   @relation("UserRecla") 
 }
 
 model Task {
@@ -94,6 +95,8 @@ enum Statusrecla {
     dateupdate DateTime?
     datetrait DateTime?
     statut Statusrecla
+    userId      String   @db.ObjectId
+    user        User     @relation("UserRecla", fields: [userId], references: [id], onDelete: Cascade)
   }
 
  

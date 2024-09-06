@@ -14,6 +14,7 @@
         <p>{{ totalBoards }}</p>
       </div>
 
+
    
       <div class="stat-card">
         <h2>Tasks - To Do</h2>
@@ -29,6 +30,7 @@
       </div>
     </section>
 
+
     <section class="charts-section">
       <div class="chart">
         <h3>Task Status</h3>
@@ -38,26 +40,10 @@
         <h3>Priority Distribution</h3>
         <canvas id="priorityChart"></canvas>
       </div>
+      <div class="chart-container">
+        <canvas id="reclamationChart"></canvas>
+      </div>
     </section>
 
-    <!-- <section class="table-section">
-      <h3>Recent Activities</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Activity</th>
-            <th>Date</th>
-            <th>User</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let activity of activities">
-            <td>{{ activity.description }}</td>
-            <td>{{ activity.date | date:'short' }}</td>
-            <td>{{ activity.user }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </section> -->
   </main>
 </div>

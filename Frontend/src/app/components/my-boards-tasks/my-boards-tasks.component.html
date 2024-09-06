@@ -1,0 +1,26 @@
+<p>my-boards-tasks works!</p>
+<div *ngIf="isLoading">Loading...</div>
+
+<div *ngIf="!isLoading && errorMessage">
+  <p>{{ errorMessage }}</p>
+</div>
+
+<div *ngIf="!isLoading && boards.length > 0">
+  <div *ngFor="let board of boards">
+    <h3>{{ board.name }}</h3>
+    <img [src]="board.wallpaper" alt="Board Wallpaper" *ngIf="board.wallpaper">
+    <ul>
+      <li *ngFor="let task of board.tasks">
+        <h4>{{ task.title }}</h4>
+        <p>{{ task.description }}</p>
+        <p>Status: {{ task.status }}</p>
+        <p>Deadline: {{ task.deadline | date }}</p>
+        <p>Priority: {{ task.priority }}</p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div *ngIf="!isLoading && boards.length === 0">
+  <p>No boards and tasks assigned to you.</p>
+</div>

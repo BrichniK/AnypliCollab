@@ -10,11 +10,14 @@ import { BoardDetailComponent } from './components/board-detail/board-detail.com
 import { SettingsComponent } from './components/setting/setting.component';
 import { ActivityComponent } from './components/activity/activity.component';
 import { ReclamationComponent } from './components/reclamation/reclamation.component';
-import { UserreclamationComponent } from './components/userreclamation/userreclamation.component';
+// import { UserreclamationComponent } from './components/userreclamation/userreclamation.component';
 import { DashboardComponent } from './components/dashbord/dashbord.component';
 import { AdminDashboardComponent } from './components/admindashboard/admindashboard.component';
 import { AuthGuard } from './components/auth.guard';
 import { EditprofileComponent } from './components/editprofile/editprofile.component';
+import { MyReclaComponent } from './components/my-recla/my-recla.component';
+import { MyBoardsTasksComponent } from './components/my-boards-tasks/my-boards-tasks.component';
+import { MyBoardsComponent } from './components/my-boards/my-boards.component';
 
 
 const routes: Routes = [
@@ -26,11 +29,13 @@ const routes: Routes = [
   { path: 'board/showById/:id', component: BoardDetailComponent },
   { path: 'user/show', component: SettingsComponent },
   { path: 'activity',component: ActivityComponent  },
-  { path: 'addreclamation',component: UserreclamationComponent  },
-  { path: 'reclamation',component: ReclamationComponent  },
+  // { path: 'addreclamation',component: UserreclamationComponent  },
+  { path: 'reclamation/show',component: ReclamationComponent  },
   { path: 'admindashbord',component: AdminDashboardComponent },
   { path: 'dashbord',component: DashboardComponent  },
-  { path: 'edit-profile', component: EditprofileComponent },
+  { path: 'user/showById/:id', component: EditprofileComponent },
+  { path: 'reclamation/user-reclas', component: MyReclaComponent },
+  { path: 'board/user-boards', component: MyBoardsComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path:'**',component:NotfoundComponent},
 ];

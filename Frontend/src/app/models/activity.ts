@@ -1,6 +1,6 @@
 import { User } from "./user";
 export interface Activity {
-    id: number;
+    id: string;
     userId: number;
     description: string;
     date: Date;

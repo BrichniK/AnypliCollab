@@ -38,12 +38,14 @@ export class ActivityComponent implements OnInit {
 
   loadUserNames() {
     this.activities.forEach((activity) => {
-      this.userService.getUserById(activity.userId).subscribe(
-        (user: User) => {
+      const userIdString = activity.userId.toString(); // Convert userId to string
+      this.userService.getUserById(userIdString).subscribe(
+        (response) => {
+          const user: User = response.data; // Extract the user from the response
           activity.user = user; // Attach the user object to the activity
         },
         (error) => {
-          console.error(`Error loading user with ID ${activity.userId}:`, error);
+          console.error(`Error loading user with ID ${userIdString}:`, error);
         }
       );
     });

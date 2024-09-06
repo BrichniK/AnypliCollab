@@ -1,15 +1,24 @@
 <div class="sidebar" [class.open]="isOpen">
-    <ul>
-      <li>
+  
+  <ul>
+    <button class="dropdown-item" (click)="openMyTasks()">My Tasks</button>
+      
+    <li *ngIf="isAdmin">
         <a [routerLink]="['/admindashbord']" class="view-activities-button">Dashboard</a></li>
-      <li>
+      <li *ngIf="isAdmin">
       <a [routerLink]="['/board/show']" class="view-activities-button">Boards</a>
-    </li>
-  <li>
-      <a [routerLink]="['/activity']" class="view-activities-button">Activity Log</a>
-    </li>
-  <li >
+      </li>
+      <li *ngIf="isManager">
+        <a [routerLink]="['/board/show']" class="view-activities-button">Boards</a>
+      </li>
+    <li *ngIf="isAdmin">
+        <a [routerLink]="['/activity']" class="view-activities-button">Activity Log</a>
+      </li>
+  <li *ngIf="isAdmin">
       <a [routerLink]="['/user/show']" class="view-activities-button">Settings</a>
+    </li>
+    <li *ngIf="isAdmin">
+      <a [routerLink]="['/reclamation/show']" class="view-activities-button">Reclamations</a>
     </li>
     </ul>
   </div>

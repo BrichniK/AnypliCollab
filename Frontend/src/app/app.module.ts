@@ -25,7 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditprofileComponent } from './components/editprofile/editprofile.component';
 import { ReclamationComponent } from './components/reclamation/reclamation.component';
-import { UserreclamationComponent } from './components/userreclamation/userreclamation.component';
+
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
 import { AdminDashboardComponent } from './components/admindashboard/admindashboard.component';
@@ -36,6 +36,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core'; 
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { MyReclaComponent } from './components/my-recla/my-recla.component';
+import { MyBoardsTasksComponent } from './components/my-boards-tasks/my-boards-tasks.component';
+import { MyBoardsComponent } from './components/my-boards/my-boards.component';
+import { NoTaskComponent } from './components/no-task/no-task.component';
 
 @NgModule({
   declarations: [
@@ -54,9 +58,13 @@ import { MessageModule } from 'primeng/message';
     ProfileComponent,
     EditprofileComponent,
     ReclamationComponent,
-    UserreclamationComponent,
+  
     // AdminDashboardComponent
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    MyReclaComponent,
+    MyBoardsTasksComponent,
+    MyBoardsComponent,
+    NoTaskComponent
 
 
   
@@ -83,7 +91,7 @@ import { MessageModule } from 'primeng/message';
     MessageModule,
 
   ],
-  providers: [MessageService], // Provide MessageService here
+  providers: [MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

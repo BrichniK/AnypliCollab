@@ -5,5 +5,6 @@ export class Reclamation {
   statut!:'WAITING' | 'TREATED';  
   dateupdate!:Date;
   datetrait!:Date;
+  userId?: string
   
 }

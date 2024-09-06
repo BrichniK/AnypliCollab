@@ -28,6 +28,10 @@ export class AuthService {
                 } else {
                     console.log('Token not found in response'); // Log if token is not found
                 }
+                const role = response.role;
+                console.log(role)
+                this.setRole(role);
+                
             })
         );
     }
@@ -51,6 +55,9 @@ export class AuthService {
 
     public setToken(token: string): void {
         localStorage.setItem('token', token);
+      }
+      public setRole(role: string): void {
+        localStorage.setItem('role', role);
       }
 
       public getToken(): string | null {
@@ -130,16 +137,17 @@ export class AuthService {
         }
         return false;
     }
+
       
       public isCollab(): boolean {
         const userRole = this.getRole();
-        return userRole === 'COLLAB';
+        return userRole === 'COLLAB'?true:false;
       }
 
 
       public isManager(): boolean {
         const userRole = this.getRole();
-        return userRole === 'MANAGER';
+        return userRole === 'MANAGER'?true:false;
       }
       
 

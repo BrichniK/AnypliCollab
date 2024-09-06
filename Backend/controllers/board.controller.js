@@ -227,3 +227,51 @@ exports.getURL = async (req, res) => {
   }
 };
 
+exports.showBoardsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Fetch boards where the user has tasks
+    const boards = await prisma.board.findMany({
+      where: {
+        tasks: {
+          some: {
+            userId: userId, // Match tasks with the given userId
+          },
+        },
+      },
+      include: {
+        tasks: {
+          where: {
+            userId: userId, // Only include tasks for the specific user
+          },
+        },
+        users: true, // Include users associated with the board if needed
+      },
+    });
+
+    if (boards.length === 0) {
+      return res.status(404).json({
+        status: false,
+        message: `No boards found for user with id ${userId}`,
+      });
+    }
+
+    res.json({
+      status: true,
+      message: "Boards successfully fetched",
+      data: boards,
+    });
+  } catch (error) {
+    console.error("Error fetching boards:", error);
+    res.status(500).json({
+      status: false,
+      message: "Error fetching boards",
+      error: error.message,
+    });
+  }
+};
+
+
+
+

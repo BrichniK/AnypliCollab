@@ -17,8 +17,14 @@ export class UsersService {
     return this.http.get<{ totalUsers: number }>(`${this.apiUrl}/dashboard/total-users`)
       .pipe(map(response => response.totalUsers));
   }
-  getUserById(userId: number): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${userId}`);
+
+  getUserById(userId: string): Observable<{ data: User }> {
+    return this.http.get<{ data: User }>(`${this.apiUrl}/showById/${userId}`);
+  }
+  
+
+  updateUser(id: string, user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/edit-profile/${id}`, user);
   }
 
   

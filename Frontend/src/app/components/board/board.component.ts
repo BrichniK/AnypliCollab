@@ -4,6 +4,8 @@ import { Board } from 'src/app/models/board';
 import { MessageService } from 'primeng/api';
 import { moveItemInArray, CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-board',
@@ -23,11 +25,15 @@ export class BoardComponent implements OnInit {
     private boardService: BoardService,
     private messageService: MessageService,
     private router: Router,
+    private authservice : AuthService,
+    private storageService : StorageService
   ) {}
 
   ngOnInit(): void {
+    
     this.getAll();
     this.loadWallpapers();
+  
   }
 
   getAll() {
@@ -68,7 +74,10 @@ export class BoardComponent implements OnInit {
 
   addBoard() {
     this.submitted = true;
-
+  
+    // Retrieve the stored user
+    const storedUser = this.storageService.getUser();
+  
     if (!this.board.name || !this.board.wallpaper) {
       this.messageService.add({
         severity: 'error',
@@ -78,9 +87,12 @@ export class BoardComponent implements OnInit {
       });
       return;
     }
-
+  
     this.loading = true;
-
+  
+    // Add the userId to the board object
+    this.board.userId = storedUser.id;
+  
     this.boardService.addBoard(this.board).subscribe(
       (res) => {
         this.boards.push(res);
@@ -109,7 +121,7 @@ export class BoardComponent implements OnInit {
       }
     );
   }
-
+  
   drop(event: CdkDragDrop<Board[]>) {
     moveItemInArray(this.boards, event.previousIndex, event.currentIndex);
   }
@@ -149,4 +161,5 @@ export class BoardComponent implements OnInit {
       });
     }
   }
+
 }

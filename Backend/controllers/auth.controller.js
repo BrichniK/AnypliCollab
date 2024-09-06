@@ -62,7 +62,7 @@ require('dotenv').config();
       });
       console.log(`User ID: ${user.id}`);
       // console.log ('rrrrr',token)
-      return res.status(200).json({ token, id: user.id });
+      return res.status(200).json({ token, id: user.id ,role:user.role});
     } catch (err) {
       console.error(err.message);
       return res.status(500).json({ error: 'Internal server error' });

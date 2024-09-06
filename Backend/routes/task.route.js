@@ -12,5 +12,6 @@ router.delete('/delete/:taskid', taskController.delete);
 router.get('/dashboard/total-tasks', taskController.getTasksCount);
 router.get('/status-count', taskController.countTasksByStatus);
 router.get('/priority-count', taskController.countTasksByPriority);
+router.get('/user-tasks/:userId', taskController.showByuserId);
 
 module.exports = router;
