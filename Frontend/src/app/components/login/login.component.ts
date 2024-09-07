@@ -59,7 +59,7 @@ login() {
               console.log('User saved to storage:', user);
               this.s.updateLoggedInState(true);
      
-              this.router.navigateByUrl('/board/show');
+              this.router.navigateByUrl('/landingpage');
               
           } else {
               console.error('Token or UserId is missing in the response.');

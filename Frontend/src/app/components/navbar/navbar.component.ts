@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef, HostListener, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { SidebarService } from 'src/app/services/sidebar.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { TaskService } from 'src/app/services/task.service';  
 import { StorageService } from 'src/app/services/storage.service';
 import { BoardService } from 'src/app/services/boards.service';
-import { ChangeDetectorRef, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +17,7 @@ import { ChangeDetectorRef, HostListener } from '@angular/core';
 export class NavbarComponent implements OnInit, AfterViewInit {
   @Input() isCollab: boolean = true;
   isProfileDropdownOpen = false;
+  isSidebarOpen = false;
   tasks: any[] = [];  
   boards: any[] = [];  
   isLoading: boolean = true; 
@@ -32,8 +32,12 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private storageService: StorageService,
     private boardService: BoardService,
-    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef
+  ) {
+    this.sidebarService.sidebarState$.subscribe(state => {
+      this.isSidebarOpen = state;
+    });
+  }
 
   ngOnInit(): void {
     console.log('isCollab on init:', this.isCollab);
@@ -43,23 +47,19 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     console.log('isCollab after view init:', this.isCollab);
   }
 
-  // Method to toggle isCollab dynamically
   toggleCollabStatus(status: boolean) {
     this.isCollab = status;
-    this.cdr.detectChanges(); // Trigger change detection manually
+    this.cdr.detectChanges();
   }
 
   toggleSidebar() {
-    const admin = this.authService.isAdmin();
-    const manager = this.authService.isManager();
-   
-      this.sidebarService.toggleSidebar();
-    
+    this.isSidebarOpen = !this.isSidebarOpen;
+    this.sidebarService.toggleSidebar();
   }
 
   logout() {
-    this.router.navigate(['/login']);
     this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   toggleProfileDropdown() {
@@ -113,6 +113,16 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   @HostListener('document:click', ['$event'])
   onClickOutside(event: Event) {
     const target = event.target as HTMLElement;
+    const sidebar = document.querySelector('.sidebar');
+    const menuButton = document.querySelector('.navbar-menu button');
+
+    
+    if (this.isSidebarOpen && !sidebar?.contains(target) && !menuButton?.contains(target)) {
+      this.isSidebarOpen = false;
+      this.sidebarService.toggleSidebar(); 
+    }
+
+   
     if (!target.closest('.navbar-actions')) {
       this.isProfileDropdownOpen = false;
     }

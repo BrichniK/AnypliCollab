@@ -18,6 +18,7 @@ import { EditprofileComponent } from './components/editprofile/editprofile.compo
 import { MyReclaComponent } from './components/my-recla/my-recla.component';
 import { MyBoardsTasksComponent } from './components/my-boards-tasks/my-boards-tasks.component';
 import { MyBoardsComponent } from './components/my-boards/my-boards.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 
 const routes: Routes = [
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: 'user/showById/:id', component: EditprofileComponent },
   { path: 'reclamation/user-reclas', component: MyReclaComponent },
   { path: 'board/user-boards', component: MyBoardsComponent },
+  { path: 'landingpage', component: LandingPageComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {path:'**',component:NotfoundComponent},
 ];

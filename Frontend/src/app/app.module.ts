@@ -40,6 +40,7 @@ import { MyReclaComponent } from './components/my-recla/my-recla.component';
 import { MyBoardsTasksComponent } from './components/my-boards-tasks/my-boards-tasks.component';
 import { MyBoardsComponent } from './components/my-boards/my-boards.component';
 import { NoTaskComponent } from './components/no-task/no-task.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { NoTaskComponent } from './components/no-task/no-task.component';
     MyReclaComponent,
     MyBoardsTasksComponent,
     MyBoardsComponent,
-    NoTaskComponent
+    NoTaskComponent,
+    LandingPageComponent
 
 
   
