@@ -51,6 +51,7 @@ export class SettingsComponent implements OnInit {
           role: new FormControl(Role.COLLAB, [Validators.required]),
           active: new FormControl(true),
       });
+    
   }
 
   getAll() {
@@ -97,55 +98,81 @@ export class SettingsComponent implements OnInit {
 
   save() {
     this.submitted = true;
-
+  
     if (!this.user.name || !this.user.email || !this.user.password) {
-        this.messageService.add({
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Name, Email, and Password are required.',
+        life: 3000,
+      });
+      return;
+    }
+  
+    this.loading = true;
+  
+    if (this.user.id) {
+      this.settingService.updateUser(this.user).subscribe(
+        () => {
+          // Refresh the list of users
+          this.getAll();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'User Updated',
+            life: 3000,
+          });
+  
+          // Close the dialog and reset the form
+          this.userDialog = false;
+          this.loading = false;
+          this.submitted = false;
+        },
+        (error) => {
+          console.error(error);
+          this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Name, Email, and Password are required.',
+            detail: 'Failed to update User',
             life: 3000,
-        });
-        return;
+          });
+          this.loading = false;
+          this.submitted = false;
+        }
+      );
+    } else {
+      // For adding a new user if applicable
+      this.settingService.addUser(this.user).subscribe(
+        () => {
+          // Refresh the list of users
+          this.getAll();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'User Added',
+            life: 3000,
+          });
+  
+          // Close the dialog and reset the form
+          this.userDialog = false;
+          this.loading = false;
+          this.submitted = false;
+        },
+        (error) => {
+          console.error(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to add User',
+            life: 3000,
+          });
+          this.loading = false;
+          this.submitted = false;
+        }
+      );
     }
-
-    this.loading = true;
-
-    if (this.user.id) {
-        this.settingService.updateUser(this.user).subscribe(
-            (updatedUser) => {
-                const index = this.findIndexById(this.user.id);
-                if (index !== -1) {
-                    // Update the user in the local array
-                    this.users[index] = updatedUser;
-                }
-
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'User Updated',
-                    life: 3000,
-                });
-
-                // Update the UI
-                this.users = [...this.users];
-                this.userDialog = false;
-                this.loading = false;
-                this.submitted = false;
-            },
-            (error) => {
-                console.error(error);
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Failed to update User',
-                    life: 3000,
-                });
-                this.loading = false;
-                this.submitted = false;
-            }
-        );
-    }
-}
+  }
+  
 
 
   

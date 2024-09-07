@@ -24,7 +24,7 @@ removeUser(id: String): Observable<void> {
 }
 
 updateUser(user: User): Observable<User> {
-  return this.http.put<User>(`${this.baseUrl}/update/${user.id}`, user);
+  return this.http.put<User>(`${this.baseUrl}/edit-profile/${user.id}`, user);
 }
 
 }

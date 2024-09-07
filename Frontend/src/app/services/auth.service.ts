@@ -53,7 +53,7 @@ export class AuthService {
 
   public getToken(): string | null {
     const token = localStorage.getItem('token');
-    console.log('Retrieved token:', token); // Debug log to check token value
+    console.log('Retrieved token:', token); 
     return token;
   }
 

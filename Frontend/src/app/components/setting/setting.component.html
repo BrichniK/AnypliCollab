@@ -1,81 +1,70 @@
-<div class="container">
-  <div *ngIf="loading" class="loading-spinner">
-    <div class="spinner"></div>
-  </div>
-  <h1>User Management</h1>
-  
-  <!-- Loader -->
-
-  
-  <!-- Users List -->
-  <div *ngIf="!loading && users.length > 0">
-    <table class="user-table">
-      <thead>
+<div class="user-management p-grid">
+  <!-- User List - Only visible when the dialog is not open -->
+  <div class="user-list p-col-12" *ngIf="!userDialog">
+    <p-table [value]="users" [(selection)]="selectedUsers" [paginator]="true" [rows]="10" [loading]="loading" class="custom-table">
+      <ng-template pTemplate="header">
         <tr>
-          <th>Name</th>
-          <th>Email</th>
+          <th>Profile Picture</th>
+          <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
           <th>Role</th>
           <th>Actions</th>
         </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users">
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr [pSelectableRow]="user">
+          <td>
+            <img
+            [src]="'../../../assets/images/Avatars/' + user.imageURL"
+            [alt]="user.imageURL"
+            width="150"
+            class="mt-0 mx-auto mb-5 block shadow-2"
+            (error)="onImageError($event)"
+          />          </td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.role }}</td>
           <td>
-            <!-- Edit Button: Opens the dialog for editing -->
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)"> Edit</button>
-            
-            <!-- Delete Button: Opens the confirmation dialog for deleting -->
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteUser(user)"> Delete </button>
+            <button pButton type="button" class="simple-btn edit-btn" (click)="editUser(user)">Edit</button>
+            <button pButton type="button" class="simple-btn delete-btn" (click)="deleteUser(user)">Delete</button>
           </td>
         </tr>
-      </tbody>
-    </table>
+      </ng-template>
+    </p-table>
   </div>
   
-  <!-- No Users Message -->
-  <div *ngIf="!loading && users.length === 0" class="no-users">
-    <p>No users found.</p>
-  </div>
-  
-  <!-- Dialog for Updating User -->
-  <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="User Details">
-    <ng-template pTemplate="content">
-      <img
-        [src]="'../../../assets/images/Avatars/' + user.imageURL"
-        [alt]="user.imageURL"
-        width="150"
-        class="mt-0 mx-auto mb-5 block shadow-2"
-        (error)="onImageError($event)"
-      />
-      <div class="field">
-        <label for="name">Name</label>
-        <input type="text" pInputText id="name" [(ngModel)]="user.name" required/>
-        <div *ngIf="submitted && !user.name" class="p-error">Name is required.</div>
-      </div>
-      <div class="field">
-        <label for="email">Email</label>
-        <textarea id="email" pInputTextarea [(ngModel)]="user.email" rows="3" cols="20" required></textarea>
-        <div *ngIf="submitted && !user.email" class="p-error">Email is required.</div>
-      </div>
-      <div class="formgrid grid">
-        <div class="field">
-          <label for="password">Password</label>
-          <input type="password" pInputText id="password" [(ngModel)]="user.password" required />
-          <div *ngIf="submitted && !user.password" class="p-error">Password is required.</div>
+  <!-- Dialog for Adding/Editing Users -->
+  <p-dialog header="User Details" [(visible)]="userDialog" [modal]="true" [closable]="false" [style]="{ width: '450px' }" class="custom-dialog">
+    <form [formGroup]="registerForm">
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="name">Name</label>
+          <input id="name" pInputText formControlName="name" [(ngModel)]="user.name" class="input-field"/>
+        </div>
+
+        <div class="p-field">
+          <label for="email">Email</label>
+          <input id="email" pInputText formControlName="email" [(ngModel)]="user.email" class="input-field"/>
+        </div>
+
+        <div class="p-field">
+          <label for="role">Role</label>
+          <select id="role" formControlName="role" [(ngModel)]="user.role" class="input-field">
+            <option value="MANAGER">MANAGER</option>
+            <option value="COLLAB">COLLAB</option>
+          </select>
+        </div>
+
+        <div class="p-field">
+          <label for="image">Profile Image</label>
+          <input type="file" (change)="onFileSelected($event)" class="input-file"/>
         </div>
       </div>
-      <div class="field">
-        <label for="image">Image</label>
-        <input type="file" (change)="onFileSelected($event)" />
-        <div *ngIf="submitted && !user.imageURL" class="p-error">Image is required.</div>
-      </div>
-   
+    </form>
 
-      <button pButton pRipple label="Cancel"  (click)="hideDialog()"></button>
-      <button pButton pRipple label="Save" (click)="save()"Save></button>
-    </ng-template>
+    <p-footer>
+      <button pButton label="Cancel" icon="pi pi-times" (click)="hideDialog()" class="cancel-btn">Cancel</button>
+      <button pButton label="Save" icon="pi pi-check" (click)="save()" [disabled]="!registerForm.valid" class="save-btn">Save</button>
+    </p-footer>
   </p-dialog>
 </div>

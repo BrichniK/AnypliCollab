@@ -32,7 +32,7 @@ const routes: Routes = [
   { path: 'activity',component: ActivityComponent  },
   // { path: 'addreclamation',component: UserreclamationComponent  },
   { path: 'reclamation/show',component: ReclamationComponent  },
-  { path: 'admindashbord',component: AdminDashboardComponent },
+  { path: 'admindashboard',component: AdminDashboardComponent },
   { path: 'dashbord',component: DashboardComponent  },
   { path: 'user/showById/:id', component: EditprofileComponent },
   { path: 'reclamation/user-reclas', component: MyReclaComponent },

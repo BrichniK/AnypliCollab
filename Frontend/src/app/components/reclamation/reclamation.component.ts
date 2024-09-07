@@ -58,4 +58,5 @@ export class ReclamationComponent implements OnInit {
       dateupdate: reclamation.dateupdate
     });
   }
+  
 }

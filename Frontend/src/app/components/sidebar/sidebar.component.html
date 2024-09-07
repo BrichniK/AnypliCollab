@@ -1,13 +1,13 @@
 <div class="sidebar" [class.open]="isOpen">
   <ul>
     
-    <li *ngIf="!isManager">
+    <li *ngIf="!isManager && !isAdmin">
 
     <a [routerLink]="['/board/user-boards']" class="view-activities-button">
       My Tasks </a>
     </li>
 
-    <!-- Admin-only links -->
+   
     <li *ngIf="isAdmin">
       <a [routerLink]="['/admindashboard']" class="view-activities-button">Dashboard</a>
     </li>
