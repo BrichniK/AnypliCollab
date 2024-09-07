@@ -16,6 +16,32 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+.simple-btn {
+  background-color: #007bff; /* Primary color */
+  color: #fff; /* Text color */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.simple-btn:hover {
+  background-color: #0056b3; /* Darker shade for hover */
+}
+
+.simple-btn:focus {
+  outline: none;
+}
+
+.simple-btn.cancel {
+  background-color: #6c757d; /* Secondary color for cancel */
+}
+
+.simple-btn.cancel:hover {
+  background-color: #5a6268; /* Darker shade for hover */
+}
+
 
 .add-board-button:hover {
   background-color: #0056b3; 

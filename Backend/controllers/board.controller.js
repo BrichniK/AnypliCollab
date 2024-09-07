@@ -1,20 +1,34 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-exports.add = async (req, res) => {
+exports.addBoard = async (req, res) => {
+  const { name, wallpaper, userId } = req.body;
+
   try {
+    // Create the board and associated activity
     const newBoard = await prisma.board.create({
       data: {
-        name: req.body.name,
-        wallpaper: req.body.wallpaper
+        name,
+        wallpaper,
+        activities: {
+          create: {
+            userId,  // Pass the userId from the request
+            description: `Added board : ${name} `,
+            date: new Date(),
+          },
+        },
       },
     });
+
     res.json(newBoard);
   } catch (error) {
-    console.error(error); 
+    console.error('Error creating board:', error);
     res.status(500).json({ error: 'Error creating board', details: error.message });
   }
 };
+
+
+
 
 
 exports.show = async function getBoards(req, res) {

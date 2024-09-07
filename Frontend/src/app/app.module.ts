@@ -18,7 +18,7 @@ import { BoardDetailComponent } from './components/board-detail/board-detail.com
 import { ActivityComponent } from './components/activity/activity.component';
 import { SettingsComponent } from './components/setting/setting.component';
 import { BoardComponent } from './components/board/board.component';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -93,7 +93,10 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     MessageModule,
 
   ],
-  providers: [MessageService],
+  providers: [MessageService,
+              ConfirmationService
+
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -16,4 +16,7 @@ export class ActivityService {
   getAllAct(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/show`);
   }
+  addActivity(activity: Activity): Observable<Activity> {
+    return this.http.post<Activity>(`${this.baseUrl}/addactivity`, activity);
+}
 }

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardService } from 'src/app/services/boards.service';
 import { Board } from 'src/app/models/board';
-import { MessageService } from 'primeng/api';
-import { moveItemInArray, CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Activity } from 'src/app/models/activity';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { ActivityService } from 'src/app/services/activity.service';
 
 @Component({
   selector: 'app-board',
@@ -18,22 +20,29 @@ export class BoardComponent implements OnInit {
   loading: boolean = true;
   board: Board = new Board();
   boardDialog: boolean = false;
-  submitted: boolean = false;
+  confirmationVisible: boolean = false;  // Track the visibility of the confirmation dialog
+  selectedBoardId: string | null = null;  // Store the ID of the board to be deleted
   wallpapers: string[] = [];
-
+  isManager = false;
+  submitted: boolean = false;
   constructor(
     private boardService: BoardService,
     private messageService: MessageService,
     private router: Router,
-    private authservice : AuthService,
-    private storageService : StorageService
+    private authService: AuthService,
+    private storageService: StorageService,
+    private activityService: ActivityService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
-    
     this.getAll();
     this.loadWallpapers();
-  
+    this.authService.isAuthenticated().subscribe(isAuthenticated => {
+      if (isAuthenticated) {
+        this.isManager = this.authService.isManager();
+      }
+    });
   }
 
   getAll() {
@@ -76,8 +85,21 @@ export class BoardComponent implements OnInit {
     this.submitted = true;
   
     // Retrieve the stored user
-    const storedUser = this.storageService.getUser();
+    const user = this.storageService.getUser();
   
+    if (!user || !user.id) {
+      console.error('User ID not found');
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'User ID not found.',
+        life: 3000,
+      });
+      this.submitted = false;
+      return;
+    }
+  
+    // Ensure board name and wallpaper are provided
     if (!this.board.name || !this.board.wallpaper) {
       this.messageService.add({
         severity: 'error',
@@ -85,31 +107,53 @@ export class BoardComponent implements OnInit {
         detail: 'Board name and wallpaper are required.',
         life: 3000,
       });
+      this.submitted = false;
       return;
     }
   
     this.loading = true;
   
     // Add the userId to the board object
-    this.board.userId = storedUser.id;
+    this.board.userId = user.id;
   
     this.boardService.addBoard(this.board).subscribe(
-      (res) => {
-        this.boards.push(res);
+      (newBoard) => {
+        // Success message and updating boards list
+        this.boards.push(newBoard);
         this.messageService.add({
           severity: 'success',
           summary: 'Successful',
           detail: 'Board Created',
           life: 3000,
         });
-        this.boards = [...this.boards];
+  
+        // Create activity for the new board
+        const activity: Activity = {
+          id: '',
+          userId: user.id,
+          boardId: newBoard.id,
+          description: `Board ${newBoard.name} created`,
+          date: new Date(),
+        };
+  
+        this.activityService.addActivity(activity).subscribe(
+          (newActivity) => {
+            console.log('Activity created successfully:', newActivity);
+          },
+          (error) => {
+            console.error('Error creating activity:', error);
+          }
+        );
+  
+        // Reset and close the dialog
         this.board = new Board();
         this.loading = false;
         this.boardDialog = false;
         this.submitted = false;
       },
       (error) => {
-        console.error(error);
+        // Error handling and message display
+        console.error('Error adding board:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -122,12 +166,25 @@ export class BoardComponent implements OnInit {
     );
   }
   
+
   drop(event: CdkDragDrop<Board[]>) {
     moveItemInArray(this.boards, event.previousIndex, event.currentIndex);
   }
 
   showDialog() {
-    this.boardDialog = true; // Open the dialog
+    this.boardDialog = true;
+  }
+
+  prepareDeleteBoard(boardId: string) {
+    this.selectedBoardId = boardId;
+    this.confirmationVisible = true;
+  }
+
+  confirmDeleteAction() {
+    if (this.selectedBoardId) {
+      this.deleteBoard(this.selectedBoardId);
+      this.confirmationVisible = false;  // Close the dialog after confirming
+    }
   }
 
   deleteBoard(boardId: string) {
@@ -161,5 +218,4 @@ export class BoardComponent implements OnInit {
       });
     }
   }
-
 }

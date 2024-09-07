@@ -3,7 +3,7 @@
     <h2>{{ board.name }}</h2>
 
     <!-- Button to Show Task Form -->
-    <button (click)="showTaskForm = true" class="add-task-button">+</button>
+    <button (click)="showTaskForm = true" class="add-task-button" *ngIf="isManager">+</button>
 
     <!-- Task Form -->
     <div *ngIf="showTaskForm" class="task-form-container">
@@ -52,7 +52,7 @@
 </div>
 
 <!-- Document Upload Section -->
-<div class="upload-section">
+<div class="upload-section" *ngIf="isManager">
   <h3>Upload Document</h3>
   <input type="file" (change)="onFileSelected($event)" />
   <button (click)="uploadFile()">Upload</button>

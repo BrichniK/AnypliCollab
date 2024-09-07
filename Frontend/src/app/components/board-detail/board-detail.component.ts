@@ -5,7 +5,10 @@ import { Board, Task } from 'src/app/models/board';
 import { User } from 'src/app/models/user';
 import { settingService } from 'src/app/services/setting.service';
 import { TaskService } from 'src/app/services/task.service';
-
+import { Activity } from 'src/app/models/activity';
+import { ActivityService } from 'src/app/services/activity.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-board-detail',
   templateUrl: './board-detail.component.html',
@@ -17,7 +20,7 @@ export class BoardDetailComponent implements OnInit {
   showTaskForm: boolean = false;
   selectedFile: File | null = null;
   uploadedFileUrl: string | null = null;
-
+  isManager = false;
   newTask: Task = {
     id: '',
     title: '',
@@ -33,13 +36,23 @@ export class BoardDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private renderer: Renderer2,
     private settingService: settingService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private activityService : ActivityService,
+    private storageService : StorageService,
+    private authService : AuthService
   ) {}
 
   ngOnInit(): void {
     this.getBoardDetail();
     this.getUsers(); 
     this.getTasks(); 
+
+    this.authService.isAuthenticated().subscribe(isAuthenticated => {
+      if (isAuthenticated) {
+
+        this.isManager = this.authService.isManager();
+      }
+    });
     
   
   }
@@ -180,7 +193,26 @@ isPdfFile(fileUrl: string): boolean {
             priority: 'Low'
           };
           this.showTaskForm = false;
+          const user = this.storageService.getUser();
+          const userId = user.id;
+          const activity: Activity = {
+            id: '',  // ID can be auto-generated on the server side
+            userId: userId,  // Ensure this is correctly set
+            boardId: this.newTask.id,  // Ensure this is not null
+            description: `Board ${this.newTask.title} created`,
+            date: new Date(),
+          };
+    
+          this.activityService.addActivity(activity).subscribe(
+            (newActivity) => {
+              console.log('Activity created successfully:', newActivity);
+            },
+            (error) => {
+              console.error('Error creating activity:', error);
+            }
+          );
         },
+
         (error) => {
           console.error('Error adding task:', error);
         }

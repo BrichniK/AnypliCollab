@@ -5,55 +5,25 @@ const prisma = new PrismaClient();
 
 exports.show = async function getActivitys(req, res) {
   try {
-   
-    const activities = await prisma.activity.findMany({
-      where: {
-        description: {
-          contains: "Added board", 
-        },
-      },
-      include: {
-        user: true, 
-      },
-      orderBy: {
-        date: 'desc', 
-      },
-    });
-
+    const activities = await prisma.activity.findMany();
     res.json({
       status: true,
-      message: "Board-related activities successfully fetched",
+      message: "Activities successfully fetched",
       data: activities,
     });
   } catch (error) {
     console.error("Error fetching activities:", error);
     res.status(500).json({
       status: false,
-      message: "Server error",
+      message: "Error fetching activities",
+      error: error.message,
     });
   }
 };
 
-  
-  
 
-// exports.show = async function getActivitys(req, res) {
-//     try {
-//       const activitys = await prisma.activity.findMany();
-  
-//       res.json({
-//         status: true,
-//         message: "Activitys Successfully fetched",
-//         data: activitys,
-//       });
-//     } catch (error) {
-//       console.error("Error fetching Activitys:", error);
-//       res.status(500).json({
-//         status: false,
-//         message: "Server error",
-//       });
-//     }
-//   };
+
+
   
 
   exports.showById = async function getActivity(req, res) {
@@ -162,23 +132,38 @@ exports.show = async function getActivitys(req, res) {
     }
   };
   
-  exports.add = async function createActivity(req, res) {
+  exports.add = async function(req, res) {
     try {
-      console.log(req.body); 
-      const activity = await prisma.activity.create({
-        data: req.body,
+      const { userId, boardId, description, date } = req.body;
+  
+      if (!userId || !boardId || !description || !date) {
+        return res.status(400).json({
+          status: false,
+          message: "Missing required fields",
+        });
+      }
+  
+      const newActivity = await prisma.activity.create({
+        data: {
+          userId,
+          boardId,
+          description,
+          date,
+        },
       });
   
-      res.status(201).json({
+      res.status(200).json({
         status: true,
-        message: "activity Successfully Created",
-        data: activity,
+        data: newActivity,
+        message: "Activity created successfully",
       });
     } catch (error) {
       console.error("Error creating activity:", error);
       res.status(500).json({
         status: false,
-        message: 'server error',
+        message: "Server error",
       });
     }
-  }
+  };
+  
+  

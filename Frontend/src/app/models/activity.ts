@@ -5,6 +5,8 @@ export interface Activity {
     description: string;
     date: Date;
     user?: User;
+    boardId?:string
+    taskId?:string
   }
 
 

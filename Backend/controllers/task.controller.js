@@ -2,25 +2,33 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.add = async function createTask(req, res) {
-    try {
-        console.log(req.body); 
-        const task = await prisma.task.create({
-            data: req.body,
-        });
+  const { task, activity } = req.body;
 
-        res.status(201).json({
-            status: true,
-            message: "Task Successfully Created",
-            data: task,
-        });
-    } catch (error) {
-        console.error("Error creating task:", error);
-        res.status(500).json({
-            status: false,
-            message: 'server error',
-        });
-    }
+  try {
+      const [newTask, newActivity] = await prisma.$transaction([
+          prisma.task.create({ data: task }),
+          prisma.activity.create({ data: activity }),
+      ]);
+
+      res.status(201).json({
+          status: true,
+          message: "Task and Activity Successfully Created",
+          data: {
+              task: newTask,
+              activity: newActivity,
+          },
+      });
+  } catch (error) {
+      console.error("Error creating task and activity:", error);
+      res.status(500).json({
+          status: false,
+          message: 'Server error',
+          error: error.message,
+      });
+  }
 };
+
+
 
 exports.show = async function getTasks(req, res) {
     try {

@@ -2,12 +2,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 datasource db {
   provider = "mongodb"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
-
 
 enum Role {
   ADMIN
@@ -15,30 +13,28 @@ enum Role {
   COLLAB
 }
 
-
-
 enum Status {
   ToDo
   Proceeding
   Done
 }
+
 enum Priority {
   Low
   High
-  
 }
 
 model User {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  email    String   @unique
-  password String
-  name     String
-  imageURL String? 
-  role     Role     @default(COLLAB)
-  activities Activity[] 
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  email     String         @unique
+  password  String
+  name      String
+  imageURL  String?        
+  role      Role           @default(COLLAB)
+  activities Activity[]   @relation("UserActivities")
   boardUsers BoardUser[]
-  tasks    Task[]   @relation("UserTasks")
-  reclas    Reclamation[]   @relation("UserRecla") 
+  tasks     Task[]         @relation("UserTasks")
+  reclas    Reclamation[] @relation("UserRecla") 
 }
 
 model Task {
@@ -52,54 +48,54 @@ model Task {
   board       Board    @relation("BoardTasks", fields: [boardId], references: [id], onDelete: Cascade)
   userId      String   @db.ObjectId
   user        User     @relation("UserTasks", fields: [userId], references: [id], onDelete: Cascade)
+  activities Activity[] @relation("TaskActivities")
 }
+
 model Board {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   wallpaper String
-  // uploadedFileUrl String
-  tasks     Task[]   @relation("BoardTasks")
-  users BoardUser[]  
+  tasks     Task[]     @relation("BoardTasks")
+  users     BoardUser[]
+  activities Activity[] @relation("BoardActivities")
 }
 
 model BoardUser {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   boardId String @db.ObjectId
-  userId  String @db.ObjectId
+  userId  String? @db.ObjectId
 
   board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User ?  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([boardId, userId])  
 }
 
-
-
 model Activity {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  description String
+  date        DateTime
+  boardId     String?  @db.ObjectId  // Make boardId optional (nullable)
+  taskId     String?  @db.ObjectId  // Make boardId optional (nullable)
 
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-    user   User   @relation(fields: [userId], references: [id])
-    userId String @unique @db.ObjectId
-    description String
-    date DateTime
+  user        User     @relation("UserActivities", fields: [userId], references: [id])
+  board       Board?   @relation("BoardActivities", fields: [boardId], references: [id]) 
+  task       Task?   @relation("TaskActivities", fields: [boardId], references: [id]) // Make relation optional
+}
 
-  }
 enum Statusrecla {
   WAITING
   TREATED
 }
-  model Reclamation {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-    commentaire String 
-    dateadd DateTime
-    dateupdate DateTime?
-    datetrait DateTime?
-    statut Statusrecla
-    userId      String   @db.ObjectId
-    user        User     @relation("UserRecla", fields: [userId], references: [id], onDelete: Cascade)
-  }
 
- 
-
-
-
+model Reclamation {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  commentaire String
+  dateadd     DateTime
+  dateupdate  DateTime?
+  datetrait   DateTime?
+  statut      Statusrecla
+  userId      String     @db.ObjectId
+  user        User       @relation("UserRecla", fields: [userId], references: [id], onDelete: Cascade)
+}

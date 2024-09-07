@@ -4,7 +4,7 @@ const boardController = require('../controllers/board.controller');
 const { verifyToken } = require('../middlewares/authJwt'); 
 const authJwt = require('../middlewares/authJwt');
 
-router.post('/addboard',boardController.add);
+router.post('/addboard',boardController.addBoard);
 router.get('/show', boardController.show);
 router.get('/showById/:boardid', boardController.showById);
 router.get('/wallpaper/:boardid', boardController.getURL);
